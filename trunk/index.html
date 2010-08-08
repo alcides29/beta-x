@@ -174,13 +174,15 @@ function Game() {
       self.winGame();
   }
   this.winGame = function() {
-    self.showSmiley("happy");
+    //self.showSmiley("happy");
+    alert("ganaste");
     self.board.showFlags();
     self.endGame();
   }
   this.looseGame = function(row, col) {
-    self.showSmiley("sad");
+    //self.showSmiley("sad");
     self.board.showMines(row, col);
+    //alert("perdiste"); 
     self.endGame();
   }
   this.endGame = function() {
@@ -396,13 +398,17 @@ function Board() {
           self.showMine(row, col, rowBoom, colBoom);
   }
   this.showMine = function(row, col, rowBoom, colBoom) {
+     
     var pic = "mine";
     if ( self.isFlag(row, col) )
        pic = self.isMine(row, col)? "flag" : "cross";
+    if ( self.isMine(row, col) )
+       pic = "mina";
     if ( (row == rowBoom) && (col == colBoom) )
       pic = "boom";
 
     self.getImgElement(row, col).src = self.getImgSrc(pic);
+//    alert("mina");
   }
   this.showFlags = function() {
     for (var row = 0; row != self.rows; ++ row)
