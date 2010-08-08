@@ -1,0 +1,469 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 //EN">
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<title>Buscaminas</title>
+<meta name="keywords" content="juegos,javascript" />
+</head>
+
+<style>
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial;
+  font-size: 12px;
+  color: #000000;
+  background: #CDCDCD;
+}
+
+.div-barra {
+  margin: 2% auto;
+  width: 640px;
+  height: 400px;
+}
+.div-score {
+  position: relative;
+  top: 430px;
+  left: 0px;
+  height: 30px;
+  color: #000000;
+  background: #C0C0C0;
+  border-top: 1px solid #FFFFFF;
+  border-right: 1px solid #FFFFFF;
+}
+.img-mines, .div-mines, .div-time, .bn-nivel, .bn-reiniciar {
+  position: absolute;
+}
+.img-mines {
+  top: 6px;
+  left: 10px;
+}
+.div-mines {
+  top: 6px;
+  left: 30px;
+  width: 40px;
+  font-family: Verdana;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  color: #0000CF;
+  background: transparent;
+}
+.div-time {
+  top: 6px;
+  left: 100px;
+  width: 60px;
+  font-family: Verdana;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  color: #007F00;
+  background: transparent;
+}
+.bn-nivel {
+  top: 4px;
+  left: 330px;
+  width: 80px;
+  font-family: Arial;
+  font-size: 12px;
+}
+.bn-reiniciar {
+  top: 3px;
+  left: 420px;
+  width: 50px;
+  font-family: Arial;
+  font-size: 12px;
+  text-align: center;
+}
+.div-board {
+  position: relative;
+  width: 640px;
+  height: 400px;
+  color: #000000;
+  background: #7F7F7F;
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #FFFFFF;
+  border-left: 1px solid #FFFFFF;
+}
+.celda {
+  margin-top: 30px;
+  position: absolute;
+  overflow: hidden;
+}
+
+</style>
+
+<body>
+<div id="div-barra" class="div-barra">
+
+<div id="div-score" class="div-score">
+<img id="img-mines" class="img-mines" src="imagenes/mines.png" />
+<div id="div-mines" class="div-mines"></div>
+<div id="div-time" class="div-time">00:00</div>
+<select id="bn-nivel" class="bn-nivel" onchange="game.restart()" name="bn-reiniciar"/>
+<option selected value="easy">Easy</option>
+<option value="normal">Normal</option>
+<option value="advanced">Advanced</option>
+
+</select>
+<input id="bn-reiniciar" type="button" class="bn-reiniciar" onclick="game.restart()" value="Jugar!" name="bn-reiniciar"/>
+</div>
+<div id="div-board" class="div-board"></div>
+
+
+</div>
+
+<script type="text/javascript">
+
+// Game
+function Game() {
+  var self = this;
+
+  this.board     = new Board();
+  this.startTime = null;
+
+  this.run = function() {
+    self.start();
+  }
+  this.start = function() {
+    self.createBoard();
+    self.registerMouse();
+    self.startTimer();
+    self.updateScore();
+  }
+  this.restart = function() {
+    self.board.destroyImgs();
+    self.start();
+  }
+
+  this.onMouseDown = function(e) {
+    var img = getMouseObject(e);
+    if ( self.board.isCell(img) ){
+      if ( getMouseButton(e) == 1)
+        self.onLeftClick(img.mRow, img.mCol);
+      else
+        self.onRightClick(img.mRow, img.mCol);
+    }
+    self.updateScore();
+    return(false);
+  }
+  this.onLeftClick = function(row, col) {
+    if ( self.board.isFlag(row, col) )
+      return;
+    if ( self.board.isMine(row, col) ) {
+      self.looseGame(row, col);
+      return;
+    }
+    self.board.flip(row, col);
+    if (0 == self.board.downs)
+      self.winGame();
+  }
+  this.onRightClick = function(row, col) {
+    if ( self.board.isDown(row, col) )
+      return;
+    self.board.changeState(row, col);
+    if (self.board.flags == self.board.mines)
+      self.tryWinGame();
+  }
+  
+  this.tryWinGame = function() {
+    if ( self.board.testFlags() )
+      self.winGame();
+  }
+  this.winGame = function() {
+    self.showSmiley("happy");
+    self.board.showFlags();
+    self.endGame();
+  }
+  this.looseGame = function(row, col) {
+    self.showSmiley("sad");
+    self.board.showMines(row, col);
+    self.endGame();
+  }
+  this.endGame = function() {
+    self.stopTimer();
+    self.unregisterMouse();
+  }
+
+  this.updateScore = function() {
+    document.getElementById("div-mines").innerHTML = String(self.board.mines - self.board.flags);
+  }
+  
+  this.showSmiley = function(pic) {
+    var img = document.getElementById("img-smiley");
+    img.src = self.board.getImgSrc(pic);
+    img.style.visibility = "visible";
+  }
+
+  this.startTimer = function() {
+    self.startTime = new Date().getTime();
+    self.timer();
+  }
+  this.stopTimer = function() {
+    self.startTime = null;
+  }
+  this.timer = function() {
+    if (self.startTime) {
+      var diff = Math.floor( ( new Date().getTime() - self.startTime) / 1000);
+      var mins = "0" + String( Math.floor(diff / 60) );
+      var secs = "0" + String(diff % 60);
+      document.getElementById("div-time").innerHTML = 
+		mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
+      setTimeout(self.timer, 1000);
+    }
+  }
+
+  this.registerMouse = function() {
+    self.board.div.onmousedown   = self.onMouseDown;
+    self.board.div.onclick       = function(){return false;};
+    self.board.div.ondblclick    = function(){return false;};
+    self.board.div.oncontextmenu = function(){return false;};
+  }
+  this.unregisterMouse = function() {
+    self.board.div.onmousedown = null;
+  }
+  
+  this.createBoard = function() {
+     switch( document.getElementById("bn-nivel").value ) {
+       case "easy"    : self.board.create(9, 9,  10); break;
+       case "normal"  : self.board.create(16, 16,  40); break;
+       case "advanced": self.board.create(16, 20,  99); break;
+     }
+  }
+}
+
+// Board
+function Board() {
+  var self = this;
+
+  this.div = document.getElementById("div-board");
+  
+  this.celdas = null;  
+  this.rows  = 0;
+  this.cols  = 0;
+  this.mines = 0;
+  this.downs = 0;
+  this.flags = 0;
+
+  this.imgClass  = "celda";
+  this.imgWidth  = 25;
+  this.imgHeight = 25;
+  this.imgURL    = "imagenes/";
+  this.imgExt    = ".png";
+
+  this.create = function(rows, cols, mines) {
+    self.celdas = null;
+    self.rows  = rows;
+    self.cols  = cols;
+    self.mines = mines;
+    self.downs = (self.rows * self.cols) - self.mines;
+    self.flags = 0;
+
+    self.createCells();
+    self.putMines();
+    self.createImgs();
+  }
+  
+  this.createCells = function() {
+    self.celdas = new Array(self.rows);
+    for (var row = 0; row != self.rows; ++ row) {
+      self.celdas[row] = new Array(self.cols);
+      for (var col = 0; col != self.cols; ++ col)
+        self.celdas[row][col] = new Cell();
+     }
+  }
+  
+  this.putMines = function() {
+    for (var mine = 0; mine != self.mines; ++ mine)
+      self.putRandMine();
+  }
+  this.putRandMine = function() {
+    var row, col;
+    do{
+      row = rand(self.rows);
+      col = rand(self.cols);
+    }while( self.isMine(row, col) );
+ 
+    self.putMine(row, col);
+    self.roundMine(row, col);
+  }
+  this.putMine = function(row, col) {
+    self.celdas[row][col].value = 'm';
+  }
+  this.roundMine = function(row, col) {
+    for (var r = Math.max(row - 1, 0); r <= Math.min(row + 1, self.rows - 1); ++ r)
+      for (var c = Math.max(col - 1, 0); c <= Math.min(col + 1, self.cols - 1); ++ c)
+        if ( self.isMine(r, c) == false)
+          ++ self.celdas[r][c].value;
+  }
+
+  this.createImgs = function() {
+    for (var row = 0; row != self.rows; ++ row)
+      for (var col = 0; col != self.cols; ++ col)
+        this.createImg(row, col);
+  }
+  this.createImg = function(row, col) {
+    var img = document.createElement("img");
+    
+    img.id           = self.getImgId(row, col);
+    img.className    = self.imgClass;
+    img.style.width  = String(self.imgWidth)  + "px";
+    img.style.height = String(self.imgHeight) + "px";
+    img.style.top    = String( Math.floor( ( (350 - self.imgHeight * self.rows) / 2) + (row * (self.imgHeight - 1) ) ) ) + "px";
+    img.style.left   = String( Math.floor( ( (650 - self.imgWidth  * self.cols) / 2) + (col * (self.imgWidth  - 1) ) ) ) + "px";
+    img.src          = self.getImgSrc("up");
+    img.mRow         = row;
+    img.mCol         = col;
+
+    self.div.appendChild(img);
+  }
+  this.destroyImgs = function() {
+    for (var row = 0; row != self.rows; ++ row)
+      for (var col = 0; col != self.cols; ++ col)
+        self.destroyImg(row, col);
+  }
+  this.destroyImg = function(row, col) {
+    self.div.removeChild( document.getElementById( self.getImgId(row, col) ) );
+  }
+
+  this.flip = function(row, col) {
+    if ( self.isDown(row, col) )
+      return;
+    if ( self.isFlag(row, col) )
+      return;
+    self.flipCell(row, col);
+    if ( self.isHole(row, col) )
+      self.roundFlip(row, col);
+  }
+  this.flipCell = function(row, col) {
+    self.getImgElement(row, col).src = self.getImgSrc( self.celdas[row][col].value );
+    self.celdas[row][col].state = "down";
+    -- self.downs;
+  }
+  this.roundFlip = function(row, col) {
+    var left  = (col > 0);
+    var right = (col < self.cols - 1);
+    if (row > 0) {
+      if (left) self.flip(row - 1, col - 1);
+      self.flip(row - 1, col);
+      if (right) self.flip(row - 1, col + 1);
+    }
+    if (left) self.flip(row, col - 1);
+    if (right) self.flip(row, col + 1);
+    if (row < self.rows - 1) {
+      if (left) self.flip(row + 1, col - 1);
+      self.flip(row + 1, col);
+      if (right) self.flip(row + 1, col + 1);
+    }
+  }
+
+  this.changeState = function(row, col) {
+    var change = self.getNextState(row, col);
+    if ( ("flag" == change) && (self.flags == self.mines) )
+      return;
+
+    if ("flag" == change)
+      ++ self.flags;
+    if ("question" == change)
+      -- self.flags;
+
+    self.getImgElement(row, col).src = self.getImgSrc(change);
+    self.celdas[row][col].state = change;
+  }
+  this.getNextState = function(row, col) {
+    switch( self.celdas[row][col].state ){
+      case "up"      : return("flag");
+      case "flag"    : return("question");
+      case "question": return("up");
+    }
+  }
+
+  this.testFlags = function() {
+    for (var row = 0; row != self.rows; ++ row)
+      for (var col = 0; col != self.cols; ++ col)
+        if ( self.isFlag(row, col) && ( self.isMine(row, col) == false ) )
+          return(false);
+    return(true);
+  }
+
+  this.showMines = function(rowBoom, colBoom) {
+    for (var row = 0; row != self.rows; ++ row)
+      for (var col = 0; col != self.cols; ++ col)
+        if ( self.isMine(row, col) || self.isFlag(row, col) )
+          self.showMine(row, col, rowBoom, colBoom);
+  }
+  this.showMine = function(row, col, rowBoom, colBoom) {
+    var pic = "mine";
+    if ( self.isFlag(row, col) )
+       pic = self.isMine(row, col)? "flag" : "cross";
+    if ( (row == rowBoom) && (col == colBoom) )
+      pic = "boom";
+
+    self.getImgElement(row, col).src = self.getImgSrc(pic);
+  }
+  this.showFlags = function() {
+    for (var row = 0; row != self.rows; ++ row)
+      for (var col = 0; col != self.cols; ++ col)
+        if ( self.isMine(row, col) && ( self.isFlag(row, col) == false) ){
+          self.getImgElement(row, col).src = self.getImgSrc("flag");
+          ++ self.flags;
+        }
+  }
+
+  this.isMine = function(row, col) {
+    return( 'm' == self.celdas[row][col].value );
+  }
+  this.isHole = function(row, col) {
+    return( 0 == self.celdas[row][col].value );
+  }
+  this.isFlag = function(row, col) {
+    return( 'flag' == self.celdas[row][col].state );
+  }
+  this.isDown = function(row, col) {
+    return( 'down' == self.celdas[row][col].state );
+  }
+
+  this.isCell = function(img) {
+    return(img.className == self.imgClass);
+  }
+  this.getImgElement = function(row, col) {
+    return( document.getElementById( self.getImgId(row, col) ) );
+  }
+  this.getImgId = function(row, col) {
+    return( self.imgClass + String( (row * self.cols) + col) );
+  }
+  this.getImgSrc = function(pic) {
+    return(  self.imgURL + pic + self.imgExt );
+  }
+}
+
+// Cell
+function Cell() {
+  this.value = 0;
+  this.state = 'up';
+}
+
+// Utils
+function rand(x) {
+  return( Math.floor( Math.random() * x ) );
+}
+
+function getMouseObject(e) {
+  return(e? e.target: window.event.srcElement);
+}
+function getMouseButton(e) {
+  return(e? e.which: window.event.button);
+}
+
+// Instance and start Game
+var game = new Game();
+game.run();
+
+</script>
+
+</body>
+
+</html>
