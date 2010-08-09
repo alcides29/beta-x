@@ -19,9 +19,8 @@ body{
 .div-barra{
   margin: 2% auto;
   width: 640px;
-  height: 400px;
 }
-.div-score{
+.div-puntuacion{
   position: relative;
   top: 430px;
   left: 0px;
@@ -31,10 +30,10 @@ body{
   border-top: 1px solid #FFFFFF;
   border-right: 1px solid #FFFFFF;
 }
-.div-mines, .div-tiempo, .bn-nivel, .bn-reiniciar{
+.div-minas, .div-tiempo, .bn-nivel, .bn-reiniciar{
   position: absolute;
 }
-.div-mines{
+.div-minas{
   top: 6px;
   left: 30px;
   width: 40px;
@@ -91,8 +90,8 @@ body{
 
 <body>
 <div id="div-barra" class="div-barra">
-  <div id="div-score" class="div-score">
-  <div id="div-mines" class="div-mines"></div>
+  <div id="div-puntuacion" class="div-puntuacion">
+  <div id="div-minas" class="div-minas"></div>
   <div id="div-tiempo" class="div-tiempo">00:00</div>
   
   <!-- Boton para seleccion del nivel del juego -->
@@ -126,7 +125,7 @@ function Game() {
     self.createBoard();
     self.registerMouse();
     self.iniciarTemporizador();
-    self.updateScore();
+    self.actualizarBombas();
   }
   this.reiniciar = function() {
     self.board.destroyImgs();
@@ -141,7 +140,7 @@ function Game() {
       else
         self.onRightClick(img.mRow, img.mCol);
     }
-    self.updateScore();
+    self.actualizarBombas();
     return(false);
   }
   this.onLeftClick = function(fil, col) {
@@ -159,7 +158,7 @@ function Game() {
     if ( self.board.isDown(fil, col) )
       return;
     self.board.changeState(fil, col);
-    if (self.board.flags == self.board.mines)
+    if (self.board.flags == self.board.minas)
       self.tryWinGame();
   }
   
@@ -184,8 +183,8 @@ function Game() {
     self.unregisterMouse();
   }
 
-  this.updateScore = function() {
-    document.getElementById("div-mines").innerHTML = String(self.board.mines - self.board.flags);
+  this.actualizarBombas = function() {
+    document.getElementById("div-minas").innerHTML = String(self.board.minas - self.board.flags);
   }
   
   this.showSmiley = function(pic) {
@@ -240,7 +239,7 @@ function Board() {
   this.celdas = null;  
   this.fils  = 0;
   this.cols  = 0;
-  this.mines = 0;
+  this.minas = 0;
   this.downs = 0;
   this.flags = 0;
 
@@ -250,12 +249,12 @@ function Board() {
   this.imgURL    = "imagenes/";
   this.imgExt    = ".png";
 
-  this.create = function(fils, cols, mines) {
+  this.create = function(fils, cols, minas) {
     self.celdas = null;
     self.fils  = fils;
     self.cols  = cols;
-    self.mines = mines;
-    self.downs = (self.fils * self.cols) - self.mines;
+    self.minas = minas;
+    self.downs = (self.fils * self.cols) - self.minas;
     self.flags = 0;
 
     self.createCeldas();
@@ -273,7 +272,7 @@ function Board() {
   }
   
   this.putMines = function() {
-    for (var mine = 0; mine != self.mines; ++ mine)
+    for (var mina = 0; mina != self.minas; ++ mina)
       self.putRandMine();
   }
   this.putRandMine = function() {
@@ -359,7 +358,7 @@ function Board() {
 
   this.changeState = function(fil, col) {
     var change = self.getNextState(fil, col);
-    if ( ("flag" == change) && (self.flags == self.mines) )
+    if ( ("flag" == change) && (self.flags == self.minas) )
       return;
 
     if ("flag" == change)
@@ -370,6 +369,8 @@ function Board() {
     self.getImgElement(fil, col).src = self.getImgSrc(change);
     self.celdas[fil][col].state = change;
   }
+  
+  // Cambia al siguiente estado (al hacer click derecho)
   this.getNextState = function(fil, col) {
     switch( self.celdas[fil][col].state ){
       case "up"      : return("flag");
@@ -392,9 +393,11 @@ function Board() {
         if ( self.isMine(fil, col) || self.isFlag(fil, col) )
           self.showMine(fil, col, filBoom, colBoom);
   }
-  this.showMine = function(fil, col, filBoom, colBoom) {
-     
-    var pic = "mine";
+  
+  // Muestra donde estan las minas una vez terminado el juego
+  this.showMine = function(fil, col, filBoom, colBoom){
+    var pic = "mina";
+    
     if ( self.isFlag(fil, col) )
        pic = self.isMine(fil, col)? "flag" : "cross";
     if ( self.isMine(fil, col) )
@@ -405,6 +408,7 @@ function Board() {
     self.getImgElement(fil, col).src = self.getImgSrc(pic);
 //    alert("mina");
   }
+  
   this.showFlags = function() {
     for (var fil = 0; fil != self.fils; ++ fil)
       for (var col = 0; col != self.cols; ++ col)
