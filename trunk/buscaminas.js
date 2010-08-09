@@ -75,7 +75,6 @@ function crearTablero(){
 
 // Objeto Juego
 function Game(){
-    var self = this;
 
     this.tablero = new Board();
     this.iniciarTiempo = null;
@@ -84,42 +83,42 @@ function Game(){
     this.iniciar = function(){
         crearTablero();
         controlarMouse();
-        self.iniciarTemporizador();
-        self.actualizarBombas();
+        this.iniciarTemporizador();
+        this.actualizarBombas();
     }
     
     // Reinicia el juego
     this.reiniciar = function(){
-        self.tablero.destroyImgs();
-        self.iniciar();
+        this.tablero.destroyImgs();
+        this.iniciar();
     }
     
     // Detiene el tiempo y suelta el control del mouse al finalizar el juego
     this.finJuego = function(){
-        self.iniciarTiempo = null;
-	self.tablero.div.onmousedown = null;
+        this.iniciarTiempo = null;
+	this.tablero.div.onmousedown = null;
     }
     
     // Actualiza la canidad de minas a descubrir
     this.actualizarBombas = function(){
-        document.getElementById("div-minas").innerHTML = String(self.tablero.minas - self.tablero.banderas);
+        document.getElementById("div-minas").innerHTML = String(this.tablero.minas - this.tablero.banderas);
     }
     
     // Inicializa el tiempo
     this.iniciarTemporizador = function(){
-        self.iniciarTiempo = new Date().getTime();
-        self.temporizador();
+        this.iniciarTiempo = new Date().getTime();
+        this.temporizador();
     }
     
     // Cuenta el tiempo transcurrido
     this.temporizador = function(){
-        if (self.iniciarTiempo){
-            var diff = Math.floor( ( new Date().getTime() - self.iniciarTiempo) / 1000);
+        if (this.iniciarTiempo){
+            var diff = Math.floor( ( new Date().getTime() - this.iniciarTiempo) / 1000);
             var mins = "0" + String( Math.floor(diff / 60) );
             var secs = "0" + String(diff % 60);
             document.getElementById("div-tiempo").innerHTML = 
                 mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
-            setTimeout(self.temporizador, 1000);
+            setTimeout(this.temporizador, 1000);
         }
     }
 }
