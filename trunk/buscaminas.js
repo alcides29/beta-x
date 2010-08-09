@@ -25,7 +25,6 @@ function onLeftClick(fil, col){
   }
   juego.tablero.flip(fil, col);
   if (0 == juego.tablero.downs){
-    //alert("ganaste");
     juego.tablero.showBanderas();
     juego.finJuego();
   }
@@ -263,14 +262,15 @@ function Board() {
     
     // Cambia al siguiente estado (al hacer click derecho)
     this.cambiarEstado = function(fil, col) {
-        if (self.celdas[fil][col].state == "limpio") {
-            var change = "bandera";
+        //alert("aste");
+        if (self.celdas[fil][col].estado == "limpio") {
+            var cambio = "bandera";
             ++ self.banderas;
-        } else if (self.celdas[fil][col].state == "bandera") {
-            var change = "duda";
+        } else if (self.celdas[fil][col].estado == "bandera") {
+            var cambio = "duda";
             -- self.banderas;
-        } else if (self.celdas[fil][col].state == "duda") {
-            var change = "limpio";
+        } else if (self.celdas[fil][col].estado == "duda") {
+            var cambio = "limpio";
         }
         self.getImgElement(fil, col).src = self.getImgSrc(cambio);
         self.celdas[fil][col].estado = cambio;
