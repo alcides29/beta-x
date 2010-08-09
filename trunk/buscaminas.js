@@ -57,6 +57,18 @@ function onMouseDown(e){
   return(false);
 }
 
+// Cuenta el tiempo transcurrido
+function temporizador(){
+    if (juego.iniciarTiempo){
+	var diff = Math.floor( ( new Date().getTime() - juego.iniciarTiempo) / 1000);
+	var mins = "0" + String( Math.floor(diff / 60) );
+	var secs = "0" + String(diff % 60);
+	document.getElementById("div-tiempo").innerHTML = 
+	    mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
+	setTimeout(this.temporizador, 1000);
+    }
+}
+    
 // Toma el control del mouse
 function controlarMouse(){
   juego.tablero.div.onmousedown   = onMouseDown;
@@ -107,19 +119,7 @@ function Game(){
     // Inicializa el tiempo
     this.iniciarTemporizador = function(){
         this.iniciarTiempo = new Date().getTime();
-        this.temporizador();
-    }
-    
-    // Cuenta el tiempo transcurrido
-    this.temporizador = function(){
-        if (this.iniciarTiempo){
-            var diff = Math.floor( ( new Date().getTime() - this.iniciarTiempo) / 1000);
-            var mins = "0" + String( Math.floor(diff / 60) );
-            var secs = "0" + String(diff % 60);
-            document.getElementById("div-tiempo").innerHTML = 
-                mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
-            setTimeout(this.temporizador, 1000);
-        }
+        temporizador();
     }
 }
 
