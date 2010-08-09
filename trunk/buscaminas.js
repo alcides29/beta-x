@@ -1,101 +1,110 @@
 
+// Crea el tablero
+function crearTablero(){
+  switch( document.getElementById("bn-nivel").value ){
+    case "facil"    : juego.tablero.create(9, 9,  10); break;
+    case "medio"  : juego.tablero.create(16, 16,  40); break;
+    case "avanzado": juego.tablero.create(16, 20,  99); break;
+    }
+  }
 
 // Objeto Juego
-function Game() {
+function Game(){
     var self = this;
 
-    this.board     = new Board();
+    this.tablero     = new Board();
     this.iniciarTiempo = null;
 
-    this.run = function() {
+    this.run = function(){
         self.iniciar();
     }
-    this.iniciar = function() {
-        self.crearTablero();
+    this.iniciar = function(){
+        crearTablero();
         self.registerMouse();
         self.iniciarTemporizador();
         self.actualizarBombas();
     }
-    this.reiniciar = function() {
-        self.board.destroyImgs();
+    this.reiniciar = function(){
+        self.tablero.destroyImgs();
         self.iniciar();
     }
-
-    this.onMouseDown = function(e) {
+    
+    
+    this.onMouseDown = function(e){
         var img = (e? e.target: window.event.srcElement);
-        if ( self.board.isCelda(img) ){
+        if ( self.tablero.isCelda(img) ){
 	  var evento = (e? e.which: window.event.button);
-            if ( evento == 1)
-                self.onLeftClick(img.mRow, img.mCol);
-            else
-                self.onRightClick(img.mRow, img.mCol);
+          if ( evento == 1)
+	    self.onLeftClick(img.mRow, img.mCol);
+	  else
+	    self.onRightClick(img.mRow, img.mCol);
         }
         self.actualizarBombas();
         return(false);
     }
-    this.onLeftClick = function(fil, col) {
-        if ( self.board.isBandera(fil, col) )
+    this.onLeftClick = function(fil, col){
+        if ( self.tablero.isBandera(fil, col) )
             return;
-        if ( self.board.isMina(fil, col) ) {
+        if ( self.tablero.isMina(fil, col) ){
             self.juegoPerdido(fil, col);
             return;
         }
-        self.board.flip(fil, col);
-        if (0 == self.board.downs){
+        self.tablero.flip(fil, col);
+        if (0 == self.tablero.downs){
 	  //alert("ganaste");
-	  self.board.showBanderas();
+	  self.tablero.showBanderas();
 	  self.finJuego();
 	}
     }
-    this.onRightClick = function(fil, col) {
-        if ( self.board.isDown(fil, col) )
+    this.onRightClick = function(fil, col){
+        if ( self.tablero.isDown(fil, col) )
             return;
-        self.board.changeState(fil, col);
-        if (self.board.banderas == self.board.minas)
+        self.tablero.cambiarEstado(fil, col);
+        if (self.tablero.banderas == self.tablero.minas)
             self.verificarJuegoGanado();
     }
       
     // Verifica si se gana el juego
-    this.verificarJuegoGanado = function() {
-        if ( self.board.testBanderas() ){
+    this.verificarJuegoGanado = function(){
+        if ( self.tablero.testBanderas() ){
 	  //alert("ganaste");
-	  self.board.showBanderas();
+	  self.tablero.showBanderas();
 	  self.finJuego();
 	}
     }
     
     // Verifica si se pierde el juego
-    this.juegoPerdido = function(fil, col) {
+    this.juegoPerdido = function(fil, col){
         //self.showSmiley("sad");
-        self.board.showMinas(fil, col);
+        self.tablero.showMinas(fil, col);
         document.innerHTML = "oops"; 
         self.finJuego();
     }
     
-    this.finJuego = function() {
+    this.finJuego = function(){
         self.stopTemporizador();
         self.unregisterMouse();
     }
 
-    this.actualizarBombas = function() {
-        document.getElementById("div-minas").innerHTML = String(self.board.minas - self.board.banderas);
+    this.actualizarBombas = function(){
+        document.getElementById("div-minas").innerHTML = String(self.tablero.minas - self.tablero.banderas);
     }
       
-    this.showSmiley = function(pic) {
+    this.showSmiley = function(pic){
         var img = document.getElementById("img-smiley");
-        img.src = self.board.getImgSrc(pic);
+        img.src = self.tablero.getImgSrc(pic);
         img.style.visibility = "visible";
     }
 
-    this.iniciarTemporizador = function() {
+    this.iniciarTemporizador = function(){
         self.iniciarTiempo = new Date().getTime();
         self.temporizador();
     }
-    this.stopTemporizador = function() {
+    this.stopTemporizador = function(){
         self.iniciarTiempo = null;
     }
-    this.temporizador = function() {
-        if (self.iniciarTiempo) {
+    this.temporizador = function(){
+        if (self.iniciarTiempo){
             var diff = Math.floor( ( new Date().getTime() - self.iniciarTiempo) / 1000);
             var mins = "0" + String( Math.floor(diff / 60) );
             var secs = "0" + String(diff % 60);
@@ -105,23 +114,17 @@ function Game() {
         }
     }
 
-    this.registerMouse = function() {
-        self.board.div.onmousedown   = self.onMouseDown;
-        self.board.div.onclick       = function(){return false;};
-        self.board.div.ondblclick    = function(){return false;};
-        self.board.div.oncontextmenu = function(){return false;};
+    this.registerMouse = function(){
+        self.tablero.div.onmousedown   = self.onMouseDown;
+        self.tablero.div.onclick       = function(){return false;};
+        self.tablero.div.ondblclick    = function(){return false;};
+        self.tablero.div.oncontextmenu = function(){return false;};
     }
-    this.unregisterMouse = function() {
-        self.board.div.onmousedown = null;
+    this.unregisterMouse = function(){
+        self.tablero.div.onmousedown = null;
     }
       
-    this.crearTablero = function() {
-        switch( document.getElementById("bn-nivel").value ) {
-            case "facil"    : self.board.create(9, 9,  10); break;
-            case "medio"  : self.board.create(16, 16,  40); break;
-            case "avanzado": self.board.create(16, 20,  99); break;
-        }
-    }
+    
 }
 
 // Board
@@ -235,7 +238,7 @@ function Board() {
     }
     this.flipCelda = function(fil, col) {
         self.getImgElement(fil, col).src = self.getImgSrc( self.celdas[fil][col].value );
-        self.celdas[fil][col].state = "down";
+        self.celdas[fil][col].estado = "down";
         -- self.downs;
     }
     this.roundFlip = function(fil, col) {
@@ -255,23 +258,23 @@ function Board() {
         }
     }
 
-    this.changeState = function(fil, col) {
-        var change = self.getNextState(fil, col);
-        if ( ("bandera" == change) && (self.banderas == self.minas) )
+    this.cambiarEstado = function(fil, col) {
+        var cambio = self.getNextState(fil, col);
+        if ( ("bandera" == cambio) && (self.banderas == self.minas) )
             return;
 
-        if ("bandera" == change)
+        if ("bandera" == cambio)
             ++ self.banderas;
-        if ("duda" == change)
+        if ("duda" == cambio)
             -- self.banderas;
 
-        self.getImgElement(fil, col).src = self.getImgSrc(change);
-        self.celdas[fil][col].state = change;
+        self.getImgElement(fil, col).src = self.getImgSrc(cambio);
+        self.celdas[fil][col].estado = cambio;
     }
   
     // Cambia al siguiente estado (al hacer click derecho)
     this.getNextState = function(fil, col) {
-        switch( self.celdas[fil][col].state ){
+        switch( self.celdas[fil][col].estado ){
             case "limpio"      : return("bandera");
             case "bandera"    : return("duda");
             case "duda": return("limpio");
@@ -286,7 +289,7 @@ function Board() {
                 return(true);
     }
     
-    //muestra donde están todas las minas
+    //muestra donde estï¿½n todas las minas
     this.showMinas = function(filBoom, colBoom) {
         for (var fil = 0; fil != self.fils; ++ fil) {
             for (var col = 0; col != self.cols; ++ col){
@@ -328,10 +331,10 @@ function Board() {
     return( 0 == self.celdas[fil][col].value );
   }
   this.isBandera = function(fil, col) {
-    return( 'bandera' == self.celdas[fil][col].state );
+    return( 'bandera' == self.celdas[fil][col].estado );
   }
   this.isDown = function(fil, col) {
-    return( 'down' == self.celdas[fil][col].state );
+    return( 'down' == self.celdas[fil][col].estado );
   }
 
   this.isCelda = function(img) {
@@ -351,7 +354,7 @@ function Board() {
 // Celdas del tablero
 function Celda() {
   this.value = 0;
-  this.state = 'limpio';
+  this.estado = 'limpio';
 }
 
 // Funcion para generacion de numeros aleatorios
