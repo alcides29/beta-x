@@ -10,7 +10,7 @@ function verificarJuegoGanado(){
 // Verifica si se pierde el juego
 function juegoPerdido (fil, col){
   //self.showSmiley("sad");
-  juego.tablero.showMinas(fil, col);
+  juego.tablero.mostrarMinas(fil, col);
   document.innerHTML = "oops"; 
   juego.finJuego();
 }
@@ -20,7 +20,7 @@ function onLeftClick(fil, col){
   if ( juego.tablero.isBandera(fil, col) )
       return;
   if ( juego.tablero.isMina(fil, col) ){
-      juego.juegoPerdido(fil, col);
+      juegoPerdido(fil, col);
       return;
   }
   juego.tablero.flip(fil, col);
