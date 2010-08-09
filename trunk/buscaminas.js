@@ -1,3 +1,20 @@
+// Verifica si se gana el juego
+function verificarJuegoGanado(){
+  if ( juego.tablero.testBanderas() ){
+    //alert("ganaste");
+    juego.tablero.showBanderas();
+    juego.finJuego();
+  }
+}
+
+// Verifica si se pierde el juego
+function juegoPerdido (fil, col){
+  //self.showSmiley("sad");
+  juego.tablero.showMinas(fil, col);
+  document.innerHTML = "oops"; 
+  juego.finJuego();
+}
+
 // Captura la posicion donde se hace click izquierdo para tomar una accion
 function onLeftClick(fil, col){
   if ( juego.tablero.isBandera(fil, col) )
@@ -45,7 +62,6 @@ function onMouseDown(e){
 function controlarMouse(){
   juego.tablero.div.onmousedown   = onMouseDown;
   juego.tablero.div.onclick       = function(){return false;};
-  juego.tablero.div.ondblclick    = function(){return false;};
   juego.tablero.div.oncontextmenu = function(){return false;};
 }
 
@@ -79,14 +95,7 @@ function Game(){
         self.iniciar();
     }
 
-    // Verifica si se gana el juego
-    this.verificarJuegoGanado = function(){
-        if ( self.tablero.testBanderas() ){
-	  //alert("ganaste");
-	  self.tablero.showBanderas();
-	  self.finJuego();
-	}
-    }
+
     
     // Verifica si se pierde el juego
     this.juegoPerdido = function(fil, col){
@@ -96,21 +105,21 @@ function Game(){
     }
     
     this.finJuego = function(){
-        self.stopTemporizador();
-	self.tablero.div.onmousedown = null; //Soltamos el control del mouse
+        self.iniciarTiempo = null;
+	self.tablero.div.onmousedown = null;
     }
 
     this.actualizarBombas = function(){
         document.getElementById("div-minas").innerHTML = String(self.tablero.minas - self.tablero.banderas);
     }
-
+    
+    // Inicializa el tiempo
     this.iniciarTemporizador = function(){
         self.iniciarTiempo = new Date().getTime();
         self.temporizador();
     }
-    this.stopTemporizador = function(){
-        self.iniciarTiempo = null;
-    }
+    
+    // Cuenta el tiempo transcurrido
     this.temporizador = function(){
         if (self.iniciarTiempo){
             var diff = Math.floor( ( new Date().getTime() - self.iniciarTiempo) / 1000);
