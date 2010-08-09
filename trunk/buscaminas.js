@@ -1,3 +1,5 @@
+
+
 // Objeto Juego
 function Game() {
     var self = this;
@@ -9,7 +11,7 @@ function Game() {
         self.iniciar();
     }
     this.iniciar = function() {
-        self.createBoard();
+        self.crearTablero();
         self.registerMouse();
         self.iniciarTemporizador();
         self.actualizarBombas();
@@ -20,9 +22,10 @@ function Game() {
     }
 
     this.onMouseDown = function(e) {
-        var img = getMouseObject(e);
+        var img = (e? e.target: window.event.srcElement);
         if ( self.board.isCelda(img) ){
-            if ( getMouseButton(e) == 1)
+	  var evento = (e? e.which: window.event.button);
+            if ( evento == 1)
                 self.onLeftClick(img.mRow, img.mCol);
             else
                 self.onRightClick(img.mRow, img.mCol);
@@ -34,39 +37,42 @@ function Game() {
         if ( self.board.isBandera(fil, col) )
             return;
         if ( self.board.isMina(fil, col) ) {
-            self.looseGame(fil, col);
+            self.juegoPerdido(fil, col);
             return;
         }
         self.board.flip(fil, col);
-        if (0 == self.board.downs)
-            self.winGame();
+        if (0 == self.board.downs){
+	  //alert("ganaste");
+	  self.board.showBanderas();
+	  self.finJuego();
+	}
     }
     this.onRightClick = function(fil, col) {
         if ( self.board.isDown(fil, col) )
             return;
         self.board.changeState(fil, col);
         if (self.board.banderas == self.board.minas)
-            self.tryWinGame();
+            self.verificarJuegoGanado();
     }
       
     // Verifica si se gana el juego
-    this.tryWinGame = function() {
-        if ( self.board.testBanderas() )
-            self.winGame();
+    this.verificarJuegoGanado = function() {
+        if ( self.board.testBanderas() ){
+	  //alert("ganaste");
+	  self.board.showBanderas();
+	  self.finJuego();
+	}
     }
-    this.winGame = function() {
-        //self.showSmiley("happy");
-        //alert("ganaste");
-        self.board.showBanderas();
-        self.endGame();
-    }
-    this.looseGame = function(fil, col) {
+    
+    // Verifica si se pierde el juego
+    this.juegoPerdido = function(fil, col) {
         //self.showSmiley("sad");
         self.board.showMinas(fil, col);
         document.innerHTML = "oops"; 
-        self.endGame();
+        self.finJuego();
     }
-    this.endGame = function() {
+    
+    this.finJuego = function() {
         self.stopTemporizador();
         self.unregisterMouse();
     }
@@ -109,7 +115,7 @@ function Game() {
         self.board.div.onmousedown = null;
     }
       
-    this.createBoard = function() {
+    this.crearTablero = function() {
         switch( document.getElementById("bn-nivel").value ) {
             case "facil"    : self.board.create(9, 9,  10); break;
             case "medio"  : self.board.create(16, 16,  40); break;
@@ -351,13 +357,6 @@ function Celda() {
 // Funcion para generacion de numeros aleatorios
 function rand(x) {
   return( Math.floor( Math.random() * x ) );
-}
-
-function getMouseObject(e) {
-  return(e? e.target: window.event.srcElement);
-}
-function getMouseButton(e) {
-  return(e? e.which: window.event.button);
 }
 
 // Instanciacion y ejecucion del juego
