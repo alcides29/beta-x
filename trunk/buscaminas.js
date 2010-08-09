@@ -90,8 +90,7 @@ function Game(){
     
     // Verifica si se pierde el juego
     this.juegoPerdido = function(fil, col){
-        //self.showSmiley("sad");
-        self.tablero.showMinas(fil, col);
+        self.tablero.mostrarMinas(fil, col);
         document.innerHTML = "oops"; 
         self.finJuego();
     }
@@ -124,14 +123,14 @@ function Game(){
     }
 }
 
-// Board
+// Tablero
 function Board() {
     var self = this;
 
-    this.div = document.getElementById("div-tablero");
+    this.div = document.getElementById("tablero");
   
     this.celdas = null;  
-    this.fils  = 2;
+    this.fils  = 0;
     this.cols  = 0;
     this.minas = 0;
     this.downs = 0;
@@ -143,20 +142,15 @@ function Board() {
     this.imgURL    = "imagenes/";
     this.imgExt    = ".png";
 
-    this.create = function(fils, cols, minas) {
+    //Crea el tablero
+    this.create = function(filas, columnas, minas) {
         self.celdas = null;
-        self.fils  = fils;
-        self.cols  = cols;
+        self.fils  = filas;
+        self.cols  = columnas;
         self.minas = minas;
         self.downs = (self.fils * self.cols) - self.minas;
         self.banderas = 0;
 
-        self.createCeldas();
-        self.putMinas();
-        self.createImgs();
-    }
-  
-    this.createCeldas = function() {
         self.celdas = new Array(self.fils);
         for (var fil = 0; fil != self.fils; ++ fil) {
             self.celdas[fil] = new Array(self.cols);
@@ -164,12 +158,15 @@ function Board() {
                 self.celdas[fil][col] = new Celda();
             }
         }
-    }
-  
-    this.putMinas = function() {
         for (var mina = 0; mina != self.minas; ++ mina){
             self.putRandMina();
         }
+        for (var fil = 0; fil != self.fils; ++ fil) {
+            for (var col = 0; col != self.cols; ++ col){
+                this.createImg(fil, col);
+            }
+        }
+        //self.createImgs();
     }
     this.putRandMina = function() {
         var fil, col;
@@ -199,19 +196,19 @@ function Board() {
             for (var col = 0; col != self.cols; ++ col)
                 this.createImg(fil, col);
     }
-  
+    //Crea la imagen de los cuadros
     this.createImg = function(fil, col) {
         var img = document.createElement("img");
     
-        img.id           = self.getImgId(fil, col);
-        img.className    = self.imgClass;
-        img.style.width  = String(self.imgWidth)  + "px";
+        img.id = self.getImgId(fil, col);
+        img.className = self.imgClass;
+        img.style.width = String(self.imgWidth)  + "px";
         img.style.height = String(self.imgHeight) + "px";
-        img.style.top    = String( Math.floor( ( (350 - self.imgHeight * self.fils) / 2) + (fil * (self.imgHeight - 1) ) ) ) + "px";
-        img.style.left   = String( Math.floor( ( (650 - self.imgWidth  * self.cols) / 2) + (col * (self.imgWidth  - 1) ) ) ) + "px";
-        img.src          = self.getImgSrc("limpio");
-        img.mRow         = fil;
-        img.mCol         = col;
+        img.style.top = String( Math.floor( ( (350 - self.imgHeight * self.fils) / 2) + (fil * (self.imgHeight - 1) ) ) ) + "px";
+        img.style.left = String( Math.floor( ( (650 - self.imgWidth  * self.cols) / 2) + (col * (self.imgWidth  - 1) ) ) ) + "px";
+        img.src = self.getImgSrc("limpio");
+        img.mRow = fil;
+        img.mCol = col;
 
         self.div.appendChild(img);
     }
@@ -254,28 +251,20 @@ function Board() {
             if (right) self.flip(fil + 1, col + 1);
         }
     }
-
+    
+    // Cambia al siguiente estado (al hacer click derecho)
     this.cambiarEstado = function(fil, col) {
-        var cambio = self.getNextState(fil, col);
-        if ( ("bandera" == cambio) && (self.banderas == self.minas) )
-            return;
-
-        if ("bandera" == cambio)
+        if (self.celdas[fil][col].state == "limpio") {
+            var change = "bandera";
             ++ self.banderas;
-        if ("duda" == cambio)
+        } else if (self.celdas[fil][col].state == "bandera") {
+            var change = "duda";
             -- self.banderas;
-
+        } else if (self.celdas[fil][col].state == "duda") {
+            var change = "limpio";
+        }
         self.getImgElement(fil, col).src = self.getImgSrc(cambio);
         self.celdas[fil][col].estado = cambio;
-    }
-  
-    // Cambia al siguiente estado (al hacer click derecho)
-    this.getNextState = function(fil, col) {
-        switch( self.celdas[fil][col].estado ){
-            case "limpio"      : return("bandera");
-            case "bandera"    : return("duda");
-            case "duda": return("limpio");
-        }
     }
 
     this.testBanderas = function() {
@@ -287,11 +276,10 @@ function Board() {
     }
     
     //muestra donde est�n todas las minas
-    this.showMinas = function(filBoom, colBoom) {
+    this.mostrarMinas = function(filBoom, colBoom) {
         for (var fil = 0; fil != self.fils; ++ fil) {
             for (var col = 0; col != self.cols; ++ col){
                 if ( self.isMina(fil, col) || self.isBandera(fil, col) ) {
-                    //self.showMina(fil, col, filBoom, colBoom);
                     var dibujo = "mina";
                     if (self.isBandera(fil, col) ) {
                         if (self.isMina(fil, col)){
