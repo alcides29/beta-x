@@ -123,18 +123,10 @@ function Game(){
     }
 }
 
-// Tablero
 function Board() {
     var self = this;
 
     this.div = document.getElementById("tablero");
-  
-    this.celdas = null;  
-    this.fils  = 0;
-    this.cols  = 0;
-    this.minas = 0;
-    this.downs = 0;
-    this.banderas = 0;
 
     this.imgClass  = "celda";
     this.imgWidth  = 25;
@@ -150,7 +142,7 @@ function Board() {
         self.minas = minas;
         self.downs = (self.fils * self.cols) - self.minas;
         self.banderas = 0;
-
+        //crea una matriz de celdas de dimension filasxcolumnas
         self.celdas = new Array(self.fils);
         for (var fil = 0; fil != self.fils; ++ fil) {
             self.celdas[fil] = new Array(self.cols);
