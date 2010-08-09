@@ -311,7 +311,7 @@ function Board() {
     img.style.height = String(self.imgHeight) + "px";
     img.style.top    = String( Math.floor( ( (350 - self.imgHeight * self.fils) / 2) + (fil * (self.imgHeight - 1) ) ) ) + "px";
     img.style.left   = String( Math.floor( ( (650 - self.imgWidth  * self.cols) / 2) + (col * (self.imgWidth  - 1) ) ) ) + "px";
-    img.src          = self.getImgSrc("up");
+    img.src          = self.getImgSrc("limpio");
     img.mRow         = fil;
     img.mCol         = col;
 
@@ -332,7 +332,7 @@ function Board() {
     if ( self.isBandera(fil, col) )
       return;
     self.flipCelda(fil, col);
-    if ( self.isHole(fil, col) )
+    if ( self.isVacio(fil, col) )
       self.roundFlip(fil, col);
   }
   this.flipCelda = function(fil, col) {
@@ -374,9 +374,9 @@ function Board() {
   // Cambia al siguiente estado (al hacer click derecho)
   this.getNextState = function(fil, col) {
     switch( self.celdas[fil][col].state ){
-      case "up"      : return("bandera");
+      case "limpio"      : return("bandera");
       case "bandera"    : return("duda");
-      case "duda": return("up");
+      case "duda": return("limpio");
     }
   }
 
@@ -422,7 +422,7 @@ function Board() {
   this.isMina = function(fil, col) {
     return( 'm' == self.celdas[fil][col].value );
   }
-  this.isHole = function(fil, col) {
+  this.isVacio = function(fil, col) {
     return( 0 == self.celdas[fil][col].value );
   }
   this.isBandera = function(fil, col) {
@@ -449,7 +449,7 @@ function Board() {
 // Celdas del tablero
 function Celda() {
   this.value = 0;
-  this.state = 'up';
+  this.state = 'limpio';
 }
 
 // Funcion para generacion de numeros aleatorios
