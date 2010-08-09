@@ -144,9 +144,9 @@ function Game() {
     return(false);
   }
   this.onLeftClick = function(fil, col) {
-    if ( self.board.isFlag(fil, col) )
+    if ( self.board.isBandera(fil, col) )
       return;
-    if ( self.board.isMine(fil, col) ) {
+    if ( self.board.isMina(fil, col) ) {
       self.looseGame(fil, col);
       return;
     }
@@ -158,23 +158,24 @@ function Game() {
     if ( self.board.isDown(fil, col) )
       return;
     self.board.changeState(fil, col);
-    if (self.board.flags == self.board.minas)
+    if (self.board.banderas == self.board.minas)
       self.tryWinGame();
   }
   
+  // Verifica si se gana el juego
   this.tryWinGame = function() {
-    if ( self.board.testFlags() )
+    if ( self.board.testBanderas() )
       self.winGame();
   }
   this.winGame = function() {
     //self.showSmiley("happy");
     //alert("ganaste");
-    self.board.showFlags();
+    self.board.showBanderas();
     self.endGame();
   }
   this.looseGame = function(fil, col) {
     //self.showSmiley("sad");
-    self.board.showMines(fil, col);
+    self.board.showMinas(fil, col);
     document.innerHTML = "oops"; 
     self.endGame();
   }
@@ -184,7 +185,7 @@ function Game() {
   }
 
   this.actualizarBombas = function() {
-    document.getElementById("div-minas").innerHTML = String(self.board.minas - self.board.flags);
+    document.getElementById("div-minas").innerHTML = String(self.board.minas - self.board.banderas);
   }
   
   this.showSmiley = function(pic) {
@@ -241,7 +242,7 @@ function Board() {
   this.cols  = 0;
   this.minas = 0;
   this.downs = 0;
-  this.flags = 0;
+  this.banderas = 0;
 
   this.imgClass  = "celda";
   this.imgWidth  = 25;
@@ -255,10 +256,10 @@ function Board() {
     self.cols  = cols;
     self.minas = minas;
     self.downs = (self.fils * self.cols) - self.minas;
-    self.flags = 0;
+    self.banderas = 0;
 
     self.createCeldas();
-    self.putMines();
+    self.putMinas();
     self.createImgs();
   }
   
@@ -271,27 +272,27 @@ function Board() {
      }
   }
   
-  this.putMines = function() {
+  this.putMinas = function() {
     for (var mina = 0; mina != self.minas; ++ mina)
-      self.putRandMine();
+      self.putRandMina();
   }
-  this.putRandMine = function() {
+  this.putRandMina = function() {
     var fil, col;
     do{
       fil = rand(self.fils);
       col = rand(self.cols);
-    }while( self.isMine(fil, col) );
+    }while( self.isMina(fil, col) );
  
-    self.putMine(fil, col);
-    self.roundMine(fil, col);
+    self.putMina(fil, col);
+    self.roundMina(fil, col);
   }
-  this.putMine = function(fil, col) {
+  this.putMina = function(fil, col) {
     self.celdas[fil][col].value = 'm';
   }
-  this.roundMine = function(fil, col) {
+  this.roundMina = function(fil, col) {
     for (var r = Math.max(fil - 1, 0); r <= Math.min(fil + 1, self.fils - 1); ++ r)
       for (var c = Math.max(col - 1, 0); c <= Math.min(col + 1, self.cols - 1); ++ c)
-        if ( self.isMine(r, c) == false)
+        if ( self.isMina(r, c) == false)
           ++ self.celdas[r][c].value;
   }
 
@@ -328,7 +329,7 @@ function Board() {
   this.flip = function(fil, col) {
     if ( self.isDown(fil, col) )
       return;
-    if ( self.isFlag(fil, col) )
+    if ( self.isBandera(fil, col) )
       return;
     self.flipCelda(fil, col);
     if ( self.isHole(fil, col) )
@@ -358,13 +359,13 @@ function Board() {
 
   this.changeState = function(fil, col) {
     var change = self.getNextState(fil, col);
-    if ( ("flag" == change) && (self.flags == self.minas) )
+    if ( ("bandera" == change) && (self.banderas == self.minas) )
       return;
 
-    if ("flag" == change)
-      ++ self.flags;
-    if ("question" == change)
-      -- self.flags;
+    if ("bandera" == change)
+      ++ self.banderas;
+    if ("duda" == change)
+      -- self.banderas;
 
     self.getImgElement(fil, col).src = self.getImgSrc(change);
     self.celdas[fil][col].state = change;
@@ -373,34 +374,34 @@ function Board() {
   // Cambia al siguiente estado (al hacer click derecho)
   this.getNextState = function(fil, col) {
     switch( self.celdas[fil][col].state ){
-      case "up"      : return("flag");
-      case "flag"    : return("question");
-      case "question": return("up");
+      case "up"      : return("bandera");
+      case "bandera"    : return("duda");
+      case "duda": return("up");
     }
   }
 
-  this.testFlags = function() {
+  this.testBanderas = function() {
     for (var fil = 0; fil != self.fils; ++ fil)
       for (var col = 0; col != self.cols; ++ col)
-        if ( self.isFlag(fil, col) && ( self.isMine(fil, col) == false ) )
+        if ( self.isBandera(fil, col) && ( self.isMina(fil, col) == false ) )
           return(false);
     return(true);
   }
 
-  this.showMines = function(filBoom, colBoom) {
+  this.showMinas = function(filBoom, colBoom) {
     for (var fil = 0; fil != self.fils; ++ fil)
       for (var col = 0; col != self.cols; ++ col)
-        if ( self.isMine(fil, col) || self.isFlag(fil, col) )
-          self.showMine(fil, col, filBoom, colBoom);
+        if ( self.isMina(fil, col) || self.isBandera(fil, col) )
+          self.showMina(fil, col, filBoom, colBoom);
   }
   
   // Muestra donde estan las minas una vez terminado el juego
-  this.showMine = function(fil, col, filBoom, colBoom){
+  this.showMina = function(fil, col, filBoom, colBoom){
     var pic = "mina";
     
-    if ( self.isFlag(fil, col) )
-       pic = self.isMine(fil, col)? "flag" : "cross";
-    if ( self.isMine(fil, col) )
+    if ( self.isBandera(fil, col) )
+       pic = self.isMina(fil, col)? "bandera" : "cross";
+    if ( self.isMina(fil, col) )
        pic = "mina";
     if ( (fil == filBoom) && (col == colBoom) )
       pic = "boom";
@@ -409,23 +410,23 @@ function Board() {
 //    alert("mina");
   }
   
-  this.showFlags = function() {
+  this.showBanderas = function() {
     for (var fil = 0; fil != self.fils; ++ fil)
       for (var col = 0; col != self.cols; ++ col)
-        if ( self.isMine(fil, col) && ( self.isFlag(fil, col) == false) ){
-          self.getImgElement(fil, col).src = self.getImgSrc("flag");
-          ++ self.flags;
+        if ( self.isMina(fil, col) && ( self.isBandera(fil, col) == false) ){
+          self.getImgElement(fil, col).src = self.getImgSrc("bandera");
+          ++ self.banderas;
         }
   }
 
-  this.isMine = function(fil, col) {
+  this.isMina = function(fil, col) {
     return( 'm' == self.celdas[fil][col].value );
   }
   this.isHole = function(fil, col) {
     return( 0 == self.celdas[fil][col].value );
   }
-  this.isFlag = function(fil, col) {
-    return( 'flag' == self.celdas[fil][col].state );
+  this.isBandera = function(fil, col) {
+    return( 'bandera' == self.celdas[fil][col].state );
   }
   this.isDown = function(fil, col) {
     return( 'down' == self.celdas[fil][col].state );
@@ -445,13 +446,13 @@ function Board() {
   }
 }
 
-// Celda
+// Celdas del tablero
 function Celda() {
   this.value = 0;
   this.state = 'up';
 }
 
-// Utils
+// Funcion para generacion de numeros aleatorios
 function rand(x) {
   return( Math.floor( Math.random() * x ) );
 }
