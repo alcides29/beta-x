@@ -160,143 +160,151 @@ function Board() {
         }
     }
   
-  this.putMinas = function() {
-    for (var mina = 0; mina != self.minas; ++ mina)
-      self.putRandMina();
-  }
-  this.putRandMina = function() {
-    var fil, col;
-    do{
-      fil = rand(self.fils);
-      col = rand(self.cols);
-    }while( self.isMina(fil, col) );
+    this.putMinas = function() {
+        for (var mina = 0; mina != self.minas; ++ mina){
+            self.putRandMina();
+        }
+    }
+    this.putRandMina = function() {
+        var fil, col;
+        do{
+            fil = rand(self.fils);
+            col = rand(self.cols);
+        }while( self.isMina(fil, col) );
  
-    self.putMina(fil, col);
-    self.roundMina(fil, col);
-  }
-  this.putMina = function(fil, col) {
-    self.celdas[fil][col].value = 'm';
-  }
-  this.roundMina = function(fil, col) {
-    for (var r = Math.max(fil - 1, 0); r <= Math.min(fil + 1, self.fils - 1); ++ r)
-      for (var c = Math.max(col - 1, 0); c <= Math.min(col + 1, self.cols - 1); ++ c)
-        if ( self.isMina(r, c) == false)
-          ++ self.celdas[r][c].value;
-  }
+        self.putMina(fil, col);
+        self.roundMina(fil, col);
+    }
+    this.putMina = function(fil, col) {
+        self.celdas[fil][col].value = 'm';
+    }
+    this.roundMina = function(fil, col) {
+        for (var r = Math.max(fil - 1, 0); r <= Math.min(fil + 1, self.fils - 1); ++ r) {
+            for (var c = Math.max(col - 1, 0); c <= Math.min(col + 1, self.cols - 1); ++ c) {
+                if ( self.isMina(r, c) == false) {
+                    ++ self.celdas[r][c].value;
+                }
+            }
+        }
+    }
 
-  this.createImgs = function() {
-    for (var fil = 0; fil != self.fils; ++ fil)
-      for (var col = 0; col != self.cols; ++ col)
-        this.createImg(fil, col);
-  }
+    this.createImgs = function() {
+        for (var fil = 0; fil != self.fils; ++ fil)
+            for (var col = 0; col != self.cols; ++ col)
+                this.createImg(fil, col);
+    }
   
-  this.createImg = function(fil, col) {
-    var img = document.createElement("img");
+    this.createImg = function(fil, col) {
+        var img = document.createElement("img");
     
-    img.id           = self.getImgId(fil, col);
-    img.className    = self.imgClass;
-    img.style.width  = String(self.imgWidth)  + "px";
-    img.style.height = String(self.imgHeight) + "px";
-    img.style.top    = String( Math.floor( ( (350 - self.imgHeight * self.fils) / 2) + (fil * (self.imgHeight - 1) ) ) ) + "px";
-    img.style.left   = String( Math.floor( ( (650 - self.imgWidth  * self.cols) / 2) + (col * (self.imgWidth  - 1) ) ) ) + "px";
-    img.src          = self.getImgSrc("limpio");
-    img.mRow         = fil;
-    img.mCol         = col;
+        img.id           = self.getImgId(fil, col);
+        img.className    = self.imgClass;
+        img.style.width  = String(self.imgWidth)  + "px";
+        img.style.height = String(self.imgHeight) + "px";
+        img.style.top    = String( Math.floor( ( (350 - self.imgHeight * self.fils) / 2) + (fil * (self.imgHeight - 1) ) ) ) + "px";
+        img.style.left   = String( Math.floor( ( (650 - self.imgWidth  * self.cols) / 2) + (col * (self.imgWidth  - 1) ) ) ) + "px";
+        img.src          = self.getImgSrc("limpio");
+        img.mRow         = fil;
+        img.mCol         = col;
 
-    self.div.appendChild(img);
-  }
-  this.destroyImgs = function() {
-    for (var fil = 0; fil != self.fils; ++ fil)
-      for (var col = 0; col != self.cols; ++ col)
-        self.destroyImg(fil, col);
-  }
-  this.destroyImg = function(fil, col) {
-    self.div.removeChild( document.getElementById( self.getImgId(fil, col) ) );
-  }
-
-  this.flip = function(fil, col) {
-    if ( self.isDown(fil, col) )
-      return;
-    if ( self.isBandera(fil, col) )
-      return;
-    self.flipCelda(fil, col);
-    if ( self.isVacio(fil, col) )
-      self.roundFlip(fil, col);
-  }
-  this.flipCelda = function(fil, col) {
-    self.getImgElement(fil, col).src = self.getImgSrc( self.celdas[fil][col].value );
-    self.celdas[fil][col].state = "down";
-    -- self.downs;
-  }
-  this.roundFlip = function(fil, col) {
-    var left  = (col > 0);
-    var right = (col < self.cols - 1);
-    if (fil > 0) {
-      if (left) self.flip(fil - 1, col - 1);
-      self.flip(fil - 1, col);
-      if (right) self.flip(fil - 1, col + 1);
+        self.div.appendChild(img);
     }
-    if (left) self.flip(fil, col - 1);
-    if (right) self.flip(fil, col + 1);
-    if (fil < self.fils - 1) {
-      if (left) self.flip(fil + 1, col - 1);
-      self.flip(fil + 1, col);
-      if (right) self.flip(fil + 1, col + 1);
+    this.destroyImgs = function() {
+        for (var fil = 0; fil != self.fils; ++ fil)
+            for (var col = 0; col != self.cols; ++ col)
+                self.destroyImg(fil, col);
     }
-  }
+    this.destroyImg = function(fil, col) {
+        self.div.removeChild( document.getElementById( self.getImgId(fil, col) ) );
+    }
 
-  this.changeState = function(fil, col) {
-    var change = self.getNextState(fil, col);
-    if ( ("bandera" == change) && (self.banderas == self.minas) )
-      return;
+    this.flip = function(fil, col) {
+        if ( self.isDown(fil, col) )
+            return;
+        if ( self.isBandera(fil, col) )
+            return;
+        self.flipCelda(fil, col);
+        if ( self.isVacio(fil, col) )
+        self.roundFlip(fil, col);
+    }
+    this.flipCelda = function(fil, col) {
+        self.getImgElement(fil, col).src = self.getImgSrc( self.celdas[fil][col].value );
+        self.celdas[fil][col].state = "down";
+        -- self.downs;
+    }
+    this.roundFlip = function(fil, col) {
+        var left  = (col > 0);
+        var right = (col < self.cols - 1);
+        if (fil > 0) {
+            if (left) self.flip(fil - 1, col - 1);
+            self.flip(fil - 1, col);
+            if (right) self.flip(fil - 1, col + 1);
+        }
+        if (left) self.flip(fil, col - 1);
+        if (right) self.flip(fil, col + 1);
+        if (fil < self.fils - 1) {
+            if (left) self.flip(fil + 1, col - 1);
+            self.flip(fil + 1, col);
+            if (right) self.flip(fil + 1, col + 1);
+        }
+    }
 
-    if ("bandera" == change)
-      ++ self.banderas;
-    if ("duda" == change)
-      -- self.banderas;
+    this.changeState = function(fil, col) {
+        var change = self.getNextState(fil, col);
+        if ( ("bandera" == change) && (self.banderas == self.minas) )
+            return;
 
-    self.getImgElement(fil, col).src = self.getImgSrc(change);
-    self.celdas[fil][col].state = change;
-  }
+        if ("bandera" == change)
+            ++ self.banderas;
+        if ("duda" == change)
+            -- self.banderas;
+
+        self.getImgElement(fil, col).src = self.getImgSrc(change);
+        self.celdas[fil][col].state = change;
+    }
   
-  // Cambia al siguiente estado (al hacer click derecho)
-  this.getNextState = function(fil, col) {
-    switch( self.celdas[fil][col].state ){
-      case "limpio"      : return("bandera");
-      case "bandera"    : return("duda");
-      case "duda": return("limpio");
+    // Cambia al siguiente estado (al hacer click derecho)
+    this.getNextState = function(fil, col) {
+        switch( self.celdas[fil][col].state ){
+            case "limpio"      : return("bandera");
+            case "bandera"    : return("duda");
+            case "duda": return("limpio");
+        }
     }
-  }
 
-  this.testBanderas = function() {
-    for (var fil = 0; fil != self.fils; ++ fil)
-      for (var col = 0; col != self.cols; ++ col)
-        if ( self.isBandera(fil, col) && ( self.isMina(fil, col) == false ) )
-          return(false);
-    return(true);
-  }
-
-  this.showMinas = function(filBoom, colBoom) {
-    for (var fil = 0; fil != self.fils; ++ fil)
-      for (var col = 0; col != self.cols; ++ col)
-        if ( self.isMina(fil, col) || self.isBandera(fil, col) )
-          self.showMina(fil, col, filBoom, colBoom);
-  }
-  
-  // Muestra donde estan las minas una vez terminado el juego
-  this.showMina = function(fil, col, filBoom, colBoom){
-    var pic = "mina";
+    this.testBanderas = function() {
+        for (var fil = 0; fil != self.fils; ++ fil)
+            for (var col = 0; col != self.cols; ++ col)
+                if ( self.isBandera(fil, col) && ( self.isMina(fil, col) == false ) )
+                    return(false);
+                return(true);
+    }
     
-    if ( self.isBandera(fil, col) )
-       pic = self.isMina(fil, col)? "bandera" : "cross";
-    if ( self.isMina(fil, col) )
-       pic = "mina";
-    if ( (fil == filBoom) && (col == colBoom) )
-      pic = "boom";
+    //muestra donde están todas las minas
+    this.showMinas = function(filBoom, colBoom) {
+        for (var fil = 0; fil != self.fils; ++ fil) {
+            for (var col = 0; col != self.cols; ++ col){
+                if ( self.isMina(fil, col) || self.isBandera(fil, col) ) {
+                    //self.showMina(fil, col, filBoom, colBoom);
+                    var dibujo = "mina";
+                    if (self.isBandera(fil, col) ) {
+                        if (self.isMina(fil, col)){
+                            dibujo = "bandera";
+                        } else {
+                            dibujo = "error";
+                        }
+                    } else if (self.isMina(fil, col) ) {
+                        dibujo = "mina";
+                    }
+                    if ((fil == filBoom) && (col == colBoom) ) {
+                        dibujo = "boom";
+                    }
+                    self.getImgElement(fil, col).src = self.getImgSrc(dibujo);
+                }
+            }
+        }
+    } 
 
-    self.getImgElement(fil, col).src = self.getImgSrc(pic);
-//    alert("mina");
-  }
   
   this.showBanderas = function() {
     for (var fil = 0; fil != self.fils; ++ fil)
