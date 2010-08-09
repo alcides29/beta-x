@@ -122,42 +122,43 @@ function Game() {
 function Board() {
     var self = this;
 
-  this.div = document.getElementById("div-tablero");
+    this.div = document.getElementById("div-tablero");
   
-  this.celdas = null;  
-  this.fils  = 0;
-  this.cols  = 0;
-  this.minas = 0;
-  this.downs = 0;
-  this.banderas = 0;
+    this.celdas = null;  
+    this.fils  = 2;
+    this.cols  = 0;
+    this.minas = 0;
+    this.downs = 0;
+    this.banderas = 0;
 
-  this.imgClass  = "celda";
-  this.imgWidth  = 25;
-  this.imgHeight = 25;
-  this.imgURL    = "imagenes/";
-  this.imgExt    = ".png";
+    this.imgClass  = "celda";
+    this.imgWidth  = 25;
+    this.imgHeight = 25;
+    this.imgURL    = "imagenes/";
+    this.imgExt    = ".png";
 
-  this.create = function(fils, cols, minas) {
-    self.celdas = null;
-    self.fils  = fils;
-    self.cols  = cols;
-    self.minas = minas;
-    self.downs = (self.fils * self.cols) - self.minas;
-    self.banderas = 0;
+    this.create = function(fils, cols, minas) {
+        self.celdas = null;
+        self.fils  = fils;
+        self.cols  = cols;
+        self.minas = minas;
+        self.downs = (self.fils * self.cols) - self.minas;
+        self.banderas = 0;
 
-    self.createCeldas();
-    self.putMinas();
-    self.createImgs();
-  }
+        self.createCeldas();
+        self.putMinas();
+        self.createImgs();
+    }
   
-  this.createCeldas = function() {
-    self.celdas = new Array(self.fils);
-    for (var fil = 0; fil != self.fils; ++ fil) {
-      self.celdas[fil] = new Array(self.cols);
-      for (var col = 0; col != self.cols; ++ col)
-        self.celdas[fil][col] = new Celda();
-     }
-  }
+    this.createCeldas = function() {
+        self.celdas = new Array(self.fils);
+        for (var fil = 0; fil != self.fils; ++ fil) {
+            self.celdas[fil] = new Array(self.cols);
+            for (var col = 0; col != self.cols; ++ col) {
+                self.celdas[fil][col] = new Celda();
+            }
+        }
+    }
   
   this.putMinas = function() {
     for (var mina = 0; mina != self.minas; ++ mina)
