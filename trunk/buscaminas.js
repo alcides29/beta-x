@@ -1,12 +1,62 @@
+// Captura la posicion donde se hace click izquierdo para tomar una accion
+function onLeftClick(fil, col){
+  if ( juego.tablero.isBandera(fil, col) )
+      return;
+  if ( juego.tablero.isMina(fil, col) ){
+      juego.juegoPerdido(fil, col);
+      return;
+  }
+  juego.tablero.flip(fil, col);
+  if (0 == juego.tablero.downs){
+    //alert("ganaste");
+    juego.tablero.showBanderas();
+    juego.finJuego();
+  }
+}
+
+// Toma una accion al hacer click derecho
+function onRightClick(fil, col){
+  if ( juego.tablero.isDown(fil, col) )
+    return;
+  
+  juego.tablero.cambiarEstado(fil, col);
+  
+  if (juego.tablero.banderas == juego.tablero.minas)
+    juego.verificarJuegoGanado();
+}
+
+// Captura un evento del mouse
+function onMouseDown(e){
+  var img = (e? e.target: window.event.srcElement);
+  if ( juego.tablero.isCelda(img) ){
+    
+    // obtiene que boton del mouse se presiono
+    var evento = (e? e.which: window.event.button);
+    if ( evento == 1)
+      onLeftClick(img.mRow, img.mCol);
+    else
+      onRightClick(img.mRow, img.mCol);
+  }
+  juego.actualizarBombas();
+  return(false);
+}
+
+// Toma el control del mouse
+function controlarMouse(){
+  juego.tablero.div.onmousedown   = onMouseDown;
+  juego.tablero.div.onclick       = function(){return false;};
+  juego.tablero.div.ondblclick    = function(){return false;};
+  juego.tablero.div.oncontextmenu = function(){return false;};
+}
 
 // Crea el tablero
 function crearTablero(){
   switch( document.getElementById("bn-nivel").value ){
     case "facil"    : juego.tablero.create(9, 9,  10); break;
-    case "medio"  : juego.tablero.create(16, 16,  40); break;
-    case "avanzado": juego.tablero.create(16, 20,  99); break;
-    }
+    case "medio"    : juego.tablero.create(16, 16,  40); break;
+    case "avanzado" : juego.tablero.create(16, 20,  99); break;
   }
+}
 
 // Objeto Juego
 function Game(){
@@ -20,7 +70,7 @@ function Game(){
     }
     this.iniciar = function(){
         crearTablero();
-        self.registerMouse();
+        controlarMouse();
         self.iniciarTemporizador();
         self.actualizarBombas();
     }
@@ -28,42 +78,7 @@ function Game(){
         self.tablero.destroyImgs();
         self.iniciar();
     }
-    
-    
-    this.onMouseDown = function(e){
-        var img = (e? e.target: window.event.srcElement);
-        if ( self.tablero.isCelda(img) ){
-	  var evento = (e? e.which: window.event.button);
-          if ( evento == 1)
-	    self.onLeftClick(img.mRow, img.mCol);
-	  else
-	    self.onRightClick(img.mRow, img.mCol);
-        }
-        self.actualizarBombas();
-        return(false);
-    }
-    this.onLeftClick = function(fil, col){
-        if ( self.tablero.isBandera(fil, col) )
-            return;
-        if ( self.tablero.isMina(fil, col) ){
-            self.juegoPerdido(fil, col);
-            return;
-        }
-        self.tablero.flip(fil, col);
-        if (0 == self.tablero.downs){
-	  //alert("ganaste");
-	  self.tablero.showBanderas();
-	  self.finJuego();
-	}
-    }
-    this.onRightClick = function(fil, col){
-        if ( self.tablero.isDown(fil, col) )
-            return;
-        self.tablero.cambiarEstado(fil, col);
-        if (self.tablero.banderas == self.tablero.minas)
-            self.verificarJuegoGanado();
-    }
-      
+
     // Verifica si se gana el juego
     this.verificarJuegoGanado = function(){
         if ( self.tablero.testBanderas() ){
@@ -83,17 +98,11 @@ function Game(){
     
     this.finJuego = function(){
         self.stopTemporizador();
-        self.unregisterMouse();
+	self.tablero.div.onmousedown = null; //Soltamos el control del mouse
     }
 
     this.actualizarBombas = function(){
         document.getElementById("div-minas").innerHTML = String(self.tablero.minas - self.tablero.banderas);
-    }
-      
-    this.showSmiley = function(pic){
-        var img = document.getElementById("img-smiley");
-        img.src = self.tablero.getImgSrc(pic);
-        img.style.visibility = "visible";
     }
 
     this.iniciarTemporizador = function(){
@@ -113,18 +122,6 @@ function Game(){
             setTimeout(self.temporizador, 1000);
         }
     }
-
-    this.registerMouse = function(){
-        self.tablero.div.onmousedown   = self.onMouseDown;
-        self.tablero.div.onclick       = function(){return false;};
-        self.tablero.div.ondblclick    = function(){return false;};
-        self.tablero.div.oncontextmenu = function(){return false;};
-    }
-    this.unregisterMouse = function(){
-        self.tablero.div.onmousedown = null;
-    }
-      
-    
 }
 
 // Board
