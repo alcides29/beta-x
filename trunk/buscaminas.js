@@ -1,126 +1,126 @@
 // Objeto Juego
 function Game() {
-  var self = this;
+    var self = this;
 
-  this.board     = new Board();
-  this.iniciarTiempo = null;
+    this.board     = new Board();
+    this.iniciarTiempo = null;
 
-  this.run = function() {
-    self.iniciar();
-  }
-  this.iniciar = function() {
-    self.createBoard();
-    self.registerMouse();
-    self.iniciarTemporizador();
-    self.actualizarBombas();
-  }
-  this.reiniciar = function() {
-    self.board.destroyImgs();
-    self.iniciar();
-  }
-
-  this.onMouseDown = function(e) {
-    var img = getMouseObject(e);
-    if ( self.board.isCelda(img) ){
-      if ( getMouseButton(e) == 1)
-        self.onLeftClick(img.mRow, img.mCol);
-      else
-        self.onRightClick(img.mRow, img.mCol);
+    this.run = function() {
+        self.iniciar();
     }
-    self.actualizarBombas();
-    return(false);
-  }
-  this.onLeftClick = function(fil, col) {
-    if ( self.board.isBandera(fil, col) )
-      return;
-    if ( self.board.isMina(fil, col) ) {
-      self.looseGame(fil, col);
-      return;
+    this.iniciar = function() {
+        self.createBoard();
+        self.registerMouse();
+        self.iniciarTemporizador();
+        self.actualizarBombas();
     }
-    self.board.flip(fil, col);
-    if (0 == self.board.downs)
-      self.winGame();
-  }
-  this.onRightClick = function(fil, col) {
-    if ( self.board.isDown(fil, col) )
-      return;
-    self.board.changeState(fil, col);
-    if (self.board.banderas == self.board.minas)
-      self.tryWinGame();
-  }
-  
-  // Verifica si se gana el juego
-  this.tryWinGame = function() {
-    if ( self.board.testBanderas() )
-      self.winGame();
-  }
-  this.winGame = function() {
-    //self.showSmiley("happy");
-    //alert("ganaste");
-    self.board.showBanderas();
-    self.endGame();
-  }
-  this.looseGame = function(fil, col) {
-    //self.showSmiley("sad");
-    self.board.showMinas(fil, col);
-    document.innerHTML = "oops"; 
-    self.endGame();
-  }
-  this.endGame = function() {
-    self.stopTemporizador();
-    self.unregisterMouse();
-  }
-
-  this.actualizarBombas = function() {
-    document.getElementById("div-minas").innerHTML = String(self.board.minas - self.board.banderas);
-  }
-  
-  this.showSmiley = function(pic) {
-    var img = document.getElementById("img-smiley");
-    img.src = self.board.getImgSrc(pic);
-    img.style.visibility = "visible";
-  }
-
-  this.iniciarTemporizador = function() {
-    self.iniciarTiempo = new Date().getTime();
-    self.temporizador();
-  }
-  this.stopTemporizador = function() {
-    self.iniciarTiempo = null;
-  }
-  this.temporizador = function() {
-    if (self.iniciarTiempo) {
-      var diff = Math.floor( ( new Date().getTime() - self.iniciarTiempo) / 1000);
-      var mins = "0" + String( Math.floor(diff / 60) );
-      var secs = "0" + String(diff % 60);
-      document.getElementById("div-tiempo").innerHTML = 
-		mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
-      setTimeout(self.temporizador, 1000);
+    this.reiniciar = function() {
+        self.board.destroyImgs();
+        self.iniciar();
     }
-  }
 
-  this.registerMouse = function() {
-    self.board.div.onmousedown   = self.onMouseDown;
-    self.board.div.onclick       = function(){return false;};
-    self.board.div.ondblclick    = function(){return false;};
-    self.board.div.oncontextmenu = function(){return false;};
-  }
-  this.unregisterMouse = function() {
-    self.board.div.onmousedown = null;
-  }
-  
-  this.createBoard = function() {
-     switch( document.getElementById("bn-nivel").value ) {
-       case "facil"    : self.board.create(9, 9,  10); break;
-       case "medio"  : self.board.create(16, 16,  40); break;
-       case "avanzado": self.board.create(16, 20,  99); break;
-     }
-  }
+    this.onMouseDown = function(e) {
+        var img = getMouseObject(e);
+        if ( self.board.isCelda(img) ){
+            if ( getMouseButton(e) == 1)
+                self.onLeftClick(img.mRow, img.mCol);
+            else
+                self.onRightClick(img.mRow, img.mCol);
+        }
+        self.actualizarBombas();
+        return(false);
+    }
+    this.onLeftClick = function(fil, col) {
+        if ( self.board.isBandera(fil, col) )
+            return;
+        if ( self.board.isMina(fil, col) ) {
+            self.looseGame(fil, col);
+            return;
+        }
+        self.board.flip(fil, col);
+        if (0 == self.board.downs)
+            self.winGame();
+    }
+    this.onRightClick = function(fil, col) {
+        if ( self.board.isDown(fil, col) )
+            return;
+        self.board.changeState(fil, col);
+        if (self.board.banderas == self.board.minas)
+            self.tryWinGame();
+    }
+      
+    // Verifica si se gana el juego
+    this.tryWinGame = function() {
+        if ( self.board.testBanderas() )
+            self.winGame();
+    }
+    this.winGame = function() {
+        //self.showSmiley("happy");
+        //alert("ganaste");
+        self.board.showBanderas();
+        self.endGame();
+    }
+    this.looseGame = function(fil, col) {
+        //self.showSmiley("sad");
+        self.board.showMinas(fil, col);
+        document.innerHTML = "oops"; 
+        self.endGame();
+    }
+    this.endGame = function() {
+        self.stopTemporizador();
+        self.unregisterMouse();
+    }
+
+    this.actualizarBombas = function() {
+        document.getElementById("div-minas").innerHTML = String(self.board.minas - self.board.banderas);
+    }
+      
+    this.showSmiley = function(pic) {
+        var img = document.getElementById("img-smiley");
+        img.src = self.board.getImgSrc(pic);
+        img.style.visibility = "visible";
+    }
+
+    this.iniciarTemporizador = function() {
+        self.iniciarTiempo = new Date().getTime();
+        self.temporizador();
+    }
+    this.stopTemporizador = function() {
+        self.iniciarTiempo = null;
+    }
+    this.temporizador = function() {
+        if (self.iniciarTiempo) {
+            var diff = Math.floor( ( new Date().getTime() - self.iniciarTiempo) / 1000);
+            var mins = "0" + String( Math.floor(diff / 60) );
+            var secs = "0" + String(diff % 60);
+            document.getElementById("div-tiempo").innerHTML = 
+                mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
+            setTimeout(self.temporizador, 1000);
+        }
+    }
+
+    this.registerMouse = function() {
+        self.board.div.onmousedown   = self.onMouseDown;
+        self.board.div.onclick       = function(){return false;};
+        self.board.div.ondblclick    = function(){return false;};
+        self.board.div.oncontextmenu = function(){return false;};
+    }
+    this.unregisterMouse = function() {
+        self.board.div.onmousedown = null;
+    }
+      
+    this.createBoard = function() {
+        switch( document.getElementById("bn-nivel").value ) {
+            case "facil"    : self.board.create(9, 9,  10); break;
+            case "medio"  : self.board.create(16, 16,  40); break;
+            case "avanzado": self.board.create(16, 20,  99); break;
+        }
+    }
 }
 
 // Board
 function Board() {
-  var self = this;
+    var self = this;
 
   this.div = document.getElementById("div-tablero");
   
