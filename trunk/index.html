@@ -98,21 +98,19 @@ body {
 <body>
 <div id="div-barra" class="div-barra">
 
-<div id="div-score" class="div-score">
-<img id="img-mines" class="img-mines" src="imagenes/mines.png" />
-<div id="div-mines" class="div-mines"></div>
-<div id="div-tiempo" class="div-tiempo">00:00</div>
-<select id="bn-nivel" class="bn-nivel" onchange="game.reiniciar()" name="bn-reiniciar"/>
-<option selected value="facil">Facil</option>
-<option value="medio">Medio</option>
-<option value="avanzado">Avanzado</option>
+  <div id="div-score" class="div-score">
+  <img id="img-mines" class="img-mines" src="imagenes/mines.png" />
+  <div id="div-mines" class="div-mines"></div>
+  <div id="div-tiempo" class="div-tiempo">00:00</div>
+  <select id="bn-nivel" class="bn-nivel" onchange="game.reiniciar()" name="bn-reiniciar"/>
+  <option selected value="facil">Facil</option>
+  <option value="medio">Medio</option>
+  <option value="avanzado">Avanzado</option>
 
-</select>
-<input id="bn-reiniciar" type="button" class="bn-reiniciar" onclick="game.reiniciar()" value="Jugar!" name="bn-reiniciar"/>
-</div>
-<div id="div-tablero" class="div-tablero"></div>
-
-
+  </select>
+  <input id="bn-reiniciar" type="button" class="bn-reiniciar" onclick="game.reiniciar()" value="Jugar!" name="bn-reiniciar"/>
+  </div>
+  <div id="div-tablero" class="div-tablero"></div>
 </div>
 
 <script type="text/javascript">
@@ -140,7 +138,7 @@ function Game() {
 
   this.onMouseDown = function(e) {
     var img = getMouseObject(e);
-    if ( self.board.isCell(img) ){
+    if ( self.board.isCelda(img) ){
       if ( getMouseButton(e) == 1)
         self.onLeftClick(img.mRow, img.mCol);
       else
@@ -181,7 +179,7 @@ function Game() {
   this.looseGame = function(fil, col) {
     //self.showSmiley("sad");
     self.board.showMines(fil, col);
-    document.write("perdiste"); 
+    document.innerHTML = "oops"; 
     self.endGame();
   }
   this.endGame = function() {
@@ -263,17 +261,17 @@ function Board() {
     self.downs = (self.fils * self.cols) - self.mines;
     self.flags = 0;
 
-    self.createCells();
+    self.createCeldas();
     self.putMines();
     self.createImgs();
   }
   
-  this.createCells = function() {
+  this.createCeldas = function() {
     self.celdas = new Array(self.fils);
     for (var fil = 0; fil != self.fils; ++ fil) {
       self.celdas[fil] = new Array(self.cols);
       for (var col = 0; col != self.cols; ++ col)
-        self.celdas[fil][col] = new Cell();
+        self.celdas[fil][col] = new Celda();
      }
   }
   
@@ -336,11 +334,11 @@ function Board() {
       return;
     if ( self.isFlag(fil, col) )
       return;
-    self.flipCell(fil, col);
+    self.flipCelda(fil, col);
     if ( self.isHole(fil, col) )
       self.roundFlip(fil, col);
   }
-  this.flipCell = function(fil, col) {
+  this.flipCelda = function(fil, col) {
     self.getImgElement(fil, col).src = self.getImgSrc( self.celdas[fil][col].value );
     self.celdas[fil][col].state = "down";
     -- self.downs;
@@ -432,7 +430,7 @@ function Board() {
     return( 'down' == self.celdas[fil][col].state );
   }
 
-  this.isCell = function(img) {
+  this.isCelda = function(img) {
     return(img.className == self.imgClass);
   }
   this.getImgElement = function(fil, col) {
@@ -447,7 +445,7 @@ function Board() {
 }
 
 // Celda
-function Cell() {
+function Celda() {
   this.value = 0;
   this.state = 'up';
 }
