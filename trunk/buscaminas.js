@@ -77,37 +77,30 @@ function crearTablero(){
 function Game(){
     var self = this;
 
-    this.tablero     = new Board();
+    this.tablero = new Board();
     this.iniciarTiempo = null;
-
-    this.run = function(){
-        self.iniciar();
-    }
+    
+    // Inicializa el juego
     this.iniciar = function(){
         crearTablero();
         controlarMouse();
         self.iniciarTemporizador();
         self.actualizarBombas();
     }
+    
+    // Reinicia el juego
     this.reiniciar = function(){
         self.tablero.destroyImgs();
         self.iniciar();
     }
-
-
     
-    // Verifica si se pierde el juego
-    this.juegoPerdido = function(fil, col){
-        self.tablero.mostrarMinas(fil, col);
-        document.innerHTML = "oops"; 
-        self.finJuego();
-    }
-    
+    // Detiene el tiempo y suelta el control del mouse al finalizar el juego
     this.finJuego = function(){
         self.iniciarTiempo = null;
 	self.tablero.div.onmousedown = null;
     }
-
+    
+    // Actualiza la canidad de minas a descubrir
     this.actualizarBombas = function(){
         document.getElementById("div-minas").innerHTML = String(self.tablero.minas - self.tablero.banderas);
     }
@@ -358,4 +351,4 @@ function rand(x) {
 
 // Instanciacion y ejecucion del juego
 var juego = new Game();
-juego.run();
+juego.iniciar();
