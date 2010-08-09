@@ -3,13 +3,12 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-
 <title>Buscaminas</title>
 </head>
 
 <style>
 
-body {
+body{
   margin: 0;
   padding: 0;
   font-family: Arial;
@@ -17,13 +16,12 @@ body {
   color: #000000;
   background: #CDCDCD;
 }
-
-.div-barra {
+.div-barra{
   margin: 2% auto;
   width: 640px;
   height: 400px;
 }
-.div-score {
+.div-score{
   position: relative;
   top: 430px;
   left: 0px;
@@ -33,14 +31,10 @@ body {
   border-top: 1px solid #FFFFFF;
   border-right: 1px solid #FFFFFF;
 }
-.img-mines, .div-mines, .div-tiempo, .bn-nivel, .bn-reiniciar {
+.div-mines, .div-tiempo, .bn-nivel, .bn-reiniciar{
   position: absolute;
 }
-.img-mines {
-  top: 6px;
-  left: 10px;
-}
-.div-mines {
+.div-mines{
   top: 6px;
   left: 30px;
   width: 40px;
@@ -51,7 +45,7 @@ body {
   color: #0000CF;
   background: transparent;
 }
-.div-tiempo {
+.div-tiempo{
   top: 6px;
   left: 100px;
   width: 60px;
@@ -62,22 +56,22 @@ body {
   color: #007F00;
   background: transparent;
 }
-.bn-nivel {
+.bn-nivel{
   top: 4px;
   left: 330px;
   width: 80px;
   font-family: Arial;
   font-size: 12px;
 }
-.bn-reiniciar {
+.bn-reiniciar{
   top: 3px;
   left: 420px;
-  width: 50px;
+  width: 80px;
   font-family: Arial;
   font-size: 12px;
   text-align: center;
 }
-.div-tablero {
+.div-tablero{
   position: relative;
   width: 640px;
   height: 400px;
@@ -87,7 +81,7 @@ body {
   border-bottom: 1px solid #FFFFFF;
   border-left: 1px solid #FFFFFF;
 }
-.celda {
+.celda{
   margin-top: 30px;
   position: absolute;
   overflow: hidden;
@@ -97,25 +91,28 @@ body {
 
 <body>
 <div id="div-barra" class="div-barra">
-
   <div id="div-score" class="div-score">
-  <img id="img-mines" class="img-mines" src="imagenes/mines.png" />
   <div id="div-mines" class="div-mines"></div>
   <div id="div-tiempo" class="div-tiempo">00:00</div>
-  <select id="bn-nivel" class="bn-nivel" onchange="game.reiniciar()" name="bn-reiniciar"/>
+  
+  <!-- Boton para seleccion del nivel del juego -->
+  <select id="bn-nivel" class="bn-nivel" onchange="juego.reiniciar()" name="bn-reiniciar"/>
   <option selected value="facil">Facil</option>
   <option value="medio">Medio</option>
   <option value="avanzado">Avanzado</option>
-
   </select>
-  <input id="bn-reiniciar" type="button" class="bn-reiniciar" onclick="game.reiniciar()" value="Jugar!" name="bn-reiniciar"/>
+  
+  <!-- Boton para reiniciar -->
+  <input id="bn-reiniciar" type="button" class="bn-reiniciar" onclick="juego.reiniciar()" value="Reiniciar" name="bn-reiniciar"/>
   </div>
+  
+  <!-- Tablero donde se dibujaran las celdas -->
   <div id="div-tablero" class="div-tablero"></div>
 </div>
 
 <script type="text/javascript">
 
-// Game
+// Objeto Juego
 function Game() {
   var self = this;
 
@@ -462,12 +459,10 @@ function getMouseButton(e) {
   return(e? e.which: window.event.button);
 }
 
-// Instanciacion del juego
-var game = new Game();
-game.run();
+// Instanciacion y ejecucion del juego
+var juego = new Game();
+juego.run();
 
 </script>
-
 </body>
-
 </html>
