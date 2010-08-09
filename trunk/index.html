@@ -122,7 +122,7 @@ function Game() {
   var self = this;
 
   this.board     = new Board();
-  this.startTime = null;
+  this.iniciarTiempo = null;
 
   this.run = function() {
     self.iniciar();
@@ -130,7 +130,7 @@ function Game() {
   this.iniciar = function() {
     self.createBoard();
     self.registerMouse();
-    self.startTimer();
+    self.iniciarTemporizador();
     self.updateScore();
   }
   this.reiniciar = function() {
@@ -181,11 +181,11 @@ function Game() {
   this.looseGame = function(fil, col) {
     //self.showSmiley("sad");
     self.board.showMines(fil, col);
-    //alert("perdiste"); 
+    document.write("perdiste"); 
     self.endGame();
   }
   this.endGame = function() {
-    self.stopTimer();
+    self.stopTemporizador();
     self.unregisterMouse();
   }
 
@@ -199,21 +199,21 @@ function Game() {
     img.style.visibility = "visible";
   }
 
-  this.startTimer = function() {
-    self.startTime = new Date().getTime();
-    self.timer();
+  this.iniciarTemporizador = function() {
+    self.iniciarTiempo = new Date().getTime();
+    self.temporizador();
   }
-  this.stopTimer = function() {
-    self.startTime = null;
+  this.stopTemporizador = function() {
+    self.iniciarTiempo = null;
   }
-  this.timer = function() {
-    if (self.startTime) {
-      var diff = Math.floor( ( new Date().getTime() - self.startTime) / 1000);
+  this.temporizador = function() {
+    if (self.iniciarTiempo) {
+      var diff = Math.floor( ( new Date().getTime() - self.iniciarTiempo) / 1000);
       var mins = "0" + String( Math.floor(diff / 60) );
       var secs = "0" + String(diff % 60);
       document.getElementById("div-tiempo").innerHTML = 
 		mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
-      setTimeout(self.timer, 1000);
+      setTimeout(self.temporizador, 1000);
     }
   }
 
