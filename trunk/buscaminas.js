@@ -1,7 +1,6 @@
 // Verifica si se gana el juego
 function verificarJuegoGanado(){
   if ( juego.tablero.testBanderas() ){
-    //alert("ganaste");
     juego.tablero.showBanderas();
     juego.finJuego();
   }
@@ -17,28 +16,29 @@ function juegoPerdido (fil, col){
 
 // Captura la posicion donde se hace click izquierdo para tomar una accion
 function onLeftClick(fil, col){
-  if ( juego.tablero.isBandera(fil, col) )
-      return;
-  if ( juego.tablero.isMina(fil, col) ){
-      juegoPerdido(fil, col);
-      return;
-  }
-  juego.tablero.flip(fil, col);
-  if (0 == juego.tablero.downs){
-    juego.tablero.showBanderas();
-    juego.finJuego();
+    if ( juego.tablero.isBandera(fil, col) ) {
+        return;
+    }
+    if ( juego.tablero.isMina(fil, col) ){
+        juegoPerdido(fil, col);
+        return;
+    }
+    juego.tablero.flip(fil, col);
+    if (0 == juego.tablero.downs){
+        
+        juego.tablero.showBanderas();
+        juego.finJuego();
   }
 }
 
 // Toma una accion al hacer click derecho
 function onRightClick(fil, col){
-  if ( juego.tablero.isDown(fil, col) )
-    return;
-  
-  juego.tablero.cambiarEstado(fil, col);
-  
-  if (juego.tablero.banderas == juego.tablero.minas)
-    juego.verificarJuegoGanado();
+    if ( juego.tablero.isDown(fil, col) )
+        return;
+    juego.tablero.cambiarEstado(fil, col);
+    if (juego.tablero.banderas == juego.tablero.minas){
+        juego.verificarJuegoGanado();
+    }
 }
 
 // Captura un evento del mouse
@@ -101,7 +101,7 @@ function Game(){
     
     // Reinicia el juego
     this.reiniciar = function(){
-        this.tablero.destroyImgs();
+        this.tablero.eliminarImgs();
         this.iniciar();
     }
     
@@ -142,7 +142,7 @@ function Board() {
         self.minas = minas;
         self.downs = (self.fils * self.cols) - self.minas;
         self.banderas = 0;
-        //crea una matriz de celdas de dimension filasxcolumnas
+        //crea una matriz de celdas de dimension filas x columnas
         self.celdas = new Array(self.fils);
         for (var fil = 0; fil != self.fils; ++ fil) {
             self.celdas[fil] = new Array(self.cols);
@@ -150,9 +150,7 @@ function Board() {
                 self.celdas[fil][col] = new Celda();
             }
         }
-        for (var mina = 0; mina != self.minas; ++ mina){
-            self.putRandMina();
-        }
+        self.minarTablero();
         for (var fil = 0; fil != self.fils; ++ fil) {
             for (var col = 0; col != self.cols; ++ col){
                 this.createImg(fil, col);
@@ -160,24 +158,51 @@ function Board() {
         }
         //self.createImgs();
     }
-    this.putRandMina = function() {
-        var fil, col;
-        do{
-            fil = rand(self.fils);
-            col = rand(self.cols);
-        }while( self.isMina(fil, col) );
- 
-        self.putMina(fil, col);
-        self.roundMina(fil, col);
-    }
-    this.putMina = function(fil, col) {
-        self.celdas[fil][col].value = 'm';
-    }
-    this.roundMina = function(fil, col) {
-        for (var r = Math.max(fil - 1, 0); r <= Math.min(fil + 1, self.fils - 1); ++ r) {
-            for (var c = Math.max(col - 1, 0); c <= Math.min(col + 1, self.cols - 1); ++ c) {
-                if ( self.isMina(r, c) == false) {
-                    ++ self.celdas[r][c].value;
+    // coloca las minas en el tablero y calcula los valores para las demas casillas
+    this.minarTablero = function() {
+        var mina = 0;
+        var fila, columna;
+        while(mina < self.minas){
+            fila = rand(self.fils);
+            columna = rand(self.cols);
+            if (self.isMina(fila, columna)== false){
+                //le damos el valor de 10 a las minas
+                self.celdas[fila][columna].value = 10;
+                ++ mina;
+            }
+        }
+        for (var fil = 0; fil != self.fils; ++ fil) {
+            for (var col = 0; col != self.cols; ++ col) {
+                if (self.isMina(fil, col)==false){
+                    if(col>0){
+                        if(fil>0&&self.isMina(fil-1, col-1)) {
+                            ++ self.celdas[fil][col].value;
+                        }
+                        if(self.isMina(fil, col-1)) {
+                            ++ self.celdas[fil][col].value;
+                        }
+                        if(fil<self.fils-1&&self.isMina(fil+1, col-1)) {
+                            ++ self.celdas[fil][col].value;
+                        }
+                    }
+                    if(fil>0&&self.isMina(fil-1, col)) {
+                        ++ self.celdas[fil][col].value;
+                    }
+                    if(fil<self.fils-1&&self.isMina(fil+1, col)) {
+                        ++ self.celdas[fil][col].value;
+                    }
+                    if (col<self.cols-1){
+                        if(fil>0&&self.isMina(fil-1, col+1)) {
+                            ++ self.celdas[fil][col].value;
+                        }
+                        if(self.isMina(fil, col+1)) {
+                            ++ self.celdas[fil][col].value;
+                        }
+                        if(fil<self.fils-1&&self.isMina(fil+1, col+1)) {
+                            ++ self.celdas[fil][col].value;
+                        }
+                        
+                    }
                 }
             }
         }
@@ -204,14 +229,14 @@ function Board() {
 
         self.div.appendChild(img);
     }
-    this.destroyImgs = function() {
-        for (var fil = 0; fil != self.fils; ++ fil)
-            for (var col = 0; col != self.cols; ++ col)
-                self.destroyImg(fil, col);
+    this.eliminarImgs = function() {
+        for (var fil = 0; fil != self.fils; ++ fil){
+            for (var col = 0; col != self.cols; ++ col){
+                self.div.removeChild( document.getElementById( self.getImgId(fil, col) ) );
+            }
+        }
     }
-    this.destroyImg = function(fil, col) {
-        self.div.removeChild( document.getElementById( self.getImgId(fil, col) ) );
-    }
+    
 
     this.flip = function(fil, col) {
         if ( self.isDown(fil, col) )
@@ -220,11 +245,11 @@ function Board() {
             return;
         self.flipCelda(fil, col);
         if ( self.isVacio(fil, col) )
-        self.roundFlip(fil, col);
+            self.roundFlip(fil, col);
     }
     this.flipCelda = function(fil, col) {
         self.getImgElement(fil, col).src = self.getImgSrc( self.celdas[fil][col].value );
-        self.celdas[fil][col].estado = "down";
+        self.celdas[fil][col].estado = "visible";
         -- self.downs;
     }
     this.roundFlip = function(fil, col) {
@@ -246,7 +271,6 @@ function Board() {
     
     // Cambia al siguiente estado (al hacer click derecho)
     this.cambiarEstado = function(fil, col) {
-        //alert("aste");
         if (self.celdas[fil][col].estado == "limpio") {
             var cambio = "bandera";
             ++ self.banderas;
@@ -286,6 +310,7 @@ function Board() {
                     if ((fil == filBoom) && (col == colBoom) ) {
                         dibujo = "boom";
                     }
+                    
                     self.getImgElement(fil, col).src = self.getImgSrc(dibujo);
                 }
             }
@@ -303,7 +328,7 @@ function Board() {
   }
 
   this.isMina = function(fil, col) {
-    return( 'm' == self.celdas[fil][col].value );
+    return( 10 == self.celdas[fil][col].value );
   }
   this.isVacio = function(fil, col) {
     return( 0 == self.celdas[fil][col].value );
@@ -312,7 +337,7 @@ function Board() {
     return( 'bandera' == self.celdas[fil][col].estado );
   }
   this.isDown = function(fil, col) {
-    return( 'down' == self.celdas[fil][col].estado );
+    return( 'visible' == self.celdas[fil][col].estado );
   }
 
   this.isCelda = function(img) {
