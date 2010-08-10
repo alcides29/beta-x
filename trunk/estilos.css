@@ -18,7 +18,7 @@ body{
   color: #000000;
   background: #C0C0C0;
 }
-.minas, .tiempo, .resultado, .b-nivel, .b-reiniciar{
+.minas, .tiempo, .b-nivel, .b-reiniciar{
   position: absolute;
 }
 .minas{
@@ -38,12 +38,8 @@ body{
   background: transparent;
 }
 .resultado{
-  top: 6px;
-  left: 250px;
   font-family: Verdana;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: left;
+  text-align: center;
   color: #FF0000;
   background: transparent;
 }
