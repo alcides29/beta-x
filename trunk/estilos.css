@@ -18,41 +18,45 @@ body{
   color: #000000;
   background: #C0C0C0;
 }
-.minas, .tiempo, .b-nivel, .b-reiniciar{
+.minas, .tiempo, .resultado, .b-nivel, .b-reiniciar{
   position: absolute;
 }
 .minas{
   top: 6px;
   left: 30px;
-  width: 40px;
   font-family: Verdana;
   font-size: 14px;
-  font-weight: bold;
   text-align: left;
-  color: #0000CF;
   background: transparent;
 }
 .tiempo{
   top: 6px;
   left: 100px;
-  width: 60px;
+  font-family: Verdana;
+  font-size: 14px;
+  text-align: left;
+  background: transparent;
+}
+.resultado{
+  top: 6px;
+  left: 250px;
   font-family: Verdana;
   font-size: 14px;
   font-weight: bold;
   text-align: left;
-  color: #007F00;
+  color: #FF0000;
   background: transparent;
 }
 .b-nivel{
   top: 4px;
-  left: 330px;
+  left: 430px;
   width: 80px;
   font-family: Arial;
   font-size: 12px;
 }
 .b-reiniciar{
   top: 3px;
-  left: 420px;
+  left: 520px;
   width: 80px;
   font-family: Arial;
   font-size: 12px;

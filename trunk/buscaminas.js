@@ -1,7 +1,18 @@
+
+// Actualiza la canidad de minas a descubrir
+function actualizarBombas(){
+    document.getElementById("minas").innerHTML = String(juego.tablero.minas - juego.tablero.banderas);
+}
+
+function resultado(text){
+  document.getElementById("resultado").innerHTML = text;
+}
+
 // Verifica si se gana el juego
 function verificarJuegoGanado(){
   if ( juego.tablero.testBanderas() ){
     juego.tablero.showBanderas();
+    resultado("Ganaste!");
     juego.finJuego();
   }
 }
@@ -9,7 +20,7 @@ function verificarJuegoGanado(){
 // Verifica si se pierde el juego
 function juegoPerdido (fil, col){
     juego.tablero.mostrarMinas(fil, col);
-    document.innerHTML = "oops"; 
+    resultado("Perdiste!");
     juego.finJuego();
 }
 
@@ -39,30 +50,38 @@ function onRightClick(fil, col){
 
 // Captura un evento del mouse
 function onMouseDown(e){
-    var img = (e? e.target: window.event.srcElement);
-    if ( img.className == "celda" ){
-        // obtiene que boton del mouse se presiono
-        var evento = (e? e.which: window.event.button);
-        if ( evento == 1){
-            onLeftClick(img.mRow, img.mCol);
-        } else {
-          onRightClick(img.mRow, img.mCol);
-        }
+  var img = (e? e.target: window.event.srcElement);
+  var evento;
+  
+  if ( img.className == "celda" ){
+      
+    // obtiene que boton del mouse se presiono
+    evento = (e? e.which: window.event.button);
+    
+    if ( evento == 1){
+	onLeftClick(img.mRow, img.mCol);
+    } else {
+      onRightClick(img.mRow, img.mCol);
     }
-    juego.actualizarBombas();
-    return(false);
+  }
+  actualizarBombas();
+  return(false);
 }
 
 // Cuenta el tiempo transcurrido
 function temporizador(){
-    if (juego.iniciarTiempo){
-	var diff = Math.floor( ( new Date().getTime() - juego.iniciarTiempo) / 1000);
-	var mins = "0" + String( Math.floor(diff / 60) );
-	var secs = "0" + String(diff % 60);
-	document.getElementById("tiempo").innerHTML = 
-	    mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
-	setTimeout(this.temporizador, 1000);
-    }
+  var diff;
+  var mins;
+  var secs;
+  
+  if (juego.iniciarTiempo){
+    diff = Math.floor( ( new Date().getTime() - juego.iniciarTiempo) / 1000);
+    mins = "0" + String( Math.floor(diff / 60) );
+    secs = "0" + String(diff % 60);
+    document.getElementById("tiempo").innerHTML = 
+      mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
+    setTimeout( this.temporizador, 1000 );
+  }
 }
     
 // Toma el control del mouse
@@ -98,7 +117,7 @@ function Game(){
         crearTablero();
         controlarMouse();
         this.iniciarTemporizador();
-        this.actualizarBombas();
+        actualizarBombas();
     }
     
     // Reinicia el juego
@@ -111,12 +130,7 @@ function Game(){
     this.finJuego = function(){
         this.iniciarTiempo = null;
 	this.tablero.div.onmousedown = null;
-    }
-    
-    // Actualiza la canidad de minas a descubrir
-    this.actualizarBombas = function(){
-        document.getElementById("minas").innerHTML = String(this.tablero.minas - this.tablero.banderas);
-    }
+    }  
     
     // Inicializa el tiempo
     this.iniciarTemporizador = function(){
