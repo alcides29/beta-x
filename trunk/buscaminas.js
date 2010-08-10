@@ -9,12 +9,18 @@ function resultado(text){
 }
 
 // Verifica si se gana el juego
-function verificarJuegoGanado(){
-  if ( juego.tablero.testBanderas() ){
-    juego.tablero.showBanderas();
+function juegoGanado(){
+    for (var fil = 0; fil != juego.tablero.fils; ++ fil){
+        for (var col = 0; col != juego.tablero.cols; ++ col){
+            if ( juego.tablero.isMina(fil, col) && ( juego.tablero.isBandera(fil, col) == false) ){
+                document.getElementById( juego.tablero.getImgId(fil, col) ).src = juego.tablero.getImgSrc("bandera");
+                ++ self.banderas;
+            }
+        }
+    }
     resultado("Ganaste!");
     juego.finJuego();
-  }
+  
 }
 
 // Verifica si se pierde el juego
@@ -33,10 +39,9 @@ function onLeftClick(fil, col){
         juegoPerdido(fil, col);
         return;
     }
-    juego.tablero.flip(fil, col);
+    juego.tablero.press(fil, col);
     if (0 == juego.tablero.libres){
-        juego.tablero.showBanderas();
-        juego.finJuego();
+        juegoGanado();
     }
 }
 
@@ -255,7 +260,8 @@ function Board() {
     }
     
 
-    this.flip = function(fil, col) {
+    //funcion q presiona una celda dejandola libre, se aplica recursion para los casos en q la celda no tenga minas adyacentes y presiona a las celdas adyacentes
+    this.press = function(fil, col) {
         if ( self.celdas[fil][col].estado == 'visible' || self.isBandera(fil, col)) {
             return;
         }
@@ -265,26 +271,26 @@ function Board() {
         if ( 0 == self.celdas[fil][col].valor ) {
             if(col>0){
                 if(fil>0) {
-                    self.flip(fil-1, col- 1);
+                    self.press(fil-1, col- 1);
                 }
-                self.flip(fil, col- 1);
+                self.press(fil, col- 1);
                 if(fil<self.fils-1) {
-                    self.flip(fil + 1, col - 1);
+                    self.press(fil + 1, col - 1);
                 }
             }
             if(fil>0) {
-                self.flip(fil - 1, col);
+                self.press(fil - 1, col);
             }
             if(fil<self.fils-1) {
-                self.flip(fil + 1, col);
+                self.press(fil + 1, col);
             }
             if (col<self.cols-1){
                 if(fil>0) {
-                    self.flip(fil - 1, col + 1);
+                    self.press(fil - 1, col + 1);
                 }
-                self.flip(fil, col + 1);
+                self.press(fil, col + 1);
                 if(fil<self.fils-1) {
-                    self.flip(fil+1, col + 1);
+                    self.press(fil+1, col + 1);
                 }
             }
         }   
@@ -304,14 +310,6 @@ function Board() {
         }
         document.getElementById( self.getImgId(fil, col) ).src = self.getImgSrc(cambio);
         self.celdas[fil][col].estado = cambio;
-    }
-
-    this.testBanderas = function() {
-        for (var fil = 0; fil != self.fils; ++ fil)
-            for (var col = 0; col != self.cols; ++ col)
-                if ( self.isBandera(fil, col) && ( self.isMina(fil, col) == false ) )
-                    return(false);
-                return(true);
     }
     
     //muestra donde est�n todas las minas
@@ -338,28 +336,23 @@ function Board() {
         }
     } 
 
+    //funcion booleana q verifica si en una celda hay una mina, las celdas con minas se diferencian por tener el valor 10
     this.isMina = function(fil, col) {
-        return( 10 == self.celdas[fil][col].valor );
+        return( self.celdas[fil][col].valor == 10 );
     }
+    //funcion booleana q verifica si una celda esta marcada con una bandera, las celdas marcadas con bandera poseen el estado "bandera"
     this.isBandera = function(fil, col) {
         return(  self.celdas[fil][col].estado == 'bandera');
-    }  
-    this.showBanderas = function() {
-        for (var fil = 0; fil != self.fils; ++ fil)
-            for (var col = 0; col != self.cols; ++ col)
-                if ( self.isMina(fil, col) && ( self.isBandera(fil, col) == false) ){
-                    document.getElementById( self.getImgId(fil, col) ).src = self.getImgSrc("bandera");
-                    ++ self.banderas;
-                }
+    } 
+
+    //obtiene el id de una celda, q es la fila-columna
+    this.getImgId = function(fil, col) {
+        return( String(fil) + "-" + String(col) );
     }
-
-
-  this.getImgId = function(fil, col) {
-    return( String(fil) + "-" + String(col) );
-  }
-  this.getImgSrc = function(dibujo) {
-    return(  self.imgURL + dibujo + self.imgExt );
-  }
+    //obtiene la direccion local en el q se encuentra la imagen a desplegar
+    this.getImgSrc = function(dibujo) {
+        return(  self.imgURL + dibujo + self.imgExt );
+    }
 }
 
 // Celdas del tablero
