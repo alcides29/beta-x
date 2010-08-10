@@ -35,9 +35,6 @@ function onRightClick(fil, col){
         return;
     }
     juego.tablero.cambiarEstado(fil, col);
-    if (juego.tablero.banderas == juego.tablero.minas){
-        juego.verificarJuegoGanado();
-    }
 }
 
 // Captura un evento del mouse
@@ -77,10 +74,16 @@ function controlarMouse(){
 
 // Crea el tablero
 function crearTablero(){
-  switch( document.getElementById("bn-nivel").value ){
-    case "facil"    : juego.tablero.create(9, 9,  10); break;
-    case "medio"    : juego.tablero.create(16, 16,  40); break;
-    case "avanzado" : juego.tablero.create(16, 20,  99); break;
+  switch( document.getElementById("b-nivel").value ){
+    case "facil":
+        juego.tablero.create(9, 9,  10);
+        break;
+    case "medio":
+        juego.tablero.create(16, 16,  40);
+        break;
+    case "avanzado":
+        juego.tablero.create(16, 20,  99);
+        break;
   }
 }
 
@@ -112,7 +115,7 @@ function Game(){
     
     // Actualiza la canidad de minas a descubrir
     this.actualizarBombas = function(){
-        document.getElementById("div-minas").innerHTML = String(this.tablero.minas - this.tablero.banderas);
+        document.getElementById("minas").innerHTML = String(this.tablero.minas - this.tablero.banderas);
     }
     
     // Inicializa el tiempo
@@ -166,7 +169,7 @@ function Board() {
             columna = Math.floor( Math.random() * self.cols );
             if (self.isMina(fila, columna)== false){
                 //le damos el valor de 10 a las minas
-                self.celdas[fila][columna].value = 10;
+                self.celdas[fila][columna].valor = 10;
                 ++ mina;
             }
         }
@@ -175,30 +178,30 @@ function Board() {
                 if (self.isMina(fil, col)==false){
                     if(col>0){
                         if(fil>0&&self.isMina(fil-1, col-1)) {
-                            ++ self.celdas[fil][col].value;
+                            ++ self.celdas[fil][col].valor;
                         }
                         if(self.isMina(fil, col-1)) {
-                            ++ self.celdas[fil][col].value;
+                            ++ self.celdas[fil][col].valor;
                         }
                         if(fil<self.fils-1&&self.isMina(fil+1, col-1)) {
-                            ++ self.celdas[fil][col].value;
+                            ++ self.celdas[fil][col].valor;
                         }
                     }
                     if(fil>0&&self.isMina(fil-1, col)) {
-                        ++ self.celdas[fil][col].value;
+                        ++ self.celdas[fil][col].valor;
                     }
                     if(fil<self.fils-1&&self.isMina(fil+1, col)) {
-                        ++ self.celdas[fil][col].value;
+                        ++ self.celdas[fil][col].valor;
                     }
                     if (col<self.cols-1){
                         if(fil>0&&self.isMina(fil-1, col+1)) {
-                            ++ self.celdas[fil][col].value;
+                            ++ self.celdas[fil][col].valor;
                         }
                         if(self.isMina(fil, col+1)) {
-                            ++ self.celdas[fil][col].value;
+                            ++ self.celdas[fil][col].valor;
                         }
                         if(fil<self.fils-1&&self.isMina(fil+1, col+1)) {
-                            ++ self.celdas[fil][col].value;
+                            ++ self.celdas[fil][col].valor;
                         }
                         
                     }
@@ -206,7 +209,7 @@ function Board() {
             }
         }
     }
-
+    //crea la imagen del tablero
     this.createImgs = function() {
         for (var fil = 0; fil != self.fils; ++ fil)
             for (var col = 0; col != self.cols; ++ col)
@@ -228,6 +231,7 @@ function Board() {
 
         self.div.appendChild(img);
     }
+    //limpia el html de las <img> innecesarias
     this.eliminarImgs = function() {
         for (var fil = 0; fil != self.fils; ++ fil) {
             for (var col = 0; col != self.cols; ++ col) {
@@ -241,11 +245,10 @@ function Board() {
         if ( self.celdas[fil][col].estado == 'visible' || self.isBandera(fil, col)) {
             return;
         }
-        self.getImgElement(fil, col).src = self.getImgSrc( self.celdas[fil][col].value );
+        document.getElementById( self.getImgId(fil, col) ).src = self.getImgSrc( self.celdas[fil][col].valor );
         self.celdas[fil][col].estado = "visible";
         -- self.libres;
-        if ( 0 == self.celdas[fil][col].value ) {
-            //self.roundFlip(fil, col);
+        if ( 0 == self.celdas[fil][col].valor ) {
             if(col>0){
                 if(fil>0) {
                     self.flip(fil-1, col- 1);
@@ -285,7 +288,7 @@ function Board() {
         } else if (self.celdas[fil][col].estado == "duda") {
             var cambio = "limpio";
         }
-        self.getImgElement(fil, col).src = self.getImgSrc(cambio);
+        document.getElementById( self.getImgId(fil, col) ).src = self.getImgSrc(cambio);
         self.celdas[fil][col].estado = cambio;
     }
 
@@ -314,16 +317,15 @@ function Board() {
                     }
                     if ((fil == filBoom) && (col == colBoom) ) {
                         dibujo = "boom";
-                    }
-                    
-                    self.getImgElement(fil, col).src = self.getImgSrc(dibujo);
+                    }   
+                    document.getElementById( self.getImgId(fil, col) ).src = self.getImgSrc(dibujo);
                 }
             }
         }
     } 
 
     this.isMina = function(fil, col) {
-        return( 10 == self.celdas[fil][col].value );
+        return( 10 == self.celdas[fil][col].valor );
     }
     this.isBandera = function(fil, col) {
         return(  self.celdas[fil][col].estado == 'bandera');
@@ -332,19 +334,14 @@ function Board() {
         for (var fil = 0; fil != self.fils; ++ fil)
             for (var col = 0; col != self.cols; ++ col)
                 if ( self.isMina(fil, col) && ( self.isBandera(fil, col) == false) ){
-                    self.getImgElement(fil, col).src = self.getImgSrc("bandera");
+                    document.getElementById( self.getImgId(fil, col) ).src = self.getImgSrc("bandera");
                     ++ self.banderas;
                 }
     }
 
 
-
-  
-  this.getImgElement = function(fil, col) {
-    return( document.getElementById( self.getImgId(fil, col) ) );
-  }
   this.getImgId = function(fil, col) {
-    return( self.imgClass + String( (fil * self.cols) + col) );
+    return( String(fil) + "-" + String(col) );
   }
   this.getImgSrc = function(dibujo) {
     return(  self.imgURL + dibujo + self.imgExt );
@@ -353,13 +350,8 @@ function Board() {
 
 // Celdas del tablero
 function Celda() {
-  this.value = 0;
+  this.valor = 0;
   this.estado = 'limpio';
-}
-
-// Funcion para generacion de numeros aleatorios
-function rand(x) {
-  return( Math.floor( Math.random() * x ) );
 }
 
 // Instanciacion y ejecucion del juego

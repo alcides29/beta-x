@@ -6,24 +6,22 @@ body{
   color: #000000;
   background: #CDCDCD;
 }
-.div-barra{
+.barra{
   margin: 2% auto;
   width: 640px;
 }
-.div-puntuacion{
+.puntuacion{
   position: relative;
   top: 430px;
   left: 0px;
   height: 30px;
   color: #000000;
   background: #C0C0C0;
-  border-top: 1px solid #FFFFFF;
-  border-right: 1px solid #FFFFFF;
 }
-.div-minas, .tiempo, .bn-nivel, .bn-reiniciar{
+.minas, .tiempo, .b-nivel, .b-reiniciar{
   position: absolute;
 }
-.div-minas{
+.minas{
   top: 6px;
   left: 30px;
   width: 40px;
@@ -45,14 +43,14 @@ body{
   color: #007F00;
   background: transparent;
 }
-.bn-nivel{
+.b-nivel{
   top: 4px;
   left: 330px;
   width: 80px;
   font-family: Arial;
   font-size: 12px;
 }
-.bn-reiniciar{
+.b-reiniciar{
   top: 3px;
   left: 420px;
   width: 80px;
@@ -60,18 +58,15 @@ body{
   font-size: 12px;
   text-align: center;
 }
-.div-tablero{
+.tablero{
   position: relative;
   width: 640px;
   height: 400px;
   color: #000000;
   background: #7F7F7F;
-  border-top: 1px solid #000000;
-  border-bottom: 1px solid #FFFFFF;
-  border-left: 1px solid #FFFFFF;
+
 }
 .celda{
   margin-top: 30px;
   position: absolute;
-  overflow: hidden;
 }
