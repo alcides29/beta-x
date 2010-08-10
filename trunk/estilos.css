@@ -20,7 +20,7 @@ body{
   border-top: 1px solid #FFFFFF;
   border-right: 1px solid #FFFFFF;
 }
-.div-minas, .div-tiempo, .bn-nivel, .bn-reiniciar{
+.div-minas, .tiempo, .bn-nivel, .bn-reiniciar{
   position: absolute;
 }
 .div-minas{
@@ -34,7 +34,7 @@ body{
   color: #0000CF;
   background: transparent;
 }
-.div-tiempo{
+.tiempo{
   top: 6px;
   left: 100px;
   width: 60px;

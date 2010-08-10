@@ -8,10 +8,9 @@ function verificarJuegoGanado(){
 
 // Verifica si se pierde el juego
 function juegoPerdido (fil, col){
-  //self.showSmiley("sad");
-  juego.tablero.mostrarMinas(fil, col);
-  document.innerHTML = "oops"; 
-  juego.finJuego();
+    juego.tablero.mostrarMinas(fil, col);
+    document.innerHTML = "oops"; 
+    juego.finJuego();
 }
 
 // Captura la posicion donde se hace click izquierdo para tomar una accion
@@ -25,15 +24,14 @@ function onLeftClick(fil, col){
     }
     juego.tablero.flip(fil, col);
     if (0 == juego.tablero.libres){
-        
         juego.tablero.showBanderas();
         juego.finJuego();
-  }
+    }
 }
 
 // Toma una accion al hacer click derecho
 function onRightClick(fil, col){
-    if ( self.celdas[fil][col].estado == 'visible' ){
+    if ( juego.tablero.celdas[fil][col].estado == 'visible' ){
         return;
     }
     juego.tablero.cambiarEstado(fil, col);
@@ -44,17 +42,18 @@ function onRightClick(fil, col){
 
 // Captura un evento del mouse
 function onMouseDown(e){
-  var img = (e? e.target: window.event.srcElement);
-  if ( img.className == self.imgClass ){
-    // obtiene que boton del mouse se presiono
-    var evento = (e? e.which: window.event.button);
-    if ( evento == 1)
-      onLeftClick(img.mRow, img.mCol);
-    else
-      onRightClick(img.mRow, img.mCol);
-  }
-  juego.actualizarBombas();
-  return(false);
+    var img = (e? e.target: window.event.srcElement);
+    if ( img.className == "celda" ){
+        // obtiene que boton del mouse se presiono
+        var evento = (e? e.which: window.event.button);
+        if ( evento == 1){
+            onLeftClick(img.mRow, img.mCol);
+        } else {
+          onRightClick(img.mRow, img.mCol);
+        }
+    }
+    juego.actualizarBombas();
+    return(false);
 }
 
 // Cuenta el tiempo transcurrido
@@ -63,7 +62,7 @@ function temporizador(){
 	var diff = Math.floor( ( new Date().getTime() - juego.iniciarTiempo) / 1000);
 	var mins = "0" + String( Math.floor(diff / 60) );
 	var secs = "0" + String(diff % 60);
-	document.getElementById("div-tiempo").innerHTML = 
+	document.getElementById("tiempo").innerHTML = 
 	    mins.substring(mins.length - 2) + ":" + secs.substring(secs.length - 2);
 	setTimeout(this.temporizador, 1000);
     }
@@ -218,7 +217,7 @@ function Board() {
         var img = document.createElement("img");
 
         img.id = self.getImgId(fil, col);
-        img.className = self.imgClass;
+        img.className = "celda";
         img.style.width = String(self.imgWidth)  + "px";
         img.style.height = String(self.imgHeight) + "px";
         img.style.top = String( Math.floor( ( (350 - self.imgHeight * self.fils) / 2) + (fil * (self.imgHeight - 1) ) ) ) + "px";
