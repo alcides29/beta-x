@@ -5,7 +5,7 @@ function actualizarBombas(){
 }
 
 function resultado(text){
-  alert( document.getElementById("resultado").innerHTML = text );
+  alert( text );
 }
 
 // Verifica si se gana el juego

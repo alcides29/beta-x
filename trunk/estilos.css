@@ -37,12 +37,6 @@ body{
   text-align: left;
   background: transparent;
 }
-.resultado{
-  font-family: Verdana;
-  text-align: center;
-  color: #FF0000;
-  background: transparent;
-}
 .b-nivel{
   top: 4px;
   left: 430px;
