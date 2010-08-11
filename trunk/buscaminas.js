@@ -91,9 +91,10 @@ function temporizador(){
     
 // Toma el control del mouse
 function controlarMouse(){
-  juego.tablero.div.onmousedown   = onMouseDown;
-  juego.tablero.div.onclick       = function(){return false;};
+  juego.tablero.div.onmousedown = onMouseDown;
+  juego.tablero.div.onclick = function(){return false;};
   juego.tablero.div.oncontextmenu = function(){return false;};
+  juego.tablero.div.ondblclick = function(){return false;};
 }
 
 // Crea el tablero

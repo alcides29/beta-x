@@ -4,7 +4,7 @@ body{
   font-family: Arial;
   font-size: 12px;
   color: #000000;
-  background: #CDCDCD;
+  background: #D7D4FF;
 }
 .barra{
   margin: 2% auto;
@@ -18,12 +18,28 @@ body{
   color: #000000;
   background: #C0C0C0;
 }
-.minas, .tiempo, .b-nivel, .b-reiniciar{
+.txt-minas, .txt-tiempo, .minas, .tiempo, .b-nivel, .b-reiniciar{
   position: absolute;
+}
+.txt-minas{
+  top: 6px;
+  left: 5px;
+  font-family: Verdana;
+  font-size: 14px;
+  text-align: left;
+  background: transparent;
 }
 .minas{
   top: 6px;
-  left: 30px;
+  left: 55px;
+  font-family: Verdana;
+  font-size: 14px;
+  text-align: left;
+  background: transparent;
+}
+.txt-tiempo{
+  top: 6px;
+  left: 130px;
   font-family: Verdana;
   font-size: 14px;
   text-align: left;
@@ -31,7 +47,7 @@ body{
 }
 .tiempo{
   top: 6px;
-  left: 100px;
+  left: 190px;
   font-family: Verdana;
   font-size: 14px;
   text-align: left;
