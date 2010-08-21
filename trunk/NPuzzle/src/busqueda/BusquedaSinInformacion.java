@@ -27,7 +27,7 @@ public class BusquedaSinInformacion {
 
                     nodoActual  = unaEstrategia.obtenerSiguienteNodo();
                     
-                    if( nodoActual != null ){
+                    if( nodoActual == null ){
                         return( new SolucionFalsa() );
                     }
                     else {

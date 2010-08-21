@@ -37,7 +37,11 @@ public class CasillaPuzzle implements Nodo{
     }
     
     public Object obtenerValor(){
-        return( this.valorActual );
+        return( new Integer( this.valorActual ) );
+    }
+
+    public void insertarValor( Object pValor ){
+        this.valorActual    = ( (Integer)pValor ).intValue();
     }
 
     public boolean yaFueVisitado(){
