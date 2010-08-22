@@ -26,13 +26,13 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         barPestanas = new javax.swing.JTabbedPane();
-        Tablero = new javax.swing.JPanel();
+        tablero = new javax.swing.JPanel();
         barBtnes = new javax.swing.JPanel();
         BtnNuevo = new javax.swing.JButton();
         BtnResolver = new javax.swing.JButton();
         BtnAnterior = new javax.swing.JButton();
         BtnSgte = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        configuracion = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,33 +74,33 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout TableroLayout = new javax.swing.GroupLayout(Tablero);
-        Tablero.setLayout(TableroLayout);
-        TableroLayout.setHorizontalGroup(
-            TableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout tableroLayout = new javax.swing.GroupLayout(tablero);
+        tablero.setLayout(tableroLayout);
+        tableroLayout.setHorizontalGroup(
+            tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(barBtnes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        TableroLayout.setVerticalGroup(
-            TableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TableroLayout.createSequentialGroup()
+        tableroLayout.setVerticalGroup(
+            tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tableroLayout.createSequentialGroup()
                 .addContainerGap(504, Short.MAX_VALUE)
                 .addComponent(barBtnes, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        barPestanas.addTab("Tablero", Tablero);
+        barPestanas.addTab("Tablero", tablero);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout configuracionLayout = new javax.swing.GroupLayout(configuracion);
+        configuracion.setLayout(configuracionLayout);
+        configuracionLayout.setHorizontalGroup(
+            configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 575, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        configuracionLayout.setVerticalGroup(
+            configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 549, Short.MAX_VALUE)
         );
 
-        barPestanas.addTab("Configuración", jPanel1);
+        barPestanas.addTab("Configuración", configuracion);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -144,10 +144,10 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JButton BtnResolver;
     private javax.swing.JButton BtnSgte;
-    private javax.swing.JPanel Tablero;
     private javax.swing.JPanel barBtnes;
     private javax.swing.JTabbedPane barPestanas;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel configuracion;
+    private javax.swing.JPanel tablero;
     // End of variables declaration//GEN-END:variables
     
 }
