@@ -13,6 +13,7 @@ import java.util.*;
  * @author gusamasan
  */
 public class NPuzzle implements Problema{
+// -----------------------------------------------------------------------------
 
     public static final int VALOR_VACIO = 1234567890;
 
@@ -24,6 +25,7 @@ public class NPuzzle implements Problema{
                             tablero[][];
 
 
+// -----------------------------------------------------------------------------
 
     public NPuzzle(){
         this.mapa   = new HashMap();
