@@ -5,6 +5,7 @@
 package busqueda;
 
 import java.util.Stack;
+import java.util.Iterator;
 
 /**
  *
@@ -14,13 +15,15 @@ public class SolucionEnProfundidad implements Solucion{
 // -----------------------------------------------------------------------------
 
     private int longitudDelCamino;
-    
+
+    private Iterator    iteradorPila;
+
     private Stack pilaSolucion, pilaAuxiliar;
 
 // -----------------------------------------------------------------------------
 
     public SolucionEnProfundidad( Stack unaPila ){
-        this.pilaAuxiliar   = unaPila;
+        this.pilaSolucion   = unaPila;
     }
 
 
@@ -35,10 +38,21 @@ public class SolucionEnProfundidad implements Solucion{
         
     // -------------------------------------------------------------------------
 
+        this.iteradorPila   = this.pilaSolucion.iterator();
         
     }
 
     public Nodo obtenerSiguienteNodo(){
-        return( null );
+    // ---------------------------------------------------------------
+
+        Nodo nodo;
+    // ---------------------------------------------------------------
+
+        if( this.iteradorPila.hasNext() )
+            nodo = ( Nodo )this.iteradorPila.next();
+        else
+            nodo = null;
+        
+        return( nodo );
     }
 }
