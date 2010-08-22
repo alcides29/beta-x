@@ -25,17 +25,49 @@ public class CasillaPuzzle implements Nodo{
 
     private int valorActual;
 
-    private boolean visitado;
+    private boolean esCasillaVacia  ,
+                    expandido       ,
+                    visitado;
     
     String movimiento;
+
+    CasillaPuzzle   nodoPadre;
 
 // -----------------------------------------------------------------------------
 
     public CasillaPuzzle(){
         this.valorActual    = 0;
         this.visitado       = false;
+        this.esCasillaVacia = false;
+        this.nodoPadre      = null;
+        this.expandido      = false;
     }
-    
+
+
+    public CasillaPuzzle getNodoPadre(){
+        return( this.nodoPadre );
+    }
+
+    public void setNodoPadre( CasillaPuzzle pNodo ){
+        this.nodoPadre  = pNodo;
+    }
+
+    public int getCoordenadaX(){
+        return( this.coordenadaX );
+    }
+
+    public void setCoordenadaX( int pX ){
+        this.coordenadaX = pX;
+    }
+
+    public int getCoordenadaY(){
+        return( this.coordenadaY );
+    }
+
+    public void setCoordenadaY( int pY ){
+        this.coordenadaY = pY;
+    }
+
     public Object obtenerValor(){
         return( new Integer( this.valorActual ) );
     }
@@ -56,4 +88,28 @@ public class CasillaPuzzle implements Nodo{
         this.visitado = false;
     }
 
+    public boolean esCasillaVacia(){
+        return( this.esCasillaVacia );
+    }
+
+    public void marcarComoCasillaVacia(){
+        this.esCasillaVacia = true;
+        this.valorActual    = NPuzzle.VALOR_VACIO;
+    }
+
+    public void marcarComoCasillaNoVacia(){
+        this.esCasillaVacia = false;
+    }
+
+    public boolean fueExpandido(){
+        return( this.expandido );
+    }
+
+    public void marcaComoNoExpandido(){
+        this.expandido = false;
+    }
+
+    public void marcarComoExpandido(){
+        this.expandido = true;
+    }
 }

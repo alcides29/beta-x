@@ -25,7 +25,8 @@ public class EstrategiaEnProfundidad implements Estrategia{
 
 
     public void insertarNodo( Nodo unNodo ){
-        this.pila.add( unNodo );
+        this.pila.push( unNodo );
+
     }
 
     public Nodo obtenerSiguienteNodo(){
@@ -36,14 +37,18 @@ public class EstrategiaEnProfundidad implements Estrategia{
     // ------------------------------------------------------------------------
 
         if( !pila.empty() ){
-            unNodo = (Nodo) pila.firstElement();            
+            unNodo = (Nodo) pila.lastElement();
             return( unNodo );
         }
         else
             return( null );
     }
 
-    
+
+    public void removerSiguienteNodo(){
+        this.pila.pop();
+    }
+
     public Solucion retornarSolucion(){
     // -----------------------------------------------------------------------------
 

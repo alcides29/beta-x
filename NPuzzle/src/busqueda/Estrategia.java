@@ -14,6 +14,8 @@ public interface Estrategia {
     
     public Nodo obtenerSiguienteNodo();
 
+    public void removerSiguienteNodo();
+
     public Solucion retornarSolucion();
 
 }
