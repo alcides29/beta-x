@@ -18,11 +18,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JFrame window = new NpuzzleGUI();
+        NpuzzleGUI window = new NpuzzleGUI();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLocationRelativeTo(null);
         window.pack();  // finalize layout
-        window.show();  // make window visible
+        window.setVisible(true);  // make window visible
         window.setResizable(false);
+        
     }//end main
 
 }
