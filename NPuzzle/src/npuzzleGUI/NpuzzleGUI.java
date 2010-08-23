@@ -117,6 +117,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         BtnResolver = new javax.swing.JButton();
         BtnAnterior = new javax.swing.JButton();
         BtnSgte = new javax.swing.JButton();
+        BtnVistaPrevia = new javax.swing.JButton();
         configuracion = new javax.swing.JPanel();
         jTextDimension = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -143,19 +144,16 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 573, Short.MAX_VALUE)
         );
 
         barBtnes.setPreferredSize(new java.awt.Dimension(575, 26));
 
+        BtnNuevo.setFont(new java.awt.Font("Arial", 0, 11));
         BtnNuevo.setActionCommand("jButton1");
         BtnNuevo.setLabel("Nuevo");
-        BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnNuevoActionPerformed(evt);
-            }
-        });
 
+        BtnResolver.setFont(new java.awt.Font("Arial", 0, 11));
         BtnResolver.setLabel("Resolver");
         BtnResolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,20 +161,32 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             }
         });
 
+        BtnAnterior.setFont(new java.awt.Font("Arial", 0, 11));
         BtnAnterior.setLabel("Anterior");
 
+        BtnSgte.setFont(new java.awt.Font("Arial", 0, 11));
         BtnSgte.setLabel("Siguiente");
+
+        BtnVistaPrevia.setFont(new java.awt.Font("Arial", 0, 11));
+        BtnVistaPrevia.setText("Vista Previa");
+        BtnVistaPrevia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnVistaPreviaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout barBtnesLayout = new javax.swing.GroupLayout(barBtnes);
         barBtnes.setLayout(barBtnesLayout);
         barBtnesLayout.setHorizontalGroup(
             barBtnesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(barBtnesLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addContainerGap()
+                .addComponent(BtnVistaPrevia)
+                .addGap(16, 16, 16)
                 .addComponent(BtnNuevo)
-                .addGap(31, 31, 31)
+                .addGap(23, 23, 23)
                 .addComponent(BtnResolver)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addComponent(BtnAnterior)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnSgte)
@@ -187,10 +197,11 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, barBtnesLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(barBtnesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnNuevo)
-                    .addComponent(BtnResolver)
                     .addComponent(BtnSgte)
-                    .addComponent(BtnAnterior))
+                    .addComponent(BtnAnterior)
+                    .addComponent(BtnResolver)
+                    .addComponent(BtnNuevo)
+                    .addComponent(BtnVistaPrevia))
                 .addContainerGap())
         );
 
@@ -199,16 +210,13 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         tableroLayout.setHorizontalGroup(
             tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelCentral, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
-            .addGroup(tableroLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(barBtnes, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(barBtnes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
         );
         tableroLayout.setVerticalGroup(
             tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tableroLayout.createSequentialGroup()
-                .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tableroLayout.createSequentialGroup()
+                .addComponent(panelCentral, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(barBtnes, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -269,31 +277,31 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
-        this.nuevo();
+    private void BtnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResolverActionPerformed
+        this.tablero.repaint();
+        
+        //System.out.println(this.panelCentral.getComponents().length);
+    }//GEN-LAST:event_BtnResolverActionPerformed
+
+    private void BtnVistaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVistaPreviaActionPerformed
+        this.nuevaVista();
         for (java.awt.Component pan : this.panelCentral.getComponents()) {
             pan.validate();
             pan.repaint();
         }
 
-        new Thread(new Runnable() {//GEN-LAST:event_BtnNuevoActionPerformed
+        new Thread(new Runnable() {
                 public void run() {
                     try{
-                        Thread.currentThread().sleep(200);
+                        Thread.currentThread().sleep(dimension*10);
                     } catch(Exception e){
                         System.out.println(e.getMessage());
                     }
                     panelCentral.repaint();
                 }
         }).start();
-    }                                        
-
-    private void BtnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResolverActionPerformed
-        this.tablero.repaint();
-        
-        //System.out.println(this.panelCentral.getComponents().length);
-    }//GEN-LAST:event_BtnResolverActionPerformed
-    public void nuevo(){
+    }//GEN-LAST:event_BtnVistaPreviaActionPerformed
+    public void nuevaVista(){
         //System.out.println(getDimension());
         dimension = getDimension();
         if (dimension == 0){
@@ -425,6 +433,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JButton BtnResolver;
     private javax.swing.JButton BtnSgte;
+    private javax.swing.JButton BtnVistaPrevia;
     private javax.swing.JPanel barBtnes;
     private javax.swing.JTabbedPane barPestanas;
     private javax.swing.JPanel configuracion;

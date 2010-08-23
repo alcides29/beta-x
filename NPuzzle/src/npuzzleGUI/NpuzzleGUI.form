@@ -75,18 +75,14 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="panelCentral" alignment="0" pref="572" max="32767" attributes="1"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="barBtnes" pref="552" max="32767" attributes="1"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="barBtnes" alignment="1" pref="572" max="32767" attributes="1"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="panelCentral" min="-2" pref="560" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="panelCentral" pref="573" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="barBtnes" min="-2" pref="45" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -115,7 +111,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="560" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="573" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -131,11 +127,13 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="BtnVistaPrevia" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                           <Component id="BtnNuevo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                           <Component id="BtnResolver" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="142" max="32767" attributes="0"/>
+                          <EmptySpace pref="81" max="32767" attributes="0"/>
                           <Component id="BtnAnterior" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="BtnSgte" min="-2" max="-2" attributes="0"/>
@@ -148,10 +146,11 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="BtnNuevo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="BtnResolver" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="BtnSgte" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="BtnAnterior" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="BtnResolver" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="BtnNuevo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="BtnVistaPrevia" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -161,15 +160,18 @@
               <SubComponents>
                 <Component class="javax.swing.JButton" name="BtnNuevo">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Arial" size="11" style="0"/>
+                    </Property>
                     <Property name="actionCommand" type="java.lang.String" value="jButton1"/>
                     <Property name="label" type="java.lang.String" value="Nuevo"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnNuevoActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="BtnResolver">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Arial" size="11" style="0"/>
+                    </Property>
                     <Property name="label" type="java.lang.String" value="Resolver"/>
                   </Properties>
                   <Events>
@@ -178,13 +180,30 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="BtnAnterior">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Arial" size="11" style="0"/>
+                    </Property>
                     <Property name="label" type="java.lang.String" value="Anterior"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="BtnSgte">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Arial" size="11" style="0"/>
+                    </Property>
                     <Property name="label" type="java.lang.String" value="Siguiente"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="BtnVistaPrevia">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Arial" size="11" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Vista Previa"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnVistaPreviaActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
