@@ -143,7 +143,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 636, Short.MAX_VALUE)
+            .addGap(0, 560, Short.MAX_VALUE)
         );
 
         barBtnes.setPreferredSize(new java.awt.Dimension(575, 26));
@@ -176,7 +176,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addComponent(BtnNuevo)
                 .addGap(31, 31, 31)
                 .addComponent(BtnResolver)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                 .addComponent(BtnAnterior)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnSgte)
@@ -198,18 +198,18 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         tablero.setLayout(tableroLayout);
         tableroLayout.setHorizontalGroup(
             tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tableroLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(barBtnes, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE))
             .addComponent(panelCentral, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+            .addGroup(tableroLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(barBtnes, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                .addContainerGap())
         );
         tableroLayout.setVerticalGroup(
             tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tableroLayout.createSequentialGroup()
-                .addComponent(panelCentral, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(barBtnes, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(tableroLayout.createSequentialGroup()
+                .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(barBtnes, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         barPestanas.addTab("Tablero", tablero);
@@ -242,7 +242,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jCheckCuadricula)
-                .addContainerGap(583, Short.MAX_VALUE))
+                .addContainerGap(509, Short.MAX_VALUE))
         );
 
         barPestanas.addTab("Configuración", configuracion);
@@ -251,17 +251,17 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(barPestanas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(barPestanas, javax.swing.GroupLayout.PREFERRED_SIZE, 726, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(barPestanas, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         barPestanas.getAccessibleContext().setAccessibleName("Tablero");
