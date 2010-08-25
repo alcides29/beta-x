@@ -26,6 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import npuzzle.NPuzzle;
+
+
 public class NpuzzleGUI extends javax.swing.JFrame {
     private JPanel panel;
     private JLabel label;
@@ -169,9 +172,14 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
         barBtnes.setPreferredSize(new java.awt.Dimension(575, 26));
 
-        BtnNuevo.setFont(new java.awt.Font("Arial", 0, 11));
+        BtnNuevo.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         BtnNuevo.setActionCommand("jButton1");
         BtnNuevo.setLabel("Nuevo");
+        BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnNuevoActionPerformed(evt);
+            }
+        });
 
         BtnResolver.setFont(new java.awt.Font("Arial", 0, 11));
         BtnResolver.setLabel("Resolver");
@@ -206,7 +214,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addComponent(BtnNuevo)
                 .addGap(23, 23, 23)
                 .addComponent(BtnResolver)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addComponent(BtnAnterior)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnSgte)
@@ -259,7 +267,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckCuadricula)
                     .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(403, Short.MAX_VALUE))
+                .addContainerGap(363, Short.MAX_VALUE))
         );
         configuracionLayout.setVerticalGroup(
             configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,7 +278,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jCheckCuadricula)
-                .addContainerGap(509, Short.MAX_VALUE))
+                .addContainerGap(510, Short.MAX_VALUE))
         );
 
         barPestanas.addTab("Configuración", configuracion);
@@ -400,6 +408,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 }
         }).start();
     }//GEN-LAST:event_panelCentralMouseClicked
+
+    private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
+        
+        NPuzzle puzzle = new NPuzzle( this.dimension );
+        puzzle.generarTablero();
+    }//GEN-LAST:event_BtnNuevoActionPerformed
     public void nuevaVista(){
         //System.out.println(getDimension());
         dimension = getDimension();
