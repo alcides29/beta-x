@@ -11,11 +11,14 @@ package busqueda;
 public interface Estrategia {
 
     public void insertarNodo( Nodo unNodoNuevo );
+
+    public boolean encontroAlMenosUnaSolucion();
     
     public Nodo obtenerSiguienteNodo();
 
     public void removerSiguienteNodo();
 
     public Solucion retornarSolucion();
+    
 
 }

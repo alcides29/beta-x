@@ -10,4 +10,6 @@ package busqueda;
  */
 public interface Nodo {
     public Object obtenerValor();
+
+    public boolean formaParteDelCamino();
 }

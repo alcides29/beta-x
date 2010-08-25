@@ -24,6 +24,11 @@ public class EstrategiaEnProfundidad implements Estrategia{
     }
 
 
+    public boolean encontroAlMenosUnaSolucion(){
+        
+        return( !this.pila.empty() );
+    }
+
     public void insertarNodo( Nodo unNodo ){
         this.pila.push( unNodo );
 
@@ -56,7 +61,7 @@ public class EstrategiaEnProfundidad implements Estrategia{
 
         this.unaSolucion.armarSolucion();
         
-        return( this.unaSolucion );
+    return( this.unaSolucion );
     }
 
 }
