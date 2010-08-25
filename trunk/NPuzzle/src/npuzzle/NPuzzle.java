@@ -24,16 +24,21 @@ public class NPuzzle implements Problema{
     private CasillaPuzzle   casillaVacia,
                             tablero[][];
 
-    private int matriz[][];
-
 // -----------------------------------------------------------------------------
 
+    /*
     public NPuzzle(){
         this.mapa   = new HashMap();
     }
+     */
 
+    /**
+     * Constructor
+     * @param pN Dimension del tablero
+     */
     public NPuzzle( int pN ){
         this.mapa   = new HashMap();
+        this.cantidadFilasTablero = pN;
         this.tablero= new CasillaPuzzle[ pN ][ pN ];
 
     }
@@ -388,10 +393,15 @@ public class NPuzzle implements Problema{
      * @note Para verificar...
      */
     public void generarTablero(){
+    // -------------------------------------------------------------------------
+
         int fila;
         int columna;
         int valor = 1;
+        
+    // -------------------------------------------------------------------------
 
+        
         for( fila= 0; fila < this.cantidadFilasTablero; fila++ ){
 
             for( columna=0; columna < this.cantidadFilasTablero; columna++ ){
