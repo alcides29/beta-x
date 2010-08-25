@@ -13,7 +13,6 @@ package npuzzleGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,9 +21,6 @@ import java.awt.image.FilteredImageSource;
 import java.awt.Graphics;
 
 
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -74,7 +70,17 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         //add(Box.createRigidArea(new Dimension(0, 5)), BorderLayout.NORTH);    
         //(panelCentral, BorderLayout.CENTER);
 
-        for ( int i = 0; i < dimension; i++) {
+        for (int i = 0; i<dimension*dimension; i++){
+            if (i==(dimension*dimension-1)){
+                hole = new ImagePanel(i, dimension);
+                panelCentral.add(hole);
+                this.panelCentral.validate();
+            } else {
+                panel = new ImagePanel(i, dimension);
+                panelCentral.add(panel);
+            }
+        }     
+        /*for ( int i = 0; i < dimension; i++) {
             for ( int j = 0; j < dimension; j++) {
                 if ( j == dimension-1 && i == dimension-1) {
                     label = new JLabel("");
@@ -83,7 +89,6 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     panelCentral.add(hole);
                     this.panelCentral.validate();
                 } else {
-                    //button = new JButton();
                     panel = new ImagePanel(j, i, dimension);
                     //button.addActionListener(this);
                     //panelCentral.add(button);
@@ -94,7 +99,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     
                 }
             }
-        }
+        }*/
         for (java.awt.Component pan : this.panelCentral.getComponents()) {
             pan.validate();
             pan.repaint();
@@ -321,54 +326,79 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         //System.out.println("hasta aqui");
         ImagePanel button = (ImagePanel) panelCentral.getComponentAt(evt.getPoint());
         Dimension size = button.getSize();
-        System.out.println("hasta aqui");
         
-        int labelX = hole.getX();
-        int labelY = hole.getY();
-        int buttonX = button.getX();
-        int buttonY = button.getY();
+        int labelX = hole.getX()/size.width;
+        int labelY = hole.getY()/size.width;
+        int buttonX = button.getX()/size.width;
+        int buttonY = button.getY()/size.width;
         int buttonPosX = buttonX / size.width;
         int buttonPosY = buttonY / size.height;
         int buttonIndex = pos[buttonPosY][buttonPosX];
-
+        System.out.println("posY"+buttonY+" posX"+buttonX);
+        System.out.println("2posY"+labelY+" 2posX"+labelX);
+        if(buttonX==labelX+1&&buttonY==labelY){
+            this.moveBlank(3);//derecha
+            //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
+            //System.out.println("jaja");
+        } else if(buttonX==labelX-1 && buttonY==labelY){
+            this.moveBlank(1);//izquierda
+           //System.out.println("jaja");
+        } else if(buttonX==labelX&&buttonY==labelY+1){
+            this.moveBlank(2);//abajo
+            //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
+        } else if(buttonX==labelX&&buttonY==labelY-1){
+            this.moveBlank(4);//arriba
+            //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
+        }
+/*
         if (labelX == buttonX && (labelY - buttonY) == size.height ) {
-
+            System.out.println("+3");
              int labelIndex = buttonIndex + 3;
 
              panelCentral.remove(buttonIndex);
-             panelCentral.add(label, buttonIndex);
+             panelCentral.add(hole, buttonIndex);
              panelCentral.add(button,labelIndex);
              panelCentral.validate();
         }
 
         if (labelX == buttonX && (labelY - buttonY) == -size.height ) {
-
+            System.out.println("-3");
              int labelIndex = buttonIndex - 3;
              panelCentral.remove(labelIndex);
              panelCentral.add(button,labelIndex);
-             panelCentral.add(label, buttonIndex);
+             panelCentral.add(hole, buttonIndex);
              panelCentral.validate();
         }
 
         if (labelY == buttonY && (labelX - buttonX) == size.width ) {
-
+            System.out.println("+1");
              int labelIndex = buttonIndex + 1;
 
              panelCentral.remove(buttonIndex);
-             panelCentral.add(label, buttonIndex);
+             panelCentral.add(hole, buttonIndex);
              panelCentral.add(button,labelIndex);
              panelCentral.validate();
         }
 
         if (labelY == buttonY && (labelX - buttonX) == -size.width ) {
-
+            System.out.println("+1");
              int labelIndex = buttonIndex - 1;
 
              panelCentral.remove(buttonIndex);
-             panelCentral.add(label, labelIndex);
+             panelCentral.add(hole, labelIndex);
              panelCentral.add(button,labelIndex);
              panelCentral.validate();
-        }
+        }*/
+        new Thread(new Runnable() {
+                public void run() {
+                    try{
+                        Thread.currentThread().sleep(100);
+                    } catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    panelCentral.repaint();
+                }
+        }).start();
     }//GEN-LAST:event_panelCentralMouseClicked
     public void nuevaVista(){
         //System.out.println(getDimension());
@@ -384,7 +414,18 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         leftOut = (width%dimension)>3;
         cuadricula = getCuadricula();
         panelCentral.removeAll();
-        for ( int i = 0; i < dimension; i++) {
+        
+        for (int i = 0; i<dimension*dimension; i++){
+            if (i==(dimension*dimension-1)){
+                hole = new ImagePanel(i, dimension);
+                panelCentral.add(hole);
+                this.panelCentral.validate();
+            } else {
+                panel = new ImagePanel(i, dimension);
+                panelCentral.add(panel);
+            }
+        }        
+        /*for ( int i = 0; i < dimension; i++) {
             for ( int j = 0; j < dimension; j++) {
                 if ( j == dimension-1 && i == dimension-1) {
                     label = new JLabel("");
@@ -400,14 +441,20 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     //panel.repaint();
                 }
             }
-        }
+        }*/
     }
     public class ImagePanel extends JPanel{
         private Image image;
         private int dimension;
+        private int valor;
 
-        public ImagePanel(int x, int y, int n) {
+        public ImagePanel(int nro, int n) {
+            int x;
+            int y;
             dimension = n;
+            valor = nro;
+            x = nro/dimension;
+            y = nro%dimension;
             try {
                 if(x==dimension-1&&y==dimension-1){
                     if (cuadricula){
@@ -462,6 +509,19 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 System.out.println(e.getMessage());
             }
         }
+        public Image getImage(){
+            return this.image;
+        }
+        public void setImage(Image pImage){
+            this.image = pImage;
+        }
+        public int getValor(){
+            return this.valor;
+        }
+        public void setValor(int val){
+            this.valor = val;
+        }
+        
 
         @Override
         public void paintComponent(Graphics g) {
@@ -469,6 +529,66 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
         }
 
+    }
+    
+    public void moveBlank(int direccion){
+        ImagePanel aux1;
+        ImagePanel aux2;
+        Image imgAux1;
+        Image imgAux2;
+        if(direccion==1){//izquierda
+            System.out.println(hole.getX());
+            if((hole.getX()/hole.getSize().width)!=0){
+                aux1 = (ImagePanel) panelCentral.getComponentAt(hole.getX()-hole.getSize().width, hole.getY());
+                aux2 = hole;
+                hole = aux1;
+                imgAux1 = aux1.getImage();
+                imgAux2 = aux2.getImage();
+                aux2.setImage(imgAux1);
+                aux1.setImage(imgAux2);
+                aux2.setValor(aux1.getValor());
+                aux1.setValor(dimension*dimension-1);
+            }
+        } else if(direccion==2){//abajo
+            if((hole.getY()/hole.getSize().width)!=dimension-1){
+                aux1 = (ImagePanel) panelCentral.getComponentAt(hole.getX(), hole.getY()+hole.getSize().width);
+                aux2 = hole;
+                hole = aux1;
+                imgAux1 = aux1.getImage();
+                imgAux2 = aux2.getImage();
+                aux2.setImage(imgAux1);
+                aux1.setImage(imgAux2);
+                aux2.setValor(aux1.getValor());
+                aux1.setValor(dimension*dimension-1);
+            }
+        } else if(direccion==3){//derecha
+            System.out.println("jaja");
+            if((hole.getX()/hole.getSize().width)!=dimension-1){
+                aux1 = (ImagePanel) panelCentral.getComponentAt(hole.getX()+hole.getSize().width, hole.getY());
+                aux2 = hole;
+                System.out.println("jeje");
+                hole = aux1;
+                imgAux1 = aux1.getImage();
+                imgAux2 = aux2.getImage();
+                aux2.setImage(imgAux1);
+                aux1.setImage(imgAux2);
+                aux2.setValor(aux1.getValor());
+                aux1.setValor(dimension*dimension-1);
+            }
+        } else if(direccion==4){//arriba
+            if((hole.getY()/hole.getSize().width)!=0){
+                aux1 = (ImagePanel) panelCentral.getComponentAt(hole.getX(), hole.getY()-hole.getSize().width);
+                aux2 = hole;
+                hole = aux1;
+                imgAux1 = aux1.getImage();
+                imgAux2 = aux2.getImage();
+                aux2.setImage(imgAux1);
+                aux1.setImage(imgAux2);
+                aux2.setValor(aux1.getValor());
+                aux1.setValor(dimension*dimension-1);
+            }
+        }
+        
     }
     //se debe controlar que sea un entero
     //hace falta algún tipo de manejo de excepciones
