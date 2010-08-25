@@ -390,7 +390,6 @@ public class NPuzzle implements Problema{
 
     /**
      * @function Funcion que genera el tablero
-     * @note Para verificar...
      */
     public void generarTablero(){
     // -------------------------------------------------------------------------
@@ -401,19 +400,22 @@ public class NPuzzle implements Problema{
         
     // -------------------------------------------------------------------------
 
-        
         for( fila= 0; fila < this.cantidadFilasTablero; fila++ ){
 
             for( columna=0; columna < this.cantidadFilasTablero; columna++ ){
+                System.out.println("fila: " + fila + "\tcol: " + columna);
 
                 // verifica para no asignarle un valor a la ultima casilla
                 if( (fila == this.cantidadFilasTablero-1) && (columna == this.cantidadFilasTablero-1) ){
+                    this.tablero[fila][columna] = new CasillaPuzzle();
                     this.tablero[fila][columna].marcarComoCasillaVacia();
                     break;
                 }
                 else{
-                    this.tablero[fila][columna].marcarComoCasillaNoVacia();
-                    this.tablero[fila][columna].insertarValor(valor);
+                    this.tablero[fila][columna] = new CasillaPuzzle();
+                    this.tablero[fila][columna].setCoordenadaX(fila);
+                    this.tablero[fila][columna].setCoordenadaY(columna);
+                    this.tablero[fila][columna].insertarValor(new Integer(valor));
                     valor++;
                 }
             }
