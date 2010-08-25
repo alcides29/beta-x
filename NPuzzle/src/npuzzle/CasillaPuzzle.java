@@ -105,6 +105,10 @@ public class CasillaPuzzle implements Nodo{
         return( this.expandido );
     }
 
+    public boolean formaParteDelCamino(){
+        return( this.yaFueVisitado() );
+    }
+
     public void marcaComoNoExpandido(){
         this.expandido = false;
     }

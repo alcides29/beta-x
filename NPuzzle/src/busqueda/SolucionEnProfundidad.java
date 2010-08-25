@@ -27,7 +27,6 @@ public class SolucionEnProfundidad implements Solucion{
     }
 
 
-
     public int obtenerLongitudDelCamino(){
         return( this.longitudDelCamino );
     }
@@ -35,11 +34,25 @@ public class SolucionEnProfundidad implements Solucion{
     public void armarSolucion(){
     // -------------------------------------------------------------------------
 
-        
+        Nodo unNodo;
+
     // -------------------------------------------------------------------------
 
         this.iteradorPila   = this.pilaSolucion.iterator();
+
+        unNodo                  = ( Nodo )this.pilaSolucion.lastElement(); //this.obtenerSiguienteNodo();
+        this.longitudDelCamino  = 0;
+
         
+        while( unNodo != null ){
+
+            if( unNodo.formaParteDelCamino())
+                this.longitudDelCamino++;
+
+            unNodo  = this.obtenerSiguienteNodo();
+        }
+
+        this.iteradorPila   = this.pilaSolucion.iterator();
     }
 
     public Nodo obtenerSiguienteNodo(){

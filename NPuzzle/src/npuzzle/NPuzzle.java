@@ -32,6 +32,12 @@ public class NPuzzle implements Problema{
         this.mapa   = new HashMap();
     }
 
+    public NPuzzle( int pN ){
+        this.mapa   = new HashMap();
+        this.tablero= new CasillaPuzzle[ pN ][ pN ];
+
+    }
+
 
     public int getCantidadFilasTablero(){
         return( this.cantidadFilasTablero );
@@ -56,7 +62,7 @@ public class NPuzzle implements Problema{
     
     // -------------------------------------------------------------------------
 
-        this.casillaVacia   = new CasillaPuzzle();
+        //this.casillaVacia   = new CasillaPuzzle();
 
     
             for( fila= 0; fila < this.cantidadFilasTablero; fila++ ){
@@ -71,7 +77,13 @@ public class NPuzzle implements Problema{
 
             }
 
-        this.expandir( this.casillaVacia, unaEstrategia );
+        if( unaEstrategia.encontroAlMenosUnaSolucion() ){
+            this.prepararOtraOpcion( ( CasillaPuzzle )unaEstrategia.obtenerSiguienteNodo(),
+                                        unaEstrategia );
+        }
+        else
+            this.expandir( this.casillaVacia, unaEstrategia );
+            
         
     }
 
@@ -285,16 +297,43 @@ public class NPuzzle implements Problema{
 
     
     public boolean esNodoMeta( Nodo nodoActual ){
+    // ------------------------------------------------------------------------
 
+        Object         valor;
+        boolean         estaOrdenado;
+        CasillaPuzzle   casillaAuxiliar, casillaActual;
+
+    // ------------------------------------------------------------------------
+
+        
         /*
         if( ( (CasillaPuzzle )nodoActual ).yaFueVisitado() )
             return( false );
         else{
          *
-         */
+         */            
+
+            valor   = nodoActual.obtenerValor();
+
             this.moverCasillaVacia(( CasillaPuzzle ) nodoActual );
 
-            return( elTableroEstaOrdenado() );
+            estaOrdenado        = elTableroEstaOrdenado();
+
+            if( estaOrdenado ){                
+
+                casillaActual   = ( CasillaPuzzle )nodoActual;
+
+                casillaAuxiliar = new CasillaPuzzle();
+                casillaAuxiliar.insertarValor( valor );
+                casillaAuxiliar.setCoordenadaX( casillaActual.getCoordenadaX() );
+                casillaAuxiliar.setCoordenadaY( casillaActual.getCoordenadaY() );
+                
+                this.marcarNodoComoVisitado( casillaAuxiliar );
+
+                return( estaOrdenado );
+            }
+            else
+                return( false );
         //}
     }
 
@@ -308,6 +347,7 @@ public class NPuzzle implements Problema{
         firma   = "" + ( ( Integer )casilla.obtenerValor() ).intValue();
         firma+= casilla.getCoordenadaX();
         firma+= casilla.getCoordenadaY();
+
 
         this.mapa.put( firma, firma );
     }
