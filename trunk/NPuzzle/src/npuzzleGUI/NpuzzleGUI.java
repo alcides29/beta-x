@@ -334,8 +334,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         int buttonPosX = buttonX / size.width;
         int buttonPosY = buttonY / size.height;
         int buttonIndex = pos[buttonPosY][buttonPosX];
-        System.out.println("posY"+buttonY+" posX"+buttonX);
-        System.out.println("2posY"+labelY+" 2posX"+labelX);
+        //System.out.println("posY"+buttonY+" posX"+buttonX);
+        //System.out.println("2posY"+labelY+" 2posX"+labelX);
         if(buttonX==labelX+1&&buttonY==labelY){
             this.moveBlank(3);//derecha
             //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
@@ -537,7 +537,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         Image imgAux1;
         Image imgAux2;
         if(direccion==1){//izquierda
-            System.out.println(hole.getX());
+            //System.out.println(hole.getX());
             if((hole.getX()/hole.getSize().width)!=0){
                 aux1 = (ImagePanel) panelCentral.getComponentAt(hole.getX()-hole.getSize().width, hole.getY());
                 aux2 = hole;
@@ -561,12 +561,11 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 aux2.setValor(aux1.getValor());
                 aux1.setValor(dimension*dimension-1);
             }
-        } else if(direccion==3){//derecha
-            System.out.println("jaja");
+        } else if(direccion==3){//derecha;
             if((hole.getX()/hole.getSize().width)!=dimension-1){
                 aux1 = (ImagePanel) panelCentral.getComponentAt(hole.getX()+hole.getSize().width, hole.getY());
                 aux2 = hole;
-                System.out.println("jeje");
+                //System.out.println("jeje");
                 hole = aux1;
                 imgAux1 = aux1.getImage();
                 imgAux2 = aux2.getImage();
