@@ -403,13 +403,17 @@ public class NPuzzle implements Problema{
         for( fila= 0; fila < this.cantidadFilasTablero; fila++ ){
 
             for( columna=0; columna < this.cantidadFilasTablero; columna++ ){
-                System.out.println("fila: " + fila + "\tcol: " + columna);
-
-                // verifica para no asignarle un valor a la ultima casilla
+                
+                // Asigna la casilla vacia
                 if( (fila == this.cantidadFilasTablero-1) && (columna == this.cantidadFilasTablero-1) ){
+
                     this.tablero[fila][columna] = new CasillaPuzzle();
                     this.tablero[fila][columna].marcarComoCasillaVacia();
-                    break;
+
+                    this.casillaVacia = new CasillaPuzzle();
+                    this.casillaVacia.setCoordenadaX(fila);
+                    this.casillaVacia.setCoordenadaY(columna);
+                    this.casillaVacia.insertarValor(this.VALOR_VACIO);
                 }
                 else{
                     this.tablero[fila][columna] = new CasillaPuzzle();
@@ -428,7 +432,78 @@ public class NPuzzle implements Problema{
      * @note  Para implementar...
      */
     public void desordenarTablero(){
+        // -----------------------------------------------------------------------------
 
+        Random rnd = new Random();
+        int n = 4;
+        int i;
+        int posicion;
+        int anterior = 1;
 
+        // -----------------------------------------------------------------------------
+
+        for ( i = 0; i < 100; i++){
+            posicion = rnd.nextInt( n );
+
+            // Verifica que la posicion sea valida y no se mude a la posicion anterior
+            while( !movimientoValido( posicion )  || ( posicion == anterior ) ){
+                posicion = rnd.nextInt( n );
+            }
+            
+            moverCasilla( posicion );
+
+        }
+    }
+
+    /**
+     * @function Verifica si el movimiento es valido
+     * @param pos
+     * @return boolean
+     */
+    private boolean movimientoValido( int pos ){
+        // -----------------------------------------------------------------------------
+
+        int up = 0;
+        int down = 1;
+        int left = 2;
+        int right = 3;
+
+        // -----------------------------------------------------------------------------
+
+        if( ( pos == up ) &&  ( this.casillaVacia.getCoordenadaX() -1 ) < 0 )
+            return false;
+        else if( ( pos == down ) &&  ( this.casillaVacia.getCoordenadaX() + 1 ) > this.cantidadFilasTablero )
+            return false;
+        else if( ( pos == left ) && ( this.casillaVacia.getCoordenadaY() - 1) < 0 )
+            return false;
+        else if( ( pos == right ) &&  ( this.casillaVacia.getCoordenadaY() + 1 ) > this.cantidadFilasTablero )
+            return false;
+        
+        return true;
+    }
+
+    /**
+     * @function Intercambia las casillas al inicio del juego
+     * @note Falta completar
+     */
+    public void moverCasilla( int pos){
+        int up = 0;
+        int down = 1;
+        int left = 2;
+        int right = 3;
+        int newX, newY;
+
+        if( pos == up ){
+            newX = this.casillaVacia.getCoordenadaX() - 1;
+        }
+        else if( pos == down ){
+            newX = this.casillaVacia.getCoordenadaX() + 1;
+        }
+        else if( pos == left ){
+            newY = this.casillaVacia.getCoordenadaY() - 1;
+        }
+        else if( pos == right ){
+            newY = this.casillaVacia.getCoordenadaY() + 1;
+        }
     }
 }
