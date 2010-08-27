@@ -570,7 +570,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 for (int c=0; c<dim; c++) {
                     int x = c * celda;
                     int y = r * celda;
-                    String text = valor.toString();
+                    Integer j = (valor+1);
+                    String text = j.toString();
                     if (valor != (dim*dim)-1 ) {
                         g.setColor(Color.gray);
                         g.fillRect(x+2, y+2, celda-4, celda-4);
