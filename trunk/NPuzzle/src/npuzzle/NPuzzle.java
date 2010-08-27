@@ -448,15 +448,38 @@ public class NPuzzle implements Problema{
 
             // Verifica que la posicion sea valida y no se mude a la posicion anterior
             while( !this.movimientoValido( posicion )  || ( posicion == anterior ) ){
-                System.out.println("posicion no valida");
                 posicion = rnd.nextInt( n );
             }
             
-            System.out.println("Mover: " + posicion);
+            anterior = this.posicionAnterior( posicion );
+            //System.out.println("Mover: " + posicion);
             this.moverCasilla( posicion );
             // llamar a la la funcion del GUI
             this.imprimirTablero();
         }
+    }
+
+    // Calcula la posicion anterior de donde vino la casilla vacia
+    private int posicionAnterior( int pos ){
+        // ---------------------------------------------------------------------
+
+        int up = 0;
+        int down = 1;
+        int left = 2;
+        int right = 3;
+        int anterior = 0;
+
+        // ---------------------------------------------------------------------
+        if( pos == up )
+            anterior = down;
+        else if( pos == down )
+            anterior = up;
+        else if( pos == left )
+            anterior = right;
+        else if( pos == right )
+            anterior = left;
+
+        return anterior;
     }
 
     /**
