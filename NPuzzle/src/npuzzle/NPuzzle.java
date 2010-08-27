@@ -15,7 +15,7 @@ import java.util.*;
 public class NPuzzle implements Problema{
 // -----------------------------------------------------------------------------
 
-    public static final int VALOR_VACIO = 1234567890;
+    public static final int VALOR_VACIO = 9999;
 
     private int cantidadFilasTablero;
 
@@ -425,14 +425,15 @@ public class NPuzzle implements Problema{
             }
 
         }
+        this.imprimirTablero();
     }
 
     /**
      * @function Funcion que desordena el tablero
-     * @note  Para implementar...
+     * @note  Para implementacion
      */
     public void desordenarTablero(){
-        // -----------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         Random rnd = new Random();
         int n = 4;
@@ -440,18 +441,21 @@ public class NPuzzle implements Problema{
         int posicion;
         int anterior = 1;
 
-        // -----------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         for ( i = 0; i < 100; i++){
             posicion = rnd.nextInt( n );
 
             // Verifica que la posicion sea valida y no se mude a la posicion anterior
-            while( !movimientoValido( posicion )  || ( posicion == anterior ) ){
+            while( !this.movimientoValido( posicion )  || ( posicion == anterior ) ){
+                System.out.println("posicion no valida");
                 posicion = rnd.nextInt( n );
             }
             
-            moverCasilla( posicion );
-
+            System.out.println("Mover: " + posicion);
+            this.moverCasilla( posicion );
+            // llamar a la la funcion del GUI
+            this.imprimirTablero();
         }
     }
 
@@ -461,22 +465,22 @@ public class NPuzzle implements Problema{
      * @return boolean
      */
     private boolean movimientoValido( int pos ){
-        // -----------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         int up = 0;
         int down = 1;
         int left = 2;
         int right = 3;
 
-        // -----------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         if( ( pos == up ) &&  ( this.casillaVacia.getCoordenadaX() -1 ) < 0 )
             return false;
-        else if( ( pos == down ) &&  ( this.casillaVacia.getCoordenadaX() + 1 ) > this.cantidadFilasTablero )
+        else if( ( pos == down ) &&  ( this.casillaVacia.getCoordenadaX() + 1 ) == this.cantidadFilasTablero )
             return false;
         else if( ( pos == left ) && ( this.casillaVacia.getCoordenadaY() - 1) < 0 )
             return false;
-        else if( ( pos == right ) &&  ( this.casillaVacia.getCoordenadaY() + 1 ) > this.cantidadFilasTablero )
+        else if( ( pos == right ) &&  ( this.casillaVacia.getCoordenadaY() + 1 ) == this.cantidadFilasTablero )
             return false;
         
         return true;
@@ -487,23 +491,70 @@ public class NPuzzle implements Problema{
      * @note Falta completar
      */
     public void moverCasilla( int pos){
+        // ---------------------------------------------------------------------
+
         int up = 0;
         int down = 1;
         int left = 2;
         int right = 3;
-        int newX, newY;
+        int nuevoValor;
+        int newX = this.casillaVacia.getCoordenadaX();
+        int newY = this.casillaVacia.getCoordenadaY();
 
+
+        // ---------------------------------------------------------------------
+        
         if( pos == up ){
-            newX = this.casillaVacia.getCoordenadaX() - 1;
+            nuevoValor = ( ( Integer )this.tablero[newX - 1][newY].obtenerValor() ).intValue();
+            this.tablero[newX][newY].insertarValor(nuevoValor);
+            this.tablero[newX][newY].marcarComoCasillaNoVacia();
+            
+            // mover casilla vacia
+            this.tablero[newX - 1][newY].marcarComoCasillaVacia();
+            this.casillaVacia.setCoordenadaX(newX - 1);
+
+
         }
         else if( pos == down ){
-            newX = this.casillaVacia.getCoordenadaX() + 1;
+            nuevoValor = ( ( Integer )this.tablero[newX + 1][newY].obtenerValor() ).intValue();
+            this.tablero[newX][newY].insertarValor(nuevoValor);
+            this.tablero[newX][newY].marcarComoCasillaNoVacia();
+
+            // mover casilla vacia
+            this.tablero[newX + 1][newY].marcarComoCasillaVacia();
+            this.casillaVacia.setCoordenadaX(newX + 1);
         }
         else if( pos == left ){
-            newY = this.casillaVacia.getCoordenadaY() - 1;
+            nuevoValor = ( ( Integer )this.tablero[newX][newY - 1].obtenerValor() ).intValue();
+            this.tablero[newX][newY].insertarValor(nuevoValor);
+            this.tablero[newX][newY].marcarComoCasillaNoVacia();
+
+            // mover casilla vacia
+            this.tablero[newX][newY - 1].marcarComoCasillaVacia();
+            this.casillaVacia.setCoordenadaY(newY - 1);
         }
         else if( pos == right ){
-            newY = this.casillaVacia.getCoordenadaY() + 1;
+            nuevoValor = ( ( Integer )this.tablero[newX][newY + 1].obtenerValor() ).intValue();
+            this.tablero[newX][newY].insertarValor(nuevoValor);
+            this.tablero[newX][newY].marcarComoCasillaNoVacia();
+
+            // mover casilla vacia
+            this.tablero[newX][newY + 1].marcarComoCasillaVacia();
+            this.casillaVacia.setCoordenadaY(newY + 1);
+        }
+    }
+
+    // Funcion de prueba
+    public void imprimirTablero(){
+
+        int i, j;
+
+        for( i = 0; i < this.cantidadFilasTablero; i++){
+            for( j = 0; j < this.cantidadFilasTablero; j++){
+
+                System.out.print( "\t" + ( (Integer)this.tablero[i][j].obtenerValor()).intValue() );
+            }
+            System.out.println();
         }
     }
 }
