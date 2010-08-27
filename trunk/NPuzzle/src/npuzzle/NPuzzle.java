@@ -6,6 +6,7 @@ package npuzzle;
 
 
 import busqueda.*;
+import npuzzleGUI.NpuzzleGUI;
 import java.util.*;
 
 /**
@@ -430,21 +431,22 @@ public class NPuzzle implements Problema{
 
     /**
      * @function Funcion que desordena el tablero
-     * @note  Para implementacion
+     * @param ventana
      */
-    public void desordenarTablero(){
+    public void desordenarTablero(NpuzzleGUI ventana){
         // ---------------------------------------------------------------------
 
         Random rnd = new Random();
         int n = 4;
         int i;
         int posicion;
-        int anterior = 1;
+        int anterior = 2;
+        int iteraciones = 10000;
 
         // ---------------------------------------------------------------------
 
-        for ( i = 0; i < 100; i++){
-            posicion = rnd.nextInt( n );
+        for ( i = 0; i < iteraciones; i++){
+            posicion = ( rnd.nextInt( n ) + 1 );
 
             // Verifica que la posicion sea valida y no se mude a la posicion anterior
             while( !this.movimientoValido( posicion )  || ( posicion == anterior ) ){
@@ -452,10 +454,8 @@ public class NPuzzle implements Problema{
             }
             
             anterior = this.posicionAnterior( posicion );
-            //System.out.println("Mover: " + posicion);
             this.moverCasilla( posicion );
-            // llamar a la la funcion del GUI
-            this.imprimirTablero();
+            ventana.moveBlank(posicion); // llamar a la funcion del GUI
         }
     }
 
@@ -463,13 +463,14 @@ public class NPuzzle implements Problema{
     private int posicionAnterior( int pos ){
         // ---------------------------------------------------------------------
 
-        int up = 0;
-        int down = 1;
-        int left = 2;
+        int left = 1;
+        int down = 2;
         int right = 3;
+        int up = 4;
         int anterior = 0;
 
         // ---------------------------------------------------------------------
+
         if( pos == up )
             anterior = down;
         else if( pos == down )
@@ -490,10 +491,10 @@ public class NPuzzle implements Problema{
     private boolean movimientoValido( int pos ){
         // ---------------------------------------------------------------------
 
-        int up = 0;
-        int down = 1;
-        int left = 2;
+        int left = 1;
+        int down = 2;
         int right = 3;
+        int up = 4;
 
         // ---------------------------------------------------------------------
 
@@ -511,14 +512,14 @@ public class NPuzzle implements Problema{
 
     /**
      * @function Intercambia las casillas al inicio del juego
-     * @note Falta completar
+     * @param pos
      */
     public void moverCasilla( int pos){
         // ---------------------------------------------------------------------
 
-        int up = 0;
-        int down = 1;
-        int left = 2;
+        int up = 4;
+        int down = 2;
+        int left = 1;
         int right = 3;
         int nuevoValor;
         int newX = this.casillaVacia.getCoordenadaX();

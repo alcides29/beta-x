@@ -393,10 +393,20 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_panelCentralMouseClicked
 
     private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
-        
+        this.nuevaVista();
         NPuzzle puzzle = new NPuzzle( this.dimension );
         puzzle.generarTablero();
-        puzzle.desordenarTablero();
+        puzzle.desordenarTablero(this);
+        new Thread(new Runnable() {
+                public void run() {
+                    try{
+                        Thread.currentThread().sleep(dimension*10+200);
+                    } catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    panelCentral.repaint();
+                }
+        }).start();
     }//GEN-LAST:event_BtnNuevoActionPerformed
 
     private void jImagenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jImagenesActionPerformed
