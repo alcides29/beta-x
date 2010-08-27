@@ -154,6 +154,11 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         barPestanas.setPreferredSize(new java.awt.Dimension(577, 677));
 
         tablero.setDoubleBuffered(false);
+        tablero.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                tableroComponentShown(evt);
+            }
+        });
 
         panelCentral.setMinimumSize(new java.awt.Dimension(560, 100));
         panelCentral.setPreferredSize(new java.awt.Dimension(575, 575));
@@ -259,6 +264,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Dimensión");
 
+        jCheckCuadricula.setSelected(true);
         jCheckCuadricula.setText("Cuadrícula");
 
         jImagenes.setText("Imágenes");
@@ -356,7 +362,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         int buttonY = button.getY()/size.width;
         int buttonPosX = buttonX / size.width;
         int buttonPosY = buttonY / size.height;
-        int buttonIndex = pos[buttonPosY][buttonPosX];
+        //int buttonIndex = pos[buttonPosY][buttonPosX];
         //System.out.println("posY"+buttonY+" posX"+buttonX);
         //System.out.println("2posY"+labelY+" 2posX"+labelX);
         if(buttonX==labelX+1&&buttonY==labelY){
@@ -373,49 +379,11 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             this.moveBlank(4);//arriba
             //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
         }
-/*
-        if (labelX == buttonX && (labelY - buttonY) == size.height ) {
-            System.out.println("+3");
-             int labelIndex = buttonIndex + 3;
 
-             panelCentral.remove(buttonIndex);
-             panelCentral.add(hole, buttonIndex);
-             panelCentral.add(button,labelIndex);
-             panelCentral.validate();
-        }
-
-        if (labelX == buttonX && (labelY - buttonY) == -size.height ) {
-            System.out.println("-3");
-             int labelIndex = buttonIndex - 3;
-             panelCentral.remove(labelIndex);
-             panelCentral.add(button,labelIndex);
-             panelCentral.add(hole, buttonIndex);
-             panelCentral.validate();
-        }
-
-        if (labelY == buttonY && (labelX - buttonX) == size.width ) {
-            System.out.println("+1");
-             int labelIndex = buttonIndex + 1;
-
-             panelCentral.remove(buttonIndex);
-             panelCentral.add(hole, buttonIndex);
-             panelCentral.add(button,labelIndex);
-             panelCentral.validate();
-        }
-
-        if (labelY == buttonY && (labelX - buttonX) == -size.width ) {
-            System.out.println("+1");
-             int labelIndex = buttonIndex - 1;
-
-             panelCentral.remove(buttonIndex);
-             panelCentral.add(hole, labelIndex);
-             panelCentral.add(button,labelIndex);
-             panelCentral.validate();
-        }*/
         new Thread(new Runnable() {
                 public void run() {
                     try{
-                        Thread.currentThread().sleep(100);
+                        Thread.currentThread().sleep(dimension*10+20);
                     } catch(Exception e){
                         System.out.println(e.getMessage());
                     }
@@ -434,6 +402,19 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private void jImagenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jImagenesActionPerformed
         imagenes = jImagenes.isSelected();
 }//GEN-LAST:event_jImagenesActionPerformed
+
+    private void tableroComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tableroComponentShown
+        new Thread(new Runnable() {
+                public void run() {
+                    try{
+                        Thread.currentThread().sleep(dimension*10+20);
+                    } catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    panelCentral.repaint();
+                }
+        }).start();
+    }//GEN-LAST:event_tableroComponentShown
     public void nuevaVista(){
         //System.out.println(getDimension());
         dimension = getDimension();
@@ -459,23 +440,6 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 panelCentral.add(panel);
             }
         }        
-        /*for ( int i = 0; i < dimension; i++) {
-            for ( int j = 0; j < dimension; j++) {
-                if ( j == dimension-1 && i == dimension-1) {
-                    label = new JLabel("");
-                    hole = new ImagePanel(j, i, dimension);
-                    panelCentral.add(hole);
-                    panelCentral.add(label);
-                } else {
-                    panel = new ImagePanel(j, i, dimension);
-                    //panel.setDoubleBuffered(true);
-                    panel.setVisible(true);
-                    panelCentral.add(panel);
-                    //panel.validate();
-                    //panel.repaint();
-                }
-            }
-        }*/
     }
     public class ImagePanel extends JPanel{
         private Image image;
@@ -519,19 +483,6 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 } else{
                     this.setLocation((x*(celda)), (y*(celda)));
                 }
-                /*if (x>0){
-                    if(y>0){
-                        this.setLocation((x*(cuadro)), (y*(cuadro)));
-                    } else {
-                        this.setLocation((x*cuadro), (y*cuadro));
-                    }
-                } else {
-                    if(y>0){
-                        this.setLocation((x*cuadro), (y*cuadro));
-                    }else {
-                        this.setLocation((x*cuadro), (y*cuadro));
-                    }
-                }*/
                 
             } catch (Exception ex) {
                 ex.getMessage();
