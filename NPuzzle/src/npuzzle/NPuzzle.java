@@ -27,12 +27,6 @@ public class NPuzzle implements Problema{
 
 // -----------------------------------------------------------------------------
 
-    /*
-    public NPuzzle(){
-        this.mapa   = new HashMap();
-    }
-     */
-
     /**
      * Constructor
      * @param pN Dimension del tablero
@@ -426,7 +420,6 @@ public class NPuzzle implements Problema{
             }
 
         }
-        this.imprimirTablero();
     }
 
     /**
@@ -441,7 +434,7 @@ public class NPuzzle implements Problema{
         int i;
         int posicion;
         int anterior = 2;
-        int iteraciones = 10000;
+        int iteraciones = 1500 * this.cantidadFilasTablero;
 
         // ---------------------------------------------------------------------
 
