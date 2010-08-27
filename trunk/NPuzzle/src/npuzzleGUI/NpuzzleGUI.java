@@ -428,6 +428,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         
         NPuzzle puzzle = new NPuzzle( this.dimension );
         puzzle.generarTablero();
+        puzzle.desordenarTablero();
     }//GEN-LAST:event_BtnNuevoActionPerformed
 
     private void jImagenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jImagenesActionPerformed
