@@ -111,7 +111,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        estrategia = new javax.swing.ButtonGroup();
+        groupEstrategia = new javax.swing.ButtonGroup();
         barPestanas = new javax.swing.JTabbedPane();
         tablero = new javax.swing.JPanel();
         panelCentral = new javax.swing.JPanel();
@@ -233,12 +233,14 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             }
         });
 
-        estrategia.add(RadioBtnAnchura);
+        groupEstrategia.add(RadioBtnAnchura);
         RadioBtnAnchura.setText("En anchura");
+        RadioBtnAnchura.setActionCommand("anchura");
 
-        estrategia.add(RadioBtnProfundidad);
+        groupEstrategia.add(RadioBtnProfundidad);
         RadioBtnProfundidad.setSelected(true);
         RadioBtnProfundidad.setText("En profundidad");
+        RadioBtnProfundidad.setActionCommand("profundidad");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("Estrategia");
@@ -261,7 +263,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                         .addComponent(labelEstrategia)
                         .addGap(6, 6, 6)
                         .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(317, Short.MAX_VALUE))
+                .addContainerGap(274, Short.MAX_VALUE))
         );
         configuracionLayout.setVerticalGroup(
             configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,7 +282,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addComponent(jCheckCuadricula)
                 .addGap(18, 18, 18)
                 .addComponent(jImagenes)
-                .addContainerGap(352, Short.MAX_VALUE))
+                .addContainerGap(348, Short.MAX_VALUE))
         );
 
         barPestanas.addTab("Configuración", configuracion);
@@ -308,6 +310,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResolverActionPerformed
+        String seleccion = this.groupEstrategia.getSelection().getActionCommand();
         this.tablero.repaint();
         
         //System.out.println(this.panelCentral.getComponents().length);
@@ -599,21 +602,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 aux1.setValor(dimension*dimension-1);
             }
         }
-        
     }
 
-    // falta terminar...
-    public int getEstrategia(){
-        int estrategia = 0;
-
-        try{
-            //estrategia = Integer.parseInt( this.estrategia.getSelection() );
-        }
-        catch(Exception ex){
-            JOptionPane.showMessageDialog(barBtnes, ex);
-        }
-        return estrategia;
-    }
     //se debe controlar que sea un entero
     //hace falta algún tipo de manejo de excepciones
     public int getDimension(){
@@ -660,7 +650,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private javax.swing.JPanel barBtnes;
     private javax.swing.JTabbedPane barPestanas;
     private javax.swing.JPanel configuracion;
-    private javax.swing.ButtonGroup estrategia;
+    private javax.swing.ButtonGroup groupEstrategia;
     private javax.swing.JCheckBox jCheckCuadricula;
     private javax.swing.JToggleButton jImagenes;
     private javax.swing.JLabel jLabel2;
