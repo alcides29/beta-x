@@ -507,6 +507,10 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
         @Override
         public void paintComponent(Graphics g) {
+            if(dim>20&&!jImagenes.isSelected()){
+                jImagenes.doClick();
+            }
+
             if (imagenes){
                 g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters
                 return;
@@ -523,11 +527,13 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                         g.fillRect(x+2, y+2, celda-4, celda-4);
                         g.setColor(Color.black);
                         g.setFont(new Font("SansSerif", Font.BOLD, celda/2));
-                        if (text.length()<3){
-                            g.drawString(text, x+(celda/4), y+(3*celda)/4);
-                        } else {
-                            g.setFont(new Font("SansSerif", Font.BOLD, celda/3));
-                            g.drawString(text, x+(celda/6), y+(3*celda)/4);
+                        if(dim<50){
+                            if (text.length()<3){
+                                g.drawString(text, x+(celda/4), y+(3*celda)/4);
+                            } else {
+                                g.setFont(new Font("SansSerif", Font.BOLD, celda/3));
+                                g.drawString(text, x+(celda/6), y+(3*celda)/4);
+                            }
                         }
                     }
                 }
