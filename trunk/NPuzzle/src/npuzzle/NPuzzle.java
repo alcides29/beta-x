@@ -484,7 +484,7 @@ public class NPuzzle implements Problema{
         int i;
         int posicion;
         int anterior = 2;
-        int iteraciones = 1500 * this.cantidadFilasTablero;
+        int iteraciones = 1700 * this.cantidadFilasTablero*this.cantidadFilasTablero/2;
 
         // ---------------------------------------------------------------------
 
