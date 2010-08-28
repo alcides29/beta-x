@@ -48,7 +48,7 @@ public class NPuzzle implements Problema{
     }
 
     public CasillaPuzzle[][] getTablero(){
-        return( null );
+        return( this.tablero );
     }
 
     public void setTablero( CasillaPuzzle[][] pTablero ){
@@ -447,12 +447,19 @@ public class NPuzzle implements Problema{
                 if( (fila == this.cantidadFilasTablero-1) && (columna == this.cantidadFilasTablero-1) ){
 
                     this.tablero[fila][columna] = new CasillaPuzzle();
+                    
                     this.tablero[fila][columna].marcarComoCasillaVacia();
 
+                    this.casillaVacia       = this.tablero[ fila ][ columna ];
+                    this.casillaVacia.setCoordenadaX(fila);
+                    this.casillaVacia.setCoordenadaY(columna);
+                    /*
                     this.casillaVacia = new CasillaPuzzle();
                     this.casillaVacia.setCoordenadaX(fila);
                     this.casillaVacia.setCoordenadaY(columna);
-                    this.casillaVacia.insertarValor(this.VALOR_VACIO);
+                    this.casillaVacia.insertarValor( new Integer( this.VALOR_VACIO ) );
+                     *
+                     */
                 }
                 else{
                     this.tablero[fila][columna] = new CasillaPuzzle();
@@ -492,6 +499,31 @@ public class NPuzzle implements Problema{
             anterior = this.posicionAnterior( posicion );
             this.moverCasilla( posicion );
             ventana.moveBlank(posicion); // llamar a la funcion del GUI
+        }
+    }
+
+    public void desordenarTablero(){
+        // ---------------------------------------------------------------------
+
+        Random rnd = new Random();
+        int n = 4;
+        int i;
+        int posicion;
+        int anterior = 2;
+        int iteraciones = 1500;
+
+        // ---------------------------------------------------------------------
+
+        for ( i = 0; i < iteraciones; i++){
+            posicion = ( rnd.nextInt( n ) + 1 );
+
+            // Verifica que la posicion sea valida y no se mude a la posicion anterior
+            while( !this.movimientoValido( posicion )  || ( posicion == anterior ) ){
+                posicion = rnd.nextInt( n );
+            }
+
+            anterior = this.posicionAnterior( posicion );
+            this.moverCasilla( posicion );            
         }
     }
 
