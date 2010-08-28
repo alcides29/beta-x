@@ -418,7 +418,6 @@ public class NPuzzle implements Problema{
                     valor++;
                 }
             }
-
         }
     }
 
