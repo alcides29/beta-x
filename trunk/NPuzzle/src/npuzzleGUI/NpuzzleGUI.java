@@ -131,6 +131,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        estrategia = new javax.swing.ButtonGroup();
         barPestanas = new javax.swing.JTabbedPane();
         tablero = new javax.swing.JPanel();
         panelCentral = new javax.swing.JPanel();
@@ -145,6 +146,9 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jCheckCuadricula = new javax.swing.JCheckBox();
         jImagenes = new javax.swing.JToggleButton();
+        RadioBtnAnchura = new javax.swing.JRadioButton();
+        labelEstrategia = new java.awt.Label();
+        RadioBtnProfundidad = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(590, 650));
@@ -177,7 +181,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         );
         panelCentralLayout.setVerticalGroup(
             panelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 573, Short.MAX_VALUE)
+            .addGap(0, 575, Short.MAX_VALUE)
         );
 
         barBtnes.setPreferredSize(new java.awt.Dimension(575, 26));
@@ -224,7 +228,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addComponent(BtnNuevo)
                 .addGap(23, 23, 23)
                 .addComponent(BtnResolver)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addComponent(BtnAnterior)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnSgte)
@@ -253,7 +257,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         tableroLayout.setVerticalGroup(
             tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tableroLayout.createSequentialGroup()
-                .addComponent(panelCentral, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+                .addComponent(panelCentral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(barBtnes, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -274,19 +278,37 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             }
         });
 
+        estrategia.add(RadioBtnAnchura);
+        RadioBtnAnchura.setText("En anchura");
+
+        labelEstrategia.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        labelEstrategia.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        labelEstrategia.setForeground(new java.awt.Color(51, 51, 51));
+        labelEstrategia.setText("Estrategia:");
+
+        estrategia.add(RadioBtnProfundidad);
+        RadioBtnProfundidad.setSelected(true);
+        RadioBtnProfundidad.setText("En profundidad");
+
         javax.swing.GroupLayout configuracionLayout = new javax.swing.GroupLayout(configuracion);
         configuracion.setLayout(configuracionLayout);
         configuracionLayout.setHorizontalGroup(
             configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(configuracionLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(jLabel1)
-                .addGap(6, 6, 6)
                 .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jImagenes)
                     .addComponent(jCheckCuadricula)
-                    .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(401, Short.MAX_VALUE))
+                    .addComponent(labelEstrategia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(configuracionLayout.createSequentialGroup()
+                        .addComponent(RadioBtnProfundidad)
+                        .addGap(39, 39, 39)
+                        .addComponent(RadioBtnAnchura))
+                    .addGroup(configuracionLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(6, 6, 6)
+                        .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(258, Short.MAX_VALUE))
         );
         configuracionLayout.setVerticalGroup(
             configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,11 +317,17 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(38, 38, 38)
+                .addComponent(labelEstrategia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RadioBtnAnchura)
+                    .addComponent(RadioBtnProfundidad))
+                .addGap(43, 43, 43)
                 .addComponent(jCheckCuadricula)
                 .addGap(18, 18, 18)
                 .addComponent(jImagenes)
-                .addContainerGap(468, Short.MAX_VALUE))
+                .addContainerGap(359, Short.MAX_VALUE))
         );
 
         barPestanas.addTab("Configuración", configuracion);
@@ -611,6 +639,19 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         }
         
     }
+
+    // falta terminar...
+    public int getEstrategia(){
+        int estrategia = 0;
+
+        try{
+            //estrategia = Integer.parseInt( this.estrategia.getSelection() );
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(barBtnes, ex);
+        }
+        return estrategia;
+    }
     //se debe controlar que sea un entero
     //hace falta algún tipo de manejo de excepciones
     public int getDimension(){
@@ -652,13 +693,17 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private javax.swing.JButton BtnResolver;
     private javax.swing.JButton BtnSgte;
     private javax.swing.JButton BtnVistaPrevia;
+    private javax.swing.JRadioButton RadioBtnAnchura;
+    private javax.swing.JRadioButton RadioBtnProfundidad;
     private javax.swing.JPanel barBtnes;
     private javax.swing.JTabbedPane barPestanas;
     private javax.swing.JPanel configuracion;
+    private javax.swing.ButtonGroup estrategia;
     private javax.swing.JCheckBox jCheckCuadricula;
     private javax.swing.JToggleButton jImagenes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField jTextDimension;
+    private java.awt.Label labelEstrategia;
     public javax.swing.JPanel panelCentral;
     private javax.swing.JPanel tablero;
     // End of variables declaration//GEN-END:variables
