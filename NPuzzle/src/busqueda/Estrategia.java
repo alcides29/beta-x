@@ -19,6 +19,13 @@ public interface Estrategia {
     public void removerSiguienteNodo();
 
     public Solucion retornarSolucion();
-    
+
+    public void aumentarUnaUnidadCantidadNodosVisitados();
+
+    public void disminuirUnaUnidadCantidadNodosVisitados();
+
+    public int getCantidadNodosVisitados();
+
+    public void setCantidadNodosVisitados( int pCantidad );
 
 }
