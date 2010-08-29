@@ -16,6 +16,9 @@ import java.util.Queue;
 public class EstrategiaEnAnchura implements Estrategia {
     // ------------------------------------------------------------------------
 
+    private int         cantidadNodosVisitados          ,
+                        menorCantidadVisitados;
+    
     private Solucion unaSolucion;
     private Queue cola;
 
@@ -26,6 +29,14 @@ public class EstrategiaEnAnchura implements Estrategia {
         this.unaSolucion = new SolucionEnAnchura( this.cola);
     }
 
+    public void aumentarUnaUnidadCantidadNodosVisitados(){
+        this.cantidadNodosVisitados++;
+    }
+
+    public void disminuirUnaUnidadCantidadNodosVisitados(){
+        this.cantidadNodosVisitados--;
+    }
+    
     public void insertarNodo(Nodo unNodoNuevo) {
         this.cola.add(unNodoNuevo);
     }
@@ -38,6 +49,14 @@ public class EstrategiaEnAnchura implements Estrategia {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public int getCantidadNodosVisitados(){
+        return( this.cantidadNodosVisitados );
+    }
+
+    public void setCantidadNodosVisitados( int pCantidad ){
+        this.cantidadNodosVisitados = pCantidad;
+    }
+    
     public void removerSiguienteNodo() {
         this.cola.remove();
     }
