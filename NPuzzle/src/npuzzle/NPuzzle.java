@@ -472,6 +472,51 @@ public class NPuzzle implements Problema{
         }
     }
 
+    
+    /**
+     * @function Funcion que genera el tablero
+     */
+    public void generarTablero(int[][] board){
+    // -------------------------------------------------------------------------
+
+        int fila;
+        int columna;
+        int valor = 1;
+        
+    // -------------------------------------------------------------------------
+
+        for( fila= 0; fila < board.length; fila++ ){
+
+            for( columna=0; columna < board.length; columna++ ){
+                
+                // Asigna la casilla vacia
+                if( board[fila][columna]==(board.length*board.length)-1 ){
+                    this.tablero[fila][columna] = new CasillaPuzzle();
+                    
+                    this.tablero[fila][columna].marcarComoCasillaVacia();
+
+                    this.casillaVacia       = this.tablero[ fila ][ columna ];
+                    this.casillaVacia.setCoordenadaX(fila);
+                    this.casillaVacia.setCoordenadaY(columna);
+                    /*
+                    this.casillaVacia = new CasillaPuzzle();
+                    this.casillaVacia.setCoordenadaX(fila);
+                    this.casillaVacia.setCoordenadaY(columna);
+                    this.casillaVacia.insertarValor( new Integer( this.VALOR_VACIO ) );
+                     *
+                     */
+                }
+                else{
+                    this.tablero[fila][columna] = new CasillaPuzzle();
+                    this.tablero[fila][columna].setCoordenadaX(fila);
+                    this.tablero[fila][columna].setCoordenadaY(columna);
+                    this.tablero[fila][columna].insertarValor(new Integer(board[fila][columna]));
+                    valor++;
+                }
+            }
+        }
+    }
+    
     /**
      * @function Funcion que desordena el tablero
      * @param ventana
