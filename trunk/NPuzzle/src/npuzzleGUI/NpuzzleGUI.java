@@ -29,6 +29,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import npuzzle.NPuzzle;
+import busqueda.*;
+import npuzzle.*;
 
 
 public class NpuzzleGUI extends javax.swing.JFrame {
@@ -131,6 +133,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("N-Puzzle");
         setMinimumSize(new java.awt.Dimension(590, 650));
         setResizable(false);
 
@@ -263,7 +266,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                         .addComponent(labelEstrategia)
                         .addGap(6, 6, 6)
                         .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(274, Short.MAX_VALUE))
+                .addContainerGap(317, Short.MAX_VALUE))
         );
         configuracionLayout.setVerticalGroup(
             configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,7 +285,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addComponent(jCheckCuadricula)
                 .addGap(18, 18, 18)
                 .addComponent(jImagenes)
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addContainerGap(352, Short.MAX_VALUE))
         );
 
         barPestanas.addTab("Configuración", configuracion);
@@ -310,10 +313,20 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResolverActionPerformed
-        String seleccion = this.groupEstrategia.getSelection().getActionCommand();
+        //String seleccion = this.groupEstrategia.getSelection().getActionCommand();
+        /*int i, j;
+
+        for( i = 0; i < this.dimension; i++){
+            for( j = 0; j < this.dimension; j++){
+
+                System.out.print( "\t" + ( this.pos[i][j]) );
+            }
+            System.out.println();
+        }*/
+        this.resolver();
         this.tablero.repaint();
         
-        //System.out.println(this.panelCentral.getComponents().length);
+        //System.out.println(seleccion);
     }//GEN-LAST:event_BtnResolverActionPerformed
 
     private void BtnVistaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVistaPreviaActionPerformed
@@ -351,8 +364,6 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         //System.out.println("2posY"+labelY+" 2posX"+labelX);
         if(buttonX==labelX+1&&buttonY==labelY){
             this.moveBlank(3);//derecha
-            //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
-            //System.out.println("jaja");
         } else if(buttonX==labelX-1 && buttonY==labelY){
             this.moveBlank(1);//izquierda
            //System.out.println("jaja");
@@ -412,6 +423,62 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 }
         }).start();
     }//GEN-LAST:event_tableroComponentShown
+    //de prueba todavia esta este metodo
+    public void resolver(){
+        BusquedaSinInformacion busquedaSinInformacion;
+        EstrategiaEnProfundidad estrategia;
+        NPuzzle rompecabezas;
+        CasillaPuzzle 
+                    casillaPuzzle   ,
+                    tablero[][];
+
+        Solucion unaSolucion;
+
+    // -----------------------------------------------------------------------
+        rompecabezas    = new NPuzzle( dimension );
+       
+        rompecabezas.generarTablero(pos);
+        //rompecabezas.imprimirTablero();
+        tablero = rompecabezas.getTablero();
+        
+        //tablero[2][2].insertarValor( new Integer( 8 ) );
+        //tablero[2][2].marcarComoCasillaNoVacia();
+
+        //tablero[2][1].marcarComoCasillaVacia();
+
+        rompecabezas.setTablero( tablero );
+       
+        estrategia      = new EstrategiaEnProfundidad();
+
+        busquedaSinInformacion  = new BusquedaSinInformacion();
+
+        do{
+            unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
+
+            casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
+
+            while( casillaPuzzle != null ){
+
+          
+                if( casillaPuzzle.yaFueVisitado() )
+                    System.out.println( "x: " + casillaPuzzle.getCoordenadaX() + "  y: " + casillaPuzzle.getCoordenadaY() );
+
+                casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
+            }
+
+            System.out.println( " Longitud de la ruta: "  + unaSolucion.obtenerLongitudDelCamino() );
+            
+        }while( unaSolucion.obtenerLongitudDelCamino() > 0 );
+
+     
+    }
+    public void setTableroGUI(CasillaPuzzle[][] pTablero){
+        for(int i=0;i<dimension*dimension;i++){
+            
+            
+        }
+        
+    }
     public void nuevaVista(){
         //System.out.println(getDimension());
         dimension = getDimension();
@@ -485,6 +552,14 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 ex.getMessage();
             }    
         }
+        
+        public int getPosicionY(){
+            return this.getX()/hole.getSize().width;
+        }
+        
+        public int getPosicionX(){
+            return this.getY()/hole.getSize().width;
+        }
         //hata aora no encontre donde usar esto, seguro le quito
         public void changeImage(int x, int y){
             try{
@@ -551,6 +626,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         ImagePanel aux2;
         Image imgAux1;
         Image imgAux2;
+        //int posAux1;
+        //int posAux2;
         if(direccion==1){//izquierda
             //System.out.println(hole.getX());
             if((hole.getX()/hole.getSize().width)!=0){
@@ -563,6 +640,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 aux1.setImage(imgAux2);
                 aux2.setValor(aux1.getValor());
                 aux1.setValor(dimension*dimension-1);
+                pos[aux1.getPosicionX()][aux1.getPosicionY()]=aux1.getValor();
+                pos[aux2.getPosicionX()][aux2.getPosicionY()]=aux2.getValor();
             }
         } else if(direccion==2){//abajo
             if((hole.getY()/hole.getSize().width)!=dimension-1){
@@ -575,6 +654,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 aux1.setImage(imgAux2);
                 aux2.setValor(aux1.getValor());
                 aux1.setValor(dimension*dimension-1);
+                pos[aux1.getPosicionX()][aux1.getPosicionY()]=aux1.getValor();
+                pos[aux2.getPosicionX()][aux2.getPosicionY()]=aux2.getValor();
             }
         } else if(direccion==3){//derecha;
             if((hole.getX()/hole.getSize().width)!=dimension-1){
@@ -588,18 +669,23 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 aux1.setImage(imgAux2);
                 aux2.setValor(aux1.getValor());
                 aux1.setValor(dimension*dimension-1);
+                pos[aux1.getPosicionX()][aux1.getPosicionY()]=aux1.getValor();
+                pos[aux2.getPosicionX()][aux2.getPosicionY()]=aux2.getValor();
             }
         } else if(direccion==4){//arriba
             if((hole.getY()/hole.getSize().width)!=0){
                 aux1 = (ImagePanel) panelCentral.getComponentAt(hole.getX(), hole.getY()-hole.getSize().width);
                 aux2 = hole;
                 hole = aux1;
+                //posAux1 = pos[aux1.getPosicionX()][aux1.getPosicionY()];
                 imgAux1 = aux1.getImage();
                 imgAux2 = aux2.getImage();
                 aux2.setImage(imgAux1);
                 aux1.setImage(imgAux2);
                 aux2.setValor(aux1.getValor());
                 aux1.setValor(dimension*dimension-1);
+                pos[aux1.getPosicionX()][aux1.getPosicionY()]=aux1.getValor();
+                pos[aux2.getPosicionX()][aux2.getPosicionY()]=aux2.getValor();
             }
         }
     }
