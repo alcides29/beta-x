@@ -18,12 +18,15 @@ public class NPuzzle implements Problema{
 
     public static final int VALOR_VACIO = 9999;
 
-    private int cantidadFilasTablero;
+    private int     cantidadFilasTablero    ,
+                    menorCantidadVisitados;
 
     private HashMap mapa;
     
     private CasillaPuzzle   casillaVacia,
                             tablero[][];
+
+    private Estrategia unaEstrategia;
 
 // -----------------------------------------------------------------------------
 
@@ -35,7 +38,7 @@ public class NPuzzle implements Problema{
         this.mapa   = new HashMap();
         this.cantidadFilasTablero = pN;
         this.tablero= new CasillaPuzzle[ pN ][ pN ];
-
+        this.menorCantidadVisitados = 99;
     }
 
 
@@ -45,6 +48,14 @@ public class NPuzzle implements Problema{
 
     public void setCantidadFilasTablero( int pCantidadFilasTablero ){
         this.cantidadFilasTablero   = pCantidadFilasTablero;
+    }
+
+    public Estrategia getUnaEstrategia() {
+        return unaEstrategia;
+    }
+
+    public void setUnaEstrategia(Estrategia unaEstrategia) {
+        this.unaEstrategia = unaEstrategia;
     }
 
     public CasillaPuzzle[][] getTablero(){
@@ -77,8 +88,9 @@ public class NPuzzle implements Problema{
         this.casillaVacia.marcarComoCasillaVacia();
 
 
-        while( nodoActual != null ){
-            unaEstrategia.removerSiguienteNodo();
+        while( nodoActual != null ){            
+            unaEstrategia.removerSiguienteNodo();            
+            this.marcarNodoComoNoVisitado( nodoActual );
 
             nodoActual  = ( CasillaPuzzle )unaEstrategia.obtenerSiguienteNodo();            
 
@@ -112,7 +124,8 @@ public class NPuzzle implements Problema{
     public void inicializar( Estrategia unaEstrategia ){
     // -------------------------------------------------------------------------
 
-        int fila, columna, menor;
+        int fila, columna, menor, xPadre, yPadre;
+        boolean repetir;
         CasillaPuzzle nodoActual, nodoPadre;
 
     // -------------------------------------------------------------------------
@@ -133,7 +146,34 @@ public class NPuzzle implements Problema{
             }
 
         if( unaEstrategia.encontroAlMenosUnaSolucion() ){            
-            this.retroceder( unaEstrategia );
+            xPadre  = -1;
+            yPadre  = -1;
+
+            nodoActual   = ( CasillaPuzzle )unaEstrategia.obtenerSiguienteNodo();
+
+            nodoPadre           = nodoActual.getNodoPadre();
+
+            while( nodoPadre.getCoordenadaX() != xPadre || nodoPadre.getCoordenadaY() != yPadre  ){
+
+                tablero[ nodoActual.getCoordenadaX() ][ nodoActual.getCoordenadaY() ].insertarValor( nodoActual.obtenerValor() );
+                tablero[ nodoActual.getCoordenadaX() ][ nodoActual.getCoordenadaY() ].marcarComoCasillaNoVacia();
+
+                xPadre          = nodoPadre.getCoordenadaX();
+                yPadre          = nodoPadre.getCoordenadaY();
+
+                tablero[ xPadre ][ yPadre ].marcarComoCasillaVacia();
+
+                this.casillaVacia   = tablero[ xPadre ][ yPadre ];
+
+                this.unaEstrategia.removerSiguienteNodo();
+
+                this.marcarNodoComoNoVisitado( nodoActual );
+
+                nodoActual   = ( CasillaPuzzle )unaEstrategia.obtenerSiguienteNodo();
+
+                nodoPadre           = nodoActual.getNodoPadre();
+                
+            }
         }
         else
             this.expandir( this.casillaVacia, unaEstrategia );
@@ -187,7 +227,7 @@ public class NPuzzle implements Problema{
             xPadre  = -1;
             yPadre  = -1;
         }
-        //if( !casillaActual.fueExpandido() ){
+        if( this.unaEstrategia.getCantidadNodosVisitados() < this.menorCantidadVisitados ){
             // Expandir el hijo de ARRIBA
             xHijo   =  casillaActual.getCoordenadaX() - 1;
             yHijo   =   casillaActual.getCoordenadaY();
@@ -269,7 +309,7 @@ public class NPuzzle implements Problema{
                     pudoExpandirse  = true;
                 }
             }
-        //}
+        }
         //else
         //    casillaActual.marcaComoNoExpandido();
         
@@ -278,7 +318,7 @@ public class NPuzzle implements Problema{
            casillaActual.marcarComoExpandido();
         }
         else // ya no hay caminos y como no es meta se debe probar otra opción
-            this.prepararOtraOpcion( casillaActual, unaEstrategia );
+            this.retroceder(unaEstrategia);// this.prepararOtraOpcion( casillaActual, unaEstrategia );
     }
 
 
@@ -340,9 +380,10 @@ public class NPuzzle implements Problema{
     public boolean esNodoMeta( Nodo nodoActual ){
     // ------------------------------------------------------------------------
 
+        int             xPadre, yPadre;
         Object         valor;
-        boolean         estaOrdenado;
-        CasillaPuzzle   casillaAuxiliar, casillaActual;
+        boolean         estaOrdenado, repetir;
+        CasillaPuzzle   padre, casillaAuxiliar, casillaActual;
 
     // ------------------------------------------------------------------------
 
@@ -360,17 +401,10 @@ public class NPuzzle implements Problema{
 
             estaOrdenado        = elTableroEstaOrdenado();
 
-            if( estaOrdenado ){                
+            if( estaOrdenado ){                                
 
-                casillaActual   = ( CasillaPuzzle )nodoActual;
-
-                casillaAuxiliar = new CasillaPuzzle();
-                casillaAuxiliar.insertarValor( valor );
-                casillaAuxiliar.setCoordenadaX( casillaActual.getCoordenadaX() );
-                casillaAuxiliar.setCoordenadaY( casillaActual.getCoordenadaY() );
+                this.menorCantidadVisitados = this.unaEstrategia.getCantidadNodosVisitados();
                 
-                this.marcarNodoComoVisitado( casillaAuxiliar );
-
                 return( estaOrdenado );
             }
             else
@@ -390,7 +424,8 @@ public class NPuzzle implements Problema{
         firma+= casilla.getCoordenadaY();
         firma+= this.casillaVacia.getCoordenadaX();
         firma+= this.casillaVacia.getCoordenadaY();
-
+        this.unaEstrategia.aumentarUnaUnidadCantidadNodosVisitados();
+                
         this.mapa.put( firma, firma );
     }
 
@@ -404,7 +439,10 @@ public class NPuzzle implements Problema{
         firma   = "" + ( ( Integer )casilla.obtenerValor() ).intValue();
         firma+= casilla.getCoordenadaX();
         firma+= casilla.getCoordenadaY();
-
+        firma+= this.casillaVacia.getCoordenadaX();
+        firma+= this.casillaVacia.getCoordenadaY();
+        this.unaEstrategia.disminuirUnaUnidadCantidadNodosVisitados();
+        
         this.mapa.remove( firma );
     }
 
@@ -419,8 +457,8 @@ public class NPuzzle implements Problema{
         firma+= casilla.getCoordenadaX();
         firma+= casilla.getCoordenadaY();
         firma+= this.casillaVacia.getCoordenadaX();
-        firma+= this.casillaVacia.getCoordenadaY();
-
+        firma+= this.casillaVacia.getCoordenadaY();        
+        
         if( this.mapa.get( firma ) != null )
             return( true );
         else

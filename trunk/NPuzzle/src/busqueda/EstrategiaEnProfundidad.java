@@ -11,6 +11,9 @@ import java.util.Stack;
 public class EstrategiaEnProfundidad implements Estrategia{
 // ------------------------------------------------------------------------------
 
+    private int         cantidadNodosVisitados          ,
+                        menorCantidadVisitados;
+    
     private Solucion    unaSolucion;
 
     private Stack       pila;
@@ -19,10 +22,19 @@ public class EstrategiaEnProfundidad implements Estrategia{
 
 
     public EstrategiaEnProfundidad(){
-        this.pila           = new Stack();
-        this.unaSolucion    = new SolucionEnProfundidad( this.pila );
+        this.pila                   = new Stack();
+        this.unaSolucion            = new SolucionEnProfundidad( this.pila );
+        this.cantidadNodosVisitados = 0;
     }
 
+
+    public void aumentarUnaUnidadCantidadNodosVisitados(){
+        this.cantidadNodosVisitados++;
+    }
+
+    public void disminuirUnaUnidadCantidadNodosVisitados(){
+        this.cantidadNodosVisitados--;
+    }
 
     public boolean encontroAlMenosUnaSolucion(){
         
@@ -49,6 +61,13 @@ public class EstrategiaEnProfundidad implements Estrategia{
             return( null );
     }
 
+    public int getCantidadNodosVisitados(){
+        return( this.cantidadNodosVisitados );
+    }
+
+    public void setCantidadNodosVisitados( int pCantidad ){
+        this.cantidadNodosVisitados = pCantidad;
+    }
 
     public void removerSiguienteNodo(){
         this.pila.pop();
