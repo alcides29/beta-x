@@ -1,12 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package busqueda;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Queue;
 import java.util.LinkedList;
 
@@ -18,7 +12,6 @@ public class EstrategiaEnAnchura implements Estrategia {
     // ------------------------------------------------------------------------
 
     private int cantidadNodosVisitados;
-    private int menorCantidadVisitados;
     private Solucion unaSolucion;
     private Queue cola;
 
@@ -27,6 +20,7 @@ public class EstrategiaEnAnchura implements Estrategia {
     public EstrategiaEnAnchura(){
         this.cola = new LinkedList();
         this.unaSolucion = new SolucionEnAnchura( this.cola);
+        this.cantidadNodosVisitados = 0;
     }
 
     public void aumentarUnaUnidadCantidadNodosVisitados(){
@@ -45,8 +39,15 @@ public class EstrategiaEnAnchura implements Estrategia {
         return( !this.cola.isEmpty() );
     }
 
+    // Para verificar...
     public Nodo obtenerSiguienteNodo() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Nodo unNodo;
+        
+        if( !this.cola.isEmpty() ){
+            unNodo = (Nodo) cola.remove();
+            return unNodo;
+        }else
+            return( null );
     }
 
     public int getCantidadNodosVisitados(){

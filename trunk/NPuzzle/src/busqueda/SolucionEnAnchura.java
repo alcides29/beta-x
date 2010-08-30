@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package busqueda;
 
@@ -16,25 +12,49 @@ public class SolucionEnAnchura implements Solucion {
     // ------------------------------------------------------------------------
 
     private int longitudDelCamino;
-    private Iterator    iteradorCola;
-    private Queue colaSolucion, colaAuxiliar;
+    private Iterator iteradorCola;
+    private Queue colaSolucion;
 
     // ------------------------------------------------------------------------
 
+    // Para verificar....
     public SolucionEnAnchura(Queue unaCola){
         this.colaSolucion = unaCola;
     }
 
+    // Para verificar...
     public void armarSolucion() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Nodo unNodo;
+        this.iteradorCola = this.colaSolucion.iterator();
+        unNodo = ( Nodo )this.colaSolucion.element(); //this.obtenerSiguienteNodo();
+        this.longitudDelCamino = 0;
+
+
+        while( unNodo != null ){
+
+            if( unNodo.formaParteDelCamino())
+                this.longitudDelCamino++;
+
+            unNodo = this.obtenerSiguienteNodo();
+        }
+
+        this.iteradorCola = this.colaSolucion.iterator();
     }
 
     public int obtenerLongitudDelCamino() {
         return this.longitudDelCamino;
     }
 
+    // Para verificar...
     public Nodo obtenerSiguienteNodo() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Nodo nodo;
+
+        if( this.iteradorCola.hasNext() )
+            nodo = ( Nodo )this.iteradorCola.next();
+        else
+            nodo = null;
+
+        return( nodo );
     }
 
 }
