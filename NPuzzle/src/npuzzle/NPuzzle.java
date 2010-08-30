@@ -170,8 +170,9 @@ public class NPuzzle implements Problema{
                 this.marcarNodoComoNoVisitado( nodoActual );
 
                 nodoActual   = ( CasillaPuzzle )unaEstrategia.obtenerSiguienteNodo();
-
-                nodoPadre           = nodoActual.getNodoPadre();
+                if(nodoActual!=null){
+                    nodoPadre           = nodoActual.getNodoPadre();
+                }
                 
             }
         }

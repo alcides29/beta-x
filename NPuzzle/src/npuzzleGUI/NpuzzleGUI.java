@@ -118,11 +118,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         tablero = new javax.swing.JPanel();
         panelCentral = new javax.swing.JPanel();
         barBtnes = new javax.swing.JPanel();
-        BtnNuevo = new javax.swing.JButton();
-        BtnResolver = new javax.swing.JButton();
-        BtnAnterior = new javax.swing.JButton();
-        BtnSgte = new javax.swing.JButton();
-        BtnVistaPrevia = new javax.swing.JButton();
+        btnVistaPrevia = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
+        btnResolver = new javax.swing.JButton();
+        btnAnterior = new javax.swing.JButton();
+        btnSgte = new javax.swing.JButton();
+        btnArmar = new javax.swing.JButton();
         configuracion = new javax.swing.JPanel();
         jTextDimension = new javax.swing.JTextField();
         labelEstrategia = new javax.swing.JLabel();
@@ -169,41 +170,53 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
         barBtnes.setPreferredSize(new java.awt.Dimension(575, 26));
 
-        BtnNuevo.setFont(new java.awt.Font("Arial", 0, 11));
-        BtnNuevo.setActionCommand("jButton1");
-        BtnNuevo.setLabel("Nuevo");
-        BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
+        btnVistaPrevia.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnVistaPrevia.setText("Vista Previa");
+        btnVistaPrevia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnNuevoActionPerformed(evt);
+                btnVistaPreviaActionPerformed(evt);
             }
         });
-        barBtnes.add(BtnNuevo);
+        barBtnes.add(btnVistaPrevia);
 
-        BtnResolver.setFont(new java.awt.Font("Arial", 0, 11));
-        BtnResolver.setLabel("Resolver");
-        BtnResolver.addActionListener(new java.awt.event.ActionListener() {
+        btnNuevo.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnNuevo.setActionCommand("jButton1");
+        btnNuevo.setLabel("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnResolverActionPerformed(evt);
+                btnNuevoActionPerformed(evt);
             }
         });
-        barBtnes.add(BtnResolver);
+        barBtnes.add(btnNuevo);
 
-        BtnAnterior.setFont(new java.awt.Font("Arial", 0, 11));
-        BtnAnterior.setLabel("Anterior");
-        barBtnes.add(BtnAnterior);
-
-        BtnSgte.setFont(new java.awt.Font("Arial", 0, 11));
-        BtnSgte.setLabel("Siguiente");
-        barBtnes.add(BtnSgte);
-
-        BtnVistaPrevia.setFont(new java.awt.Font("Arial", 0, 11));
-        BtnVistaPrevia.setText("Vista Previa");
-        BtnVistaPrevia.addActionListener(new java.awt.event.ActionListener() {
+        btnResolver.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnResolver.setLabel("Resolver");
+        btnResolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnVistaPreviaActionPerformed(evt);
+                btnResolverActionPerformed(evt);
             }
         });
-        barBtnes.add(BtnVistaPrevia);
+        barBtnes.add(btnResolver);
+
+        btnAnterior.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnAnterior.setEnabled(false);
+        btnAnterior.setLabel("Anterior");
+        btnAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnteriorActionPerformed(evt);
+            }
+        });
+        barBtnes.add(btnAnterior);
+
+        btnSgte.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnSgte.setEnabled(false);
+        btnSgte.setLabel("Siguiente");
+        barBtnes.add(btnSgte);
+
+        btnArmar.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnArmar.setText("Armar");
+        btnArmar.setEnabled(false);
+        barBtnes.add(btnArmar);
 
         javax.swing.GroupLayout tableroLayout = new javax.swing.GroupLayout(tablero);
         tablero.setLayout(tableroLayout);
@@ -312,7 +325,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BtnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResolverActionPerformed
+    private void btnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResolverActionPerformed
         //String seleccion = this.groupEstrategia.getSelection().getActionCommand();
         /*int i, j;
 
@@ -323,12 +336,38 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             }
             System.out.println();
         }*/
-        this.resolver();
+        
+        this.btnNuevo.setEnabled(false);
+        this.btnVistaPrevia.setEnabled(false);
+        btnResolver.setEnabled(false);
+        new Thread(new Runnable() {
+                public void run() {
+                    try{
+                        long inicio, fin;
+                        inicio=System.currentTimeMillis();
+                        resolver();
+                        btnNuevo.setEnabled(true);
+                        btnVistaPrevia.setEnabled(true);
+                        btnResolver.setEnabled(true);
+                        fin=System.currentTimeMillis();
+                        if(fin-inicio<60000){
+                           System.out.println("Tardo: " + (fin-inicio) + "ms");
+                        } else{
+                            System.out.println("Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
+                        }
+                    } catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    panelCentral.repaint();
+                }
+        }).start();
+        
+        
         this.tablero.repaint();
         //System.out.println(seleccion);
-    }//GEN-LAST:event_BtnResolverActionPerformed
+    }//GEN-LAST:event_btnResolverActionPerformed
 
-    private void BtnVistaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVistaPreviaActionPerformed
+    private void btnVistaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVistaPreviaActionPerformed
         this.nuevaVista();
         for (java.awt.Component pan : this.panelCentral.getComponents()) {
             pan.validate();
@@ -345,7 +384,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     panelCentral.repaint();
                 }
         }).start();
-    }//GEN-LAST:event_BtnVistaPreviaActionPerformed
+    }//GEN-LAST:event_btnVistaPreviaActionPerformed
 
     private void panelCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelCentralMouseClicked
         //System.out.println("hasta aqui");
@@ -386,7 +425,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         }).start();
     }//GEN-LAST:event_panelCentralMouseClicked
 
-    private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         this.nuevaVista();
         panelCentral.repaint();
         NPuzzle puzzle = new NPuzzle( this.dimension );
@@ -403,7 +442,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     panelCentral.repaint();
                 }
         }).start();
-    }//GEN-LAST:event_BtnNuevoActionPerformed
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void jImagenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jImagenesActionPerformed
         imagenes = jImagenes.isSelected();
@@ -422,6 +461,10 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 }
         }).start();
     }//GEN-LAST:event_tableroComponentShown
+
+    private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAnteriorActionPerformed
     //de prueba todavia esta este metodo
     public void resolver(){
         BusquedaSinInformacion busquedaSinInformacion;
@@ -740,15 +783,16 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnAnterior;
-    private javax.swing.JButton BtnNuevo;
-    private javax.swing.JButton BtnResolver;
-    private javax.swing.JButton BtnSgte;
-    private javax.swing.JButton BtnVistaPrevia;
     private javax.swing.JRadioButton RadioBtnAnchura;
     private javax.swing.JRadioButton RadioBtnProfundidad;
     private javax.swing.JPanel barBtnes;
     private javax.swing.JTabbedPane barPestanas;
+    private javax.swing.JButton btnAnterior;
+    private javax.swing.JButton btnArmar;
+    private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnResolver;
+    private javax.swing.JButton btnSgte;
+    private javax.swing.JButton btnVistaPrevia;
     private javax.swing.JPanel configuracion;
     private javax.swing.ButtonGroup groupEstrategia;
     private javax.swing.JCheckBox jCheckCuadricula;
