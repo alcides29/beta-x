@@ -38,7 +38,7 @@ public class NPuzzle implements Problema{
         this.mapa   = new HashMap();
         this.cantidadFilasTablero = pN;
         this.tablero= new CasillaPuzzle[ pN ][ pN ];
-        this.menorCantidadVisitados = 99;
+        this.menorCantidadVisitados = 50;
     }
 
 
@@ -355,25 +355,31 @@ public class NPuzzle implements Problema{
         int valorActual;
 
     // -------------------------------------------------------------------------
-        
-        menor   = ( ( Integer ) this.tablero[ 0 ][ 0 ].obtenerValor() ).intValue();
 
-        for( fila= 0; fila < this.cantidadFilasTablero; fila++ ){
+        if( this.casillaVacia.getCoordenadaX() == (this.cantidadFilasTablero -1 ) &&
+                this.casillaVacia.getCoordenadaY() == (this.cantidadFilasTablero -1 ) ){
+            menor   = ( ( Integer ) this.tablero[ 0 ][ 0 ].obtenerValor() ).intValue();
 
-            for( columna=0; columna < this.cantidadFilasTablero; columna++ ){
+            for( fila= 0; fila < this.cantidadFilasTablero; fila++ ){
 
-                valorActual = ( ( Integer ) this.tablero[ fila ][ columna ].obtenerValor() ).intValue();
+                for( columna=0; columna < this.cantidadFilasTablero; columna++ ){
 
-                if( valorActual < menor )
-                    return(  false );
-                else
-                    menor   = valorActual;
+                    valorActual = ( ( Integer ) this.tablero[ fila ][ columna ].obtenerValor() ).intValue();
+
+                    if( valorActual < menor )
+                        return(  false );
+                    else
+                        menor   = valorActual;
+
+                }
 
             }
 
+            return( true );
         }
-
-        return( true );
+        else
+            return( false );
+        
     }
 
     
