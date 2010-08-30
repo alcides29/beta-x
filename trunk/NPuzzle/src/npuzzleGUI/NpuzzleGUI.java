@@ -325,7 +325,6 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         }*/
         this.resolver();
         this.tablero.repaint();
-        
         //System.out.println(seleccion);
     }//GEN-LAST:event_BtnResolverActionPerformed
 
@@ -438,9 +437,16 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         rompecabezas    = new NPuzzle( dimension );
        
         rompecabezas.generarTablero(pos);
-        //rompecabezas.imprimirTablero();
+        //System.out.println("tablero:");
+                
+        rompecabezas.imprimirTablero();
         tablero = rompecabezas.getTablero();
-        
+        /*tablero[ 0 ][ 0 ].insertarValor( new Integer( 2 ) );
+        tablero[ 0 ][ 1 ].insertarValor( new Integer( 3 ) );
+
+        tablero[ 1 ][ 0 ].insertarValor( new Integer( 1 ) );
+
+        tablero[ 1 ][ 1 ].marcarComoCasillaVacia();*/
         //tablero[2][2].insertarValor( new Integer( 8 ) );
         //tablero[2][2].marcarComoCasillaNoVacia();
 
@@ -450,8 +456,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
        
         estrategia      = new EstrategiaEnProfundidad();
 
+        rompecabezas.setUnaEstrategia( estrategia );
+        
         busquedaSinInformacion  = new BusquedaSinInformacion();
 
+        System.out.println( "Iniciando ..." );
+        int menor = 50000;
         do{
             unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
 
@@ -459,17 +469,21 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
             while( casillaPuzzle != null ){
 
-          
-                if( casillaPuzzle.yaFueVisitado() )
-                    System.out.println( "x: " + casillaPuzzle.getCoordenadaX() + "  y: " + casillaPuzzle.getCoordenadaY() );
 
+                
+                if( casillaPuzzle.yaFueVisitado() && estrategia.getCantidadNodosVisitados() < 10 )
+                    System.out.println( "x: " + casillaPuzzle.getCoordenadaX() + "  y: " + casillaPuzzle.getCoordenadaY() );
+                        
                 casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
             }
 
             System.out.println( " Longitud de la ruta: "  + unaSolucion.obtenerLongitudDelCamino() );
-            
-        }while( unaSolucion.obtenerLongitudDelCamino() > 0 );
 
+            if( unaSolucion.obtenerLongitudDelCamino() < menor ){
+                menor   = unaSolucion.obtenerLongitudDelCamino();
+                System.out.println( "NUEVO_MENOR: " + menor );
+            }
+        }while( unaSolucion.obtenerLongitudDelCamino() > 0 );
      
     }
     public void setTableroGUI(CasillaPuzzle[][] pTablero){
