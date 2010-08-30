@@ -8,6 +8,7 @@ package busqueda;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
+import java.util.LinkedList;
 
 /**
  *
@@ -16,16 +17,15 @@ import java.util.Queue;
 public class EstrategiaEnAnchura implements Estrategia {
     // ------------------------------------------------------------------------
 
-    private int         cantidadNodosVisitados          ,
-                        menorCantidadVisitados;
-    
+    private int cantidadNodosVisitados;
+    private int menorCantidadVisitados;
     private Solucion unaSolucion;
     private Queue cola;
 
     // ------------------------------------------------------------------------
 
     public EstrategiaEnAnchura(){
-        this.cola = new Queue();
+        this.cola = new LinkedList();
         this.unaSolucion = new SolucionEnAnchura( this.cola);
     }
 
