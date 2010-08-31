@@ -38,7 +38,7 @@ public class NPuzzle implements Problema{
         this.mapa   = new HashMap();
         this.cantidadFilasTablero = pN;
         this.tablero= new CasillaPuzzle[ pN ][ pN ];
-        this.menorCantidadVisitados = 50;
+        this.menorCantidadVisitados = 48;
     }
 
 
