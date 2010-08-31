@@ -124,15 +124,11 @@ public class NPuzzle implements Problema{
     public void inicializar( Estrategia unaEstrategia ){
     // -------------------------------------------------------------------------
 
-        int fila, columna, menor, xPadre, yPadre;
-        boolean repetir;
+        int fila, columna, xPadre, yPadre;
         CasillaPuzzle nodoActual, nodoPadre;
 
     // -------------------------------------------------------------------------
 
-        //this.casillaVacia   = new CasillaPuzzle();
-
-    
             for( fila= 0; fila < this.cantidadFilasTablero; fila++ ){
 
                 for( columna=0; columna < this.cantidadFilasTablero; columna++ ){
@@ -178,7 +174,6 @@ public class NPuzzle implements Problema{
         }
         else
             this.expandir( this.casillaVacia, unaEstrategia );
-            
         
     }
 
@@ -589,7 +584,13 @@ public class NPuzzle implements Problema{
             anterior = this.posicionAnterior( posicion );
             this.moverCasilla( posicion );
             ventana.moveBlank(posicion); // llamar a la funcion del GUI
+            //this.imprimirTablero();
         }
+        //System.out.println("Posicion 0, 0: " + this.tablero[0][0].getCoordenadaX() + ", " + this.tablero[0][0].getCoordenadaY() );
+        //System.out.println("Posicion 0, 1: " + this.tablero[0][1].getCoordenadaX() + ", " + this.tablero[0][1].getCoordenadaY() );
+        //System.out.println("Posicion 1, 0: " + this.tablero[1][0].getCoordenadaX() + ", " + this.tablero[1][0].getCoordenadaY() );
+        //System.out.println("Posicion 1, 1: " + this.tablero[1][1].getCoordenadaX() + ", " + this.tablero[1][1].getCoordenadaY() );
+        //System.out.println("Casilla vacia: " + this.casillaVacia.getCoordenadaX() + ", " + this.casillaVacia.getCoordenadaY() );
     }
 
     public void desordenarTablero(){
@@ -738,5 +739,29 @@ public class NPuzzle implements Problema{
             }
             System.out.println();
         }
+    }
+
+    /*
+     * Conversor del tablero de Int a String
+     */
+    public String [][] conversor(){
+        String[][] board = new String[this.cantidadFilasTablero][this.cantidadFilasTablero];
+        int i, j;
+
+        for( i = 0; i < this.cantidadFilasTablero; i++){
+            for( j = 0; j < this.cantidadFilasTablero; j++){
+
+                // verifica si es la casilla vacia
+                if( this.tablero[i][j].esCasillaVacia() )
+                    board[i][j] = "0";
+                else
+                    board[i][j] = ( (Integer)this.tablero[i][j].obtenerValor()).toString();
+
+                //System.out.print( "\t" + board[i][j] );
+            }
+            //System.out.println();
+        }
+
+        return board;
     }
 }
