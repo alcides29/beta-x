@@ -582,14 +582,13 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             //System.out.println(casilla);
             //System.out.println(solution);
             while(casilla!=null){
-                Thread.currentThread().sleep(1000);
                 System.out.println("hasta aqui");
                 System.out.println("coordXcas"+casilla.getCoordenadaX());
                 System.out.println("coordYcas"+casilla.getCoordenadaY());
                 System.out.println("coordX"+hole.getPosicionX());
                 System.out.println("coordY"+hole.getPosicionY());
                 if(casilla.yaFueVisitado()){
-                    
+                    Thread.currentThread().sleep(1000);
                     if(casilla.getCoordenadaX()==hole.getPosicionX()+1&&hole.getPosicionY()==casilla.getCoordenadaY()){
                         //if(casilla.yaFueVisitado())
                         moveBlank(2);//abajo
