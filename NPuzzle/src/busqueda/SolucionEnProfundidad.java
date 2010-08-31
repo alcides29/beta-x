@@ -6,6 +6,7 @@ package busqueda;
 
 import java.util.Stack;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  *
@@ -36,6 +37,8 @@ public class SolucionEnProfundidad implements Solucion{
 
         Nodo unNodo;
 
+        LinkedList lista;
+
     // -------------------------------------------------------------------------
 
         this.iteradorPila   = this.pilaSolucion.iterator();
@@ -43,16 +46,20 @@ public class SolucionEnProfundidad implements Solucion{
         unNodo                  = ( Nodo )this.pilaSolucion.lastElement(); //this.obtenerSiguienteNodo();
         this.longitudDelCamino  = 0;
 
-        
+        lista   = new LinkedList();
         while( unNodo != null ){
-
-            if( unNodo.formaParteDelCamino())
+                       
+            if( unNodo.formaParteDelCamino()){
+                lista.push( unNodo );
                 this.longitudDelCamino++;
+            }
 
             unNodo  = this.obtenerSiguienteNodo();
         }
+        
 
-        this.iteradorPila   = this.pilaSolucion.iterator();
+        //this.iteradorPila   = this.pilaSolucion.iterator();
+        this.iteradorPila       = lista.iterator();
     }
 
     public Nodo obtenerSiguienteNodo(){
