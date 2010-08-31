@@ -483,11 +483,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAnteriorActionPerformed
 
     private void btnArmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArmarActionPerformed
-        System.out.println("adfa");
-        this.armarPuzzle(solution);
+        //System.out.println("adfa");
+        
         new Thread(new Runnable() {
                 public void run() {
                     try{
+                        armarPuzzle(solution);
                         Thread.currentThread().sleep(dimension*10+200);
                     } catch(Exception e){
                         System.out.println(e.getMessage());
@@ -566,6 +567,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         return unaSolucion;
      
     }
+    //ya me olvide para q ic esto
     public void setTableroGUI(CasillaPuzzle[][] pTablero){
         for(int i=0;i<dimension*dimension;i++){
             
@@ -588,19 +590,28 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 System.out.println("coordY"+hole.getPosicionY());
                 if(casilla.yaFueVisitado()){
                     
-                if(casilla.getCoordenadaX()==hole.getPosicionX()+1&&hole.getPosicionY()==casilla.getCoordenadaY()){
-                    //if(casilla.yaFueVisitado())
-                    moveBlank(2);//abajo
-                } else if(casilla.getCoordenadaX()==hole.getPosicionX()-1&&hole.getPosicionY()==casilla.getCoordenadaY()){
-                    //System.out.println("adjflkadffflkajdlfj");
-                    moveBlank(4);//arriba
-                } else if(casilla.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casilla.getCoordenadaY()+1){
-                    
-                    moveBlank(1);//derecha
-                } else if(casilla.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casilla.getCoordenadaY()-1){
-                    System.out.println("entro");
-                    moveBlank(3);//izquierda
-                }
+                    if(casilla.getCoordenadaX()==hole.getPosicionX()+1&&hole.getPosicionY()==casilla.getCoordenadaY()){
+                        //if(casilla.yaFueVisitado())
+                        moveBlank(2);//abajo
+                    } else if(casilla.getCoordenadaX()==hole.getPosicionX()-1&&hole.getPosicionY()==casilla.getCoordenadaY()){
+                        //System.out.println("adjflkadffflkajdlfj");
+                        moveBlank(4);//arriba
+                    } else if(casilla.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casilla.getCoordenadaY()+1){
+                        moveBlank(1);//derecha
+                    } else if(casilla.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casilla.getCoordenadaY()-1){
+                        //System.out.println("entro");
+                        moveBlank(3);//izquierda
+                    }
+                    new Thread(new Runnable() {
+                            public void run() {
+                                try{
+                                    Thread.currentThread().sleep(200);
+                                } catch(Exception e){
+                                    System.out.println(e.getMessage());
+                                }
+                                panelCentral.repaint();
+                            }
+                    }).start();
                 }
 
                 casilla = (CasillaPuzzle)solution.obtenerSiguienteNodo();
