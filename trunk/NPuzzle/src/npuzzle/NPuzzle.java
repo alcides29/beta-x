@@ -550,7 +550,7 @@ public class NPuzzle implements Problema{
                     this.tablero[fila][columna] = new CasillaPuzzle();
                     this.tablero[fila][columna].setCoordenadaX(fila);
                     this.tablero[fila][columna].setCoordenadaY(columna);
-                    this.tablero[fila][columna].insertarValor(new Integer(board[fila][columna]));
+                    this.tablero[fila][columna].insertarValor(new Integer(board[fila][columna]+1));
                     valor++;
                 }
             }

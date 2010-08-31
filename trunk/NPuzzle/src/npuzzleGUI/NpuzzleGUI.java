@@ -21,6 +21,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.Graphics;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 import javax.swing.ImageIcon;
@@ -44,6 +46,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private boolean leftOut;
     private boolean cuadricula;
     boolean imagenes;
+    private boolean resuelto;
+    private Solucion solution;
     //private JPanel panelCentral;
     int[][] pos;
     int width, height;
@@ -55,6 +59,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         //panelCentral = new JPanel();
         dimension = getDimension();
         imagenes = false;
+        resuelto = false;
         pos = new int[3][3];
         for (int i = 0; i<dimension*dimension; i++){
             pos[i/dimension][i%dimension]=i;
@@ -216,6 +221,11 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         btnArmar.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         btnArmar.setText("Armar");
         btnArmar.setEnabled(false);
+        btnArmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnArmarActionPerformed(evt);
+            }
+        });
         barBtnes.add(btnArmar);
 
         javax.swing.GroupLayout tableroLayout = new javax.swing.GroupLayout(tablero);
@@ -345,15 +355,19 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     try{
                         long inicio, fin;
                         inicio=System.currentTimeMillis();
-                        resolver();
+                        setSolution( resolver() );
                         btnNuevo.setEnabled(true);
                         btnVistaPrevia.setEnabled(true);
                         btnResolver.setEnabled(true);
+                        btnAnterior.setEnabled(true);
+                        btnArmar.setEnabled(true);
+                        btnSgte.setEnabled(true);
+                        resuelto = true;
                         fin=System.currentTimeMillis();
                         if(fin-inicio<60000){
-                           System.out.println("Tardo: " + (fin-inicio) + "ms");
+                            JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio) + "ms");
                         } else{
-                            System.out.println("Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
+                            JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
                         }
                     } catch(Exception e){
                         System.out.println(e.getMessage());
@@ -388,41 +402,43 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
     private void panelCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelCentralMouseClicked
         //System.out.println("hasta aqui");
-        ImagePanel button = (ImagePanel) panelCentral.getComponentAt(evt.getPoint());
-        Dimension size = button.getSize();
-        
-        int labelX = hole.getX()/size.width;
-        int labelY = hole.getY()/size.width;
-        int buttonX = button.getX()/size.width;
-        int buttonY = button.getY()/size.width;
-        //int buttonPosX = buttonX / size.width;
-        //int buttonPosY = buttonY / size.height;
-        //int buttonIndex = pos[buttonPosY][buttonPosX];
-        //System.out.println("posY"+buttonY+" posX"+buttonX);
-        //System.out.println("2posY"+labelY+" 2posX"+labelX);
-        if(buttonX==labelX+1&&buttonY==labelY){
-            this.moveBlank(3);//derecha
-        } else if(buttonX==labelX-1 && buttonY==labelY){
-            this.moveBlank(1);//izquierda
-           //System.out.println("jaja");
-        } else if(buttonX==labelX&&buttonY==labelY+1){
-            this.moveBlank(2);//abajo
-            //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
-        } else if(buttonX==labelX&&buttonY==labelY-1){
-            this.moveBlank(4);//arriba
-            //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
-        }
+        if(!resuelto){
+            ImagePanel button = (ImagePanel) panelCentral.getComponentAt(evt.getPoint());
+            Dimension size = button.getSize();
 
-        new Thread(new Runnable() {
-                public void run() {
-                    try{
-                        Thread.currentThread().sleep(dimension*10+200);
-                    } catch(Exception e){
-                        System.out.println(e.getMessage());
+            int labelX = hole.getX()/size.width;
+            int labelY = hole.getY()/size.width;
+            int buttonX = button.getX()/size.width;
+            int buttonY = button.getY()/size.width;
+            //int buttonPosX = buttonX / size.width;
+            //int buttonPosY = buttonY / size.height;
+            //int buttonIndex = pos[buttonPosY][buttonPosX];
+            //System.out.println("posY"+buttonY+" posX"+buttonX);
+            //System.out.println("2posY"+labelY+" 2posX"+labelX);
+            if(buttonX==labelX+1&&buttonY==labelY){
+                this.moveBlank(3);//derecha
+            } else if(buttonX==labelX-1 && buttonY==labelY){
+                this.moveBlank(1);//izquierda
+               //System.out.println("jaja");
+            } else if(buttonX==labelX&&buttonY==labelY+1){
+                this.moveBlank(2);//abajo
+                //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
+            } else if(buttonX==labelX&&buttonY==labelY-1){
+                this.moveBlank(4);//arriba
+                //System.out.println("posY"+buttonPosY+" posX"+buttonPosX);
+            }
+
+            new Thread(new Runnable() {
+                    public void run() {
+                        try{
+                            Thread.currentThread().sleep(dimension*10+200);
+                        } catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
+                        panelCentral.repaint();
                     }
-                    panelCentral.repaint();
-                }
-        }).start();
+            }).start();
+        }
     }//GEN-LAST:event_panelCentralMouseClicked
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -465,8 +481,27 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAnteriorActionPerformed
+
+    private void btnArmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArmarActionPerformed
+        System.out.println("adfa");
+        this.armarPuzzle(solution);
+        new Thread(new Runnable() {
+                public void run() {
+                    try{
+                        Thread.currentThread().sleep(dimension*10+200);
+                    } catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    panelCentral.repaint();
+                }
+        }).start();
+    }//GEN-LAST:event_btnArmarActionPerformed
+    public void setSolution(Solucion pSolucion){
+        solution = pSolucion;
+    }
+    
     //de prueba todavia esta este metodo
-    public void resolver(){
+    public Solucion resolver(){
         BusquedaSinInformacion busquedaSinInformacion;
         EstrategiaEnProfundidad estrategia;
         NPuzzle rompecabezas;
@@ -502,7 +537,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         rompecabezas.setUnaEstrategia( estrategia );
         
         busquedaSinInformacion  = new BusquedaSinInformacion();
-
+        unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
+/*
         System.out.println( "Iniciando ..." );
         int menor = 50000;
         do{
@@ -526,7 +562,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 menor   = unaSolucion.obtenerLongitudDelCamino();
                 System.out.println( "NUEVO_MENOR: " + menor );
             }
-        }while( unaSolucion.obtenerLongitudDelCamino() > 0 );
+        }while( unaSolucion.obtenerLongitudDelCamino() > 0 );*/
+        return unaSolucion;
      
     }
     public void setTableroGUI(CasillaPuzzle[][] pTablero){
@@ -536,8 +573,46 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         }
         
     }
+    public void armarPuzzle(Solucion pSolucion){
+        try {
+            
+            CasillaPuzzle casilla = (CasillaPuzzle)solution.obtenerSiguienteNodo();
+            //System.out.println(casilla);
+            //System.out.println(solution);
+            while(casilla!=null){
+                Thread.currentThread().sleep(1000);
+                System.out.println("hasta aqui");
+                System.out.println("coordXcas"+casilla.getCoordenadaX());
+                System.out.println("coordYcas"+casilla.getCoordenadaY());
+                System.out.println("coordX"+hole.getPosicionX());
+                System.out.println("coordY"+hole.getPosicionY());
+                if(casilla.yaFueVisitado()){
+                    
+                if(casilla.getCoordenadaX()==hole.getPosicionX()+1&&hole.getPosicionY()==casilla.getCoordenadaY()){
+                    //if(casilla.yaFueVisitado())
+                    moveBlank(2);//abajo
+                } else if(casilla.getCoordenadaX()==hole.getPosicionX()-1&&hole.getPosicionY()==casilla.getCoordenadaY()){
+                    //System.out.println("adjflkadffflkajdlfj");
+                    moveBlank(4);//arriba
+                } else if(casilla.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casilla.getCoordenadaY()+1){
+                    
+                    moveBlank(1);//derecha
+                } else if(casilla.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casilla.getCoordenadaY()-1){
+                    System.out.println("entro");
+                    moveBlank(3);//izquierda
+                }
+                }
+
+                casilla = (CasillaPuzzle)solution.obtenerSiguienteNodo();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(NpuzzleGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     public void nuevaVista(){
         //System.out.println(getDimension());
+        resuelto = false;
         dimension = getDimension();
         if (dimension == 0){
             return;
@@ -560,7 +635,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 panel = new ImagePanel(i, dimension, cuadro);
                 panelCentral.add(panel);
             }
-        }        
+        }     
     }
     public class ImagePanel extends JPanel{
         private Image image;
