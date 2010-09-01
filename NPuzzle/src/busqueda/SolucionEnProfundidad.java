@@ -46,11 +46,11 @@ public class SolucionEnProfundidad implements Solucion{
         unNodo                  = ( Nodo )this.pilaSolucion.lastElement(); //this.obtenerSiguienteNodo();
         this.longitudDelCamino  = 0;
 
-        lista   = new LinkedList();
+        //lista   = new LinkedList();
         while( unNodo != null ){
                        
             if( unNodo.formaParteDelCamino()){
-                lista.push( unNodo );
+                //lista.push( unNodo );
                 this.longitudDelCamino++;
             }
 
@@ -58,8 +58,8 @@ public class SolucionEnProfundidad implements Solucion{
         }
         
 
-        //this.iteradorPila   = this.pilaSolucion.iterator();
-        this.iteradorPila       = lista.iterator();
+        this.iteradorPila   = this.pilaSolucion.iterator();
+        //this.iteradorPila       = lista.iterator();
     }
 
     public Nodo obtenerSiguienteNodo(){
