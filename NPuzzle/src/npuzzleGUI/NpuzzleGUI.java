@@ -402,6 +402,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
     private void panelCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelCentralMouseClicked
         //System.out.println("hasta aqui");
+        
         if(!resuelto){
             ImagePanel button = (ImagePanel) panelCentral.getComponentAt(evt.getPoint());
             Dimension size = button.getSize();
@@ -455,6 +456,9 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     }
             }).start();
         }
+        if(isResuelto()){
+            btnResolver.setEnabled(false);
+        }
     }//GEN-LAST:event_panelCentralMouseClicked
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -481,7 +485,9 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 }//GEN-LAST:event_jImagenesActionPerformed
 
     private void tableroComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tableroComponentShown
-        
+        if(isResuelto()){
+            btnResolver.setEnabled(false);
+        }
         new Thread(new Runnable() {
                 public void run() {
                     try{
@@ -789,7 +795,17 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         }
 
     }
-    
+    public boolean isResuelto(){
+        boolean res=true;
+        int nro = 0;
+        for(int i=0;i<dimension;i++){
+            for(int j=0;j<dimension;j++){
+                res=pos[i][j]==nro;
+                nro++;
+            }
+        }
+        return res;
+    }
     public void moveBlank(int direccion){
         ImagePanel aux1;
         ImagePanel aux2;
