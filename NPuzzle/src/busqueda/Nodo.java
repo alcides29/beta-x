@@ -12,4 +12,6 @@ public interface Nodo {
     public Object obtenerValor();
 
     public boolean formaParteDelCamino();
+
+    public Nodo obtenerClon();
 }

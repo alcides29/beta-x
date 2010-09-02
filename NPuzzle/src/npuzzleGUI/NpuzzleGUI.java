@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 
 import npuzzle.NPuzzle;
 import busqueda.*;
+import java.util.Iterator;
 import npuzzle.*;
 
 
@@ -564,19 +565,21 @@ public class NpuzzleGUI extends javax.swing.JFrame {
        
         estrategia      = new EstrategiaEnProfundidad();
 
+        Solucion mejorSolucion= null;
+
         rompecabezas.setUnaEstrategia( estrategia );
         
         busquedaSinInformacion  = new BusquedaSinInformacion();
-        unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
-/*
+        //unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
+
         System.out.println( "Iniciando ..." );
         int menor = 50000;
         do{
             unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
 
-            casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
+            //casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
 
-            while( casillaPuzzle != null ){
+            /*while( casillaPuzzle != null ){
 
 
                 
@@ -584,16 +587,23 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     System.out.println( "x: " + casillaPuzzle.getCoordenadaX() + "  y: " + casillaPuzzle.getCoordenadaY() );
                         
                 casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
-            }
+            }*/
 
             System.out.println( " Longitud de la ruta: "  + unaSolucion.obtenerLongitudDelCamino() );
 
-            if( unaSolucion.obtenerLongitudDelCamino() < menor ){
+            if( unaSolucion.obtenerLongitudDelCamino()>=0&&unaSolucion.obtenerLongitudDelCamino() < menor ){
                 menor   = unaSolucion.obtenerLongitudDelCamino();
+                mejorSolucion = unaSolucion;
                 System.out.println( "NUEVO_MENOR: " + menor );
             }
-        }while( unaSolucion.obtenerLongitudDelCamino() > 0 );*/
-        return unaSolucion;
+        }while( unaSolucion.obtenerLongitudDelCamino() > 0 );
+        //Iterator it = ((SolucionEnProfundidad)unaSolucion).getPila().iterator();
+
+            
+            //System.out.println(  "pila: " + ((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).obtenerValor()+
+              //      " "+((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).getCoordenadaX()+" "+((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).getCoordenadaY());
+        System.out.println("sol "+mejorSolucion);   
+        return mejorSolucion;
      
     }
     //ya me olvide para q ic esto
@@ -606,45 +616,88 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     }
     public void armarPuzzle(Solucion pSolucion){
         try {
-            
+            System.out.println("pso "+pSolucion);
             CasillaPuzzle casilla = (CasillaPuzzle)pSolucion.obtenerSiguienteNodo();
-            //System.out.println(casilla);
-            //System.out.println(solution);
+            CasillaPuzzle casillaSgte;
+            boolean sgtePosible;
+            int movimiento = 0;
+            
+            System.out.println("sol:"+casilla);
             while(casilla!=null){
+                System.out.println("val "+casilla.obtenerValor()+" "+casilla.getCoordenadaX()+" "+casilla.getCoordenadaY());
                 /*System.out.println("hasta aqui");
                 System.out.println("coordXcas"+casilla.getCoordenadaX());
                 System.out.println("coordYcas"+casilla.getCoordenadaY());
                 System.out.println("coordX"+hole.getPosicionX());
                 System.out.println("coordY"+hole.getPosicionY());*/
-                if(casilla.yaFueVisitado()){
-                    Thread.currentThread().sleep(1000);
+                //System.out.println(casilla.yaFueVisitado());
+                casillaSgte = (CasillaPuzzle)pSolucion.obtenerSiguienteNodo();
+                if(casillaSgte==null){
+                    sgtePosible=true;
+                } else{
+                    sgtePosible =false;
+                }
+                if(true){
+                    Thread.currentThread().sleep(400);
                     if(casilla.getCoordenadaX()==hole.getPosicionX()+1&&hole.getPosicionY()==casilla.getCoordenadaY()){
                         //if(casilla.yaFueVisitado())
+                        movimiento=2;
                         moveBlank(2);//abajo
                     } else if(casilla.getCoordenadaX()==hole.getPosicionX()-1&&hole.getPosicionY()==casilla.getCoordenadaY()){
                         //System.out.println("adjflkadffflkajdlfj");
+                        movimiento=4;
                         moveBlank(4);//arriba
                     } else if(casilla.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casilla.getCoordenadaY()+1){
+                        movimiento=1;
                         moveBlank(1);//derecha
                     } else if(casilla.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casilla.getCoordenadaY()-1){
                         //System.out.println("entro");
+                        movimiento=3;
                         moveBlank(3);//izquierda
                     }
-                    new Thread(new Runnable() {
-                            public void run() {
-                                try{
-                                    Thread.currentThread().sleep(200);
-                                } catch(Exception e){
-                                    System.out.println(e.getMessage());
+                    if(!sgtePosible){
+                        if(casillaSgte.getCoordenadaX()==hole.getPosicionX()+1&&hole.getPosicionY()==casillaSgte.getCoordenadaY()){
+                            //if(casilla.yaFueVisitado())
+                            sgtePosible=true;
+                        } else if(casillaSgte.getCoordenadaX()==hole.getPosicionX()-1&&hole.getPosicionY()==casillaSgte.getCoordenadaY()){
+                            //System.out.println("adjflkadffflkajdlfj");
+                            sgtePosible=true;
+                        } else if(casillaSgte.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casillaSgte.getCoordenadaY()+1){
+                            sgtePosible=true;//derecha
+                        } else if(casillaSgte.getCoordenadaX()==hole.getPosicionX()&&hole.getPosicionY()==casillaSgte.getCoordenadaY()-1){
+                            //System.out.println("entro");
+                            sgtePosible=true;//izquierda
+                        }
+                    }
+                    if(!sgtePosible){
+                        if(movimiento==1){
+                            moveBlank(3);
+                        } else if(movimiento==2){
+                            moveBlank(4);
+                        } else if(movimiento==3){
+                            moveBlank(1);
+                        } else if(movimiento==4){
+                            moveBlank(2);
+                        }
+                    } else {
+                        new Thread(new Runnable() {
+                                public void run() {
+                                    try{
+                                        Thread.currentThread().sleep(200);
+                                    } catch(Exception e){
+                                        System.out.println(e.getMessage());
+                                    }
+                                    panelCentral.repaint();
                                 }
-                                panelCentral.repaint();
-                            }
-                    }).start();
+                        }).start();
+                    }
                 }
 
-                casilla = (CasillaPuzzle)pSolucion.obtenerSiguienteNodo();
+                casilla = casillaSgte;
+                System.out.println("casSgte");
             }
-        } catch (InterruptedException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(NpuzzleGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         resuelto=false;

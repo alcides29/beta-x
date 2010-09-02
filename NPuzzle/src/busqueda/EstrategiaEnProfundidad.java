@@ -74,13 +74,17 @@ public class EstrategiaEnProfundidad implements Estrategia{
     }
 
     public Solucion retornarSolucion(){
-    // -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------;
+
+        SolucionEnProfundidad nuevaSolucion;
 
     // -----------------------------------------------------------------------------
 
-        this.unaSolucion.armarSolucion();
-        
-    return( this.unaSolucion );
+        nuevaSolucion    = new SolucionEnProfundidad( (Stack)this.pila.clone() );
+
+        nuevaSolucion.armarSolucion();
+
+        return( nuevaSolucion );
     }
 
 }

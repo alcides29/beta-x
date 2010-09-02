@@ -38,7 +38,7 @@ public class NPuzzle implements Problema{
         this.mapa   = new HashMap();
         this.cantidadFilasTablero = pN;
         this.tablero= new CasillaPuzzle[ pN ][ pN ];
-        this.menorCantidadVisitados = 48;
+        this.menorCantidadVisitados = 30;
     }
 
 
@@ -202,7 +202,7 @@ public class NPuzzle implements Problema{
 
         int xHijo, yHijo, xPadre, yPadre;
 
-        boolean pudoExpandirse;
+        boolean pudoExpandirse, posibleCiclo;
 
         CasillaPuzzle nodoHijo, nodoCopia;
 
@@ -213,7 +213,8 @@ public class NPuzzle implements Problema{
         casillaActual   = ( CasillaPuzzle )nodoActual;
 
 
-        pudoExpandirse = false;
+        pudoExpandirse  = false;
+        posibleCiclo    = false;
 
         if( casillaActual.getNodoPadre() != null ){
             xPadre  = casillaActual.getNodoPadre().getCoordenadaX();
@@ -223,7 +224,11 @@ public class NPuzzle implements Problema{
             xPadre  = -1;
             yPadre  = -1;
         }
+
+        
+        
         if( this.unaEstrategia.getCantidadNodosVisitados() < this.menorCantidadVisitados ){
+            
             // Expandir el hijo de ARRIBA
             xHijo   =  casillaActual.getCoordenadaX() - 1;
             yHijo   =   casillaActual.getCoordenadaY();
@@ -233,7 +238,8 @@ public class NPuzzle implements Problema{
                 nodoHijo    = this.tablero[ xHijo ][ casillaActual.getCoordenadaY() ];
 
                //if( !nodoHijo.yaFueVisitado() && nodoHijo != casillaActual.getNodoPadre() ){
-                if( !elNodoYaFueVisitado( nodoHijo ) && !( xHijo == xPadre && yHijo == yPadre ) ){
+                if( !elNodoYaFueVisitado( nodoHijo ) && !( xHijo == xPadre && yHijo == yPadre )  )
+                {
                     nodoCopia   = new CasillaPuzzle();
                     nodoCopia.setCoordenadaX( nodoHijo.getCoordenadaX() );
                     nodoCopia.setCoordenadaY( nodoHijo.getCoordenadaY() );
@@ -253,7 +259,8 @@ public class NPuzzle implements Problema{
             if( yHijo < this.cantidadFilasTablero ){
                 nodoHijo    = this.tablero[ casillaActual.getCoordenadaX() ][ yHijo ];
 
-                if( !elNodoYaFueVisitado( nodoHijo ) && !( xHijo == xPadre && yHijo == yPadre ) ){
+                if( !elNodoYaFueVisitado( nodoHijo ) && !( xHijo == xPadre && yHijo == yPadre )  )
+                {
                     nodoCopia   = new CasillaPuzzle();
                     nodoCopia.setCoordenadaX( nodoHijo.getCoordenadaX() );
                     nodoCopia.setCoordenadaY( nodoHijo.getCoordenadaY() );
@@ -274,7 +281,8 @@ public class NPuzzle implements Problema{
             if( xHijo < this.cantidadFilasTablero ){
                 nodoHijo    = this.tablero[ xHijo ][ casillaActual.getCoordenadaY() ];
 
-                if( !elNodoYaFueVisitado( nodoHijo ) && !( xHijo == xPadre && yHijo == yPadre ) ){
+                if( !elNodoYaFueVisitado( nodoHijo ) && !( xHijo == xPadre && yHijo == yPadre )  )
+                {
                     nodoCopia   = new CasillaPuzzle();
                     nodoCopia.setCoordenadaX( nodoHijo.getCoordenadaX() );
                     nodoCopia.setCoordenadaY( nodoHijo.getCoordenadaY() );
@@ -294,7 +302,8 @@ public class NPuzzle implements Problema{
             if( yHijo >= 0 ){
                 nodoHijo    = this.tablero[ casillaActual.getCoordenadaX() ][ yHijo ];
 
-                if( !elNodoYaFueVisitado( nodoHijo ) && !( xHijo == xPadre && yHijo == yPadre ) ){
+                if( !elNodoYaFueVisitado( nodoHijo ) && !( xHijo == xPadre && yHijo == yPadre )  )
+                {
                     nodoCopia   = new CasillaPuzzle();
                     nodoCopia.setCoordenadaX( nodoHijo.getCoordenadaX() );
                     nodoCopia.setCoordenadaY( nodoHijo.getCoordenadaY() );
@@ -310,7 +319,7 @@ public class NPuzzle implements Problema{
         //    casillaActual.marcaComoNoExpandido();
         
         
-        if( pudoExpandirse ){ 
+        if( !posibleCiclo && pudoExpandirse ){
            casillaActual.marcarComoExpandido();
         }
         else // ya no hay caminos y como no es meta se debe probar otra opción
