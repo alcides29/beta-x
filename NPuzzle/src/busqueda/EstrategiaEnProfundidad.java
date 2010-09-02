@@ -92,7 +92,8 @@ public class EstrategiaEnProfundidad implements Estrategia{
 
         nuevaSolucion    = new SolucionEnProfundidad( (Stack)this.pila.clone() );
 
-        nuevaSolucion.setCantidadNodosExpandidos( this.cantidadNodosExpandidos );
+        nuevaSolucion.setCantidadNodosVisitados(    this.cantidadNodosVisitados     );
+        nuevaSolucion.setCantidadNodosExpandidos(   this.cantidadNodosExpandidos    );
         nuevaSolucion.armarSolucion();
 
         return( nuevaSolucion );

@@ -15,7 +15,8 @@ import java.util.LinkedList;
 public class SolucionEnProfundidad implements Solucion{
 // -----------------------------------------------------------------------------
 
-    private int         cantidadNodosExpandidos,
+    private int         cantidadNodosExpandidos ,
+                        cantidadNodosVisitados  ,
                         longitudDelCamino;
 
     private Iterator    iteradorPila;
@@ -39,6 +40,14 @@ public class SolucionEnProfundidad implements Solucion{
 
     public void setCantidadNodosExpandidos( int pCantidadNodos ){
         this.cantidadNodosExpandidos    = pCantidadNodos;
+    }
+
+    public int getCantidadNodosVisitados(){
+        return( this.cantidadNodosVisitados );
+    }
+
+    public void setCantidadNodosVisitados( int pCantidadNodos ){
+        this.cantidadNodosVisitados    = pCantidadNodos;
     }
 
     /**/
