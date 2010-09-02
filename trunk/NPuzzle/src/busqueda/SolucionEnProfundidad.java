@@ -15,7 +15,8 @@ import java.util.LinkedList;
 public class SolucionEnProfundidad implements Solucion{
 // -----------------------------------------------------------------------------
 
-    private int longitudDelCamino;
+    private int         cantidadNodosExpandidos,
+                        longitudDelCamino;
 
     private Iterator    iteradorPila;
 
@@ -32,12 +33,20 @@ public class SolucionEnProfundidad implements Solucion{
         return( this.longitudDelCamino );
     }
 
-    /**
+    public int getCantidadNodosExpandidos(){
+        return( this.cantidadNodosExpandidos );
+    }
+
+    public void setCantidadNodosExpandidos( int pCantidadNodos ){
+        this.cantidadNodosExpandidos    = pCantidadNodos;
+    }
+
+    /**/
     public void armarSolucion(){
     // -------------------------------------------------------------------------
 
         Nodo unNodo;
-        
+
         LinkedList lista;
 
     // -------------------------------------------------------------------------
@@ -53,7 +62,7 @@ public class SolucionEnProfundidad implements Solucion{
             if( unNodo.formaParteDelCamino()){
 
                 lista.addLast( unNodo.obtenerClon() );
-                
+
                 this.longitudDelCamino++;
             }
 
@@ -65,7 +74,7 @@ public class SolucionEnProfundidad implements Solucion{
         this.iteradorPila       = lista.iterator();
     }
     /**/
-    /**/
+    /**
     public void armarSolucion(){
     // -------------------------------------------------------------------------
 
@@ -82,7 +91,7 @@ public class SolucionEnProfundidad implements Solucion{
 
         //lista   = new LinkedList();
         while( unNodo != null ){
-                       
+
             if( unNodo.formaParteDelCamino()){
                 //lista.push( unNodo );
                 this.longitudDelCamino++;
@@ -90,7 +99,7 @@ public class SolucionEnProfundidad implements Solucion{
 
             unNodo  = this.obtenerSiguienteNodo();
         }
-        
+
 
         this.iteradorPila   = this.pilaSolucion.iterator();
         //this.iteradorPila       = lista.iterator();
@@ -107,7 +116,7 @@ public class SolucionEnProfundidad implements Solucion{
             nodo = ( Nodo )this.iteradorPila.next();
         else
             nodo = null;
-        
+
         return( nodo );
     }
 }

@@ -11,7 +11,8 @@ import java.util.Stack;
 public class EstrategiaEnProfundidad implements Estrategia{
 // ------------------------------------------------------------------------------
 
-    private int         cantidadNodosVisitados          ,
+    private int         cantidadNodosExpandidos         ,
+                        cantidadNodosVisitados          ,
                         menorCantidadVisitados;
     
     private Solucion    unaSolucion;
@@ -25,6 +26,7 @@ public class EstrategiaEnProfundidad implements Estrategia{
         this.pila                   = new Stack();
         this.unaSolucion            = new SolucionEnProfundidad( this.pila );
         this.cantidadNodosVisitados = 0;
+        this.cantidadNodosExpandidos= 0;
     }
 
 
@@ -34,6 +36,14 @@ public class EstrategiaEnProfundidad implements Estrategia{
 
     public void disminuirUnaUnidadCantidadNodosVisitados(){
         this.cantidadNodosVisitados--;
+    }
+
+    public void aumentarUnaUnidadCantidadNodosExpandidos(){
+        this.cantidadNodosExpandidos++;
+    }
+
+    public void disminuirUnaUnidadCantidadNodosExpandidos(){
+        this.cantidadNodosExpandidos--;
     }
 
     public boolean encontroAlMenosUnaSolucion(){
@@ -82,6 +92,7 @@ public class EstrategiaEnProfundidad implements Estrategia{
 
         nuevaSolucion    = new SolucionEnProfundidad( (Stack)this.pila.clone() );
 
+        nuevaSolucion.setCantidadNodosExpandidos( this.cantidadNodosExpandidos );
         nuevaSolucion.armarSolucion();
 
         return( nuevaSolucion );

@@ -57,4 +57,11 @@ public class SolucionEnAnchura implements Solucion {
         return( nodo );
     }
 
+    public int getCantidadNodosExpandidos(){
+        return( 0 );
+    }
+
+    public void setCantidadNodosExpandidos( int pCantidadNodos ){
+    }
+
 }
