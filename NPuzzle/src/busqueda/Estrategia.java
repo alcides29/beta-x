@@ -24,6 +24,10 @@ public interface Estrategia {
 
     public void disminuirUnaUnidadCantidadNodosVisitados();
 
+    public void aumentarUnaUnidadCantidadNodosExpandidos();
+
+    public void disminuirUnaUnidadCantidadNodosExpandidos();
+
     public int getCantidadNodosVisitados();
 
     public void setCantidadNodosVisitados( int pCantidad );

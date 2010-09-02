@@ -67,4 +67,9 @@ public class EstrategiaEnAnchura implements Estrategia {
         return (this.unaSolucion);
     }
 
+    public void aumentarUnaUnidadCantidadNodosExpandidos(){     
+    }
+
+    public void disminuirUnaUnidadCantidadNodosExpandidos(){        
+    }
 }

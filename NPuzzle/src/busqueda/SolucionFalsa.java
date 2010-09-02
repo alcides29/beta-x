@@ -21,4 +21,11 @@ public class SolucionFalsa implements Solucion{
     public Nodo obtenerSiguienteNodo(){
         return( null  );
     }
+
+    public int getCantidadNodosExpandidos(){
+        return( 0 );
+    }
+
+    public void setCantidadNodosExpandidos( int pCantidadNodos ){
+    }
 }

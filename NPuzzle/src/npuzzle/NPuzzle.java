@@ -18,11 +18,11 @@ public class NPuzzle implements Problema{
 
     public static final int VALOR_VACIO = 9999;
 
-    private int     cantidadFilasTablero    ,
+    private int     cantidadFilasTablero    ,                    
                     menorCantidadVisitados;
 
     private HashMap mapa;
-    
+
     private CasillaPuzzle   casillaVacia,
                             tablero[][];
 
@@ -35,10 +35,11 @@ public class NPuzzle implements Problema{
      * @param pN Dimension del tablero
      */
     public NPuzzle( int pN ){
-        this.mapa   = new HashMap();
-        this.cantidadFilasTablero = pN;
+        this.mapa   = new HashMap();        
         this.tablero= new CasillaPuzzle[ pN ][ pN ];
-        this.menorCantidadVisitados = 30;
+
+        this.cantidadFilasTablero   = pN;
+        this.menorCantidadVisitados = 30;        
     }
 
 
@@ -70,7 +71,7 @@ public class NPuzzle implements Problema{
     // -----------------------------------------------------------------------------
 
         int xPadre, yPadre;
-        
+
         CasillaPuzzle nodoActual, nodoPadre;
 
     // -----------------------------------------------------------------------------
@@ -84,24 +85,24 @@ public class NPuzzle implements Problema{
         xPadre       = nodoPadre.getCoordenadaX();
         yPadre       = nodoPadre.getCoordenadaY();
         this.casillaVacia   = this.tablero[ xPadre ][ yPadre ];
-        
+
         this.casillaVacia.marcarComoCasillaVacia();
 
 
-        while( nodoActual != null ){            
-            unaEstrategia.removerSiguienteNodo();            
+        while( nodoActual != null ){
+            unaEstrategia.removerSiguienteNodo();
             this.marcarNodoComoNoVisitado( nodoActual );
 
-            nodoActual  = ( CasillaPuzzle )unaEstrategia.obtenerSiguienteNodo();            
+            nodoActual  = ( CasillaPuzzle )unaEstrategia.obtenerSiguienteNodo();
 
             if( nodoActual != null  ){
                 nodoPadre   = nodoActual.getNodoPadre();
-                
+
                 xPadre       = nodoPadre.getCoordenadaX();
                 yPadre       = nodoPadre.getCoordenadaY();
 
                 if( !(this.casillaVacia.getCoordenadaX() == xPadre &&
-                    this.casillaVacia.getCoordenadaY() == yPadre ) ){                    
+                    this.casillaVacia.getCoordenadaY() == yPadre ) ){
 
                     this.casillaVacia.insertarValor( nodoActual.obtenerValor() );
                     this.casillaVacia.marcarComoCasillaNoVacia();
@@ -141,7 +142,7 @@ public class NPuzzle implements Problema{
 
             }
 
-        if( unaEstrategia.encontroAlMenosUnaSolucion() ){            
+        if( unaEstrategia.encontroAlMenosUnaSolucion() ){
             xPadre  = -1;
             yPadre  = -1;
 
@@ -162,19 +163,20 @@ public class NPuzzle implements Problema{
                 this.casillaVacia   = tablero[ xPadre ][ yPadre ];
 
                 this.unaEstrategia.removerSiguienteNodo();
+                this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
 
                 this.marcarNodoComoNoVisitado( nodoActual );
 
                 nodoActual   = ( CasillaPuzzle )unaEstrategia.obtenerSiguienteNodo();
                 if(nodoActual!=null){
                     nodoPadre           = nodoActual.getNodoPadre();
-                }
-                
+                }               
+
             }
         }
         else
             this.expandir( this.casillaVacia, unaEstrategia );
-        
+
     }
 
     private void prepararOtraOpcion( CasillaPuzzle casillaActual, Estrategia unaEstrategia ){
@@ -207,7 +209,7 @@ public class NPuzzle implements Problema{
         CasillaPuzzle nodoHijo, nodoCopia;
 
         CasillaPuzzle casillaActual;
-        
+
     // ------------------------------------------------------------------------
 
         casillaActual   = ( CasillaPuzzle )nodoActual;
@@ -225,14 +227,14 @@ public class NPuzzle implements Problema{
             yPadre  = -1;
         }
 
-        
-        
+
+
         if( this.unaEstrategia.getCantidadNodosVisitados() < this.menorCantidadVisitados ){
-            
+
             // Expandir el hijo de ARRIBA
             xHijo   =  casillaActual.getCoordenadaX() - 1;
             yHijo   =   casillaActual.getCoordenadaY();
-            
+
             if( xHijo >= 0 ){
 
                 nodoHijo    = this.tablero[ xHijo ][ casillaActual.getCoordenadaY() ];
@@ -245,9 +247,10 @@ public class NPuzzle implements Problema{
                     nodoCopia.setCoordenadaY( nodoHijo.getCoordenadaY() );
                     nodoCopia.insertarValor( nodoHijo.obtenerValor() );
                     nodoCopia.setNodoPadre( casillaActual );
-                    
+
                     unaEstrategia.insertarNodo( nodoCopia );
                     pudoExpandirse  = true;
+                    this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
                 }
 
             }
@@ -270,6 +273,7 @@ public class NPuzzle implements Problema{
 
                     unaEstrategia.insertarNodo( nodoCopia );
                     pudoExpandirse  = true;
+                    this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
                 }
             }
 
@@ -291,6 +295,7 @@ public class NPuzzle implements Problema{
 
                     unaEstrategia.insertarNodo( nodoCopia );
                     pudoExpandirse  = true;
+                    this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
                 }
             }
 
@@ -312,13 +317,14 @@ public class NPuzzle implements Problema{
 
                     unaEstrategia.insertarNodo( nodoCopia );
                     pudoExpandirse  = true;
+                    this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
                 }
             }
         }
         //else
         //    casillaActual.marcaComoNoExpandido();
-        
-        
+
+
         if( !posibleCiclo && pudoExpandirse ){
            casillaActual.marcarComoExpandido();
         }
@@ -339,17 +345,17 @@ public class NPuzzle implements Problema{
         this.casillaVacia.insertarValor( casilla.obtenerValor() );
         this.casillaVacia.marcarComoCasillaNoVacia();
 
-       
+
         nodoActual.marcarComoVisitado();
-       
+
         this.marcarNodoComoVisitado( casilla );
         this.casillaVacia   = casilla;
-        
+
         this.casillaVacia.marcarComoCasillaVacia();
 
         nodoActual.setCoordenadaX( this.casillaVacia.getCoordenadaX() );
         nodoActual.setCoordenadaY( this.casillaVacia.getCoordenadaY() );
-        
+
     }
 
 
@@ -384,10 +390,10 @@ public class NPuzzle implements Problema{
         }
         else
             return( false );
-        
+
     }
 
-    
+
     public boolean esNodoMeta( Nodo nodoActual ){
     // ------------------------------------------------------------------------
 
@@ -398,13 +404,13 @@ public class NPuzzle implements Problema{
 
     // ------------------------------------------------------------------------
 
-        
+
         /*
         if( ( (CasillaPuzzle )nodoActual ).yaFueVisitado() )
             return( false );
         else{
          *
-         */            
+         */
 
             valor   = nodoActual.obtenerValor();
 
@@ -412,10 +418,10 @@ public class NPuzzle implements Problema{
 
             estaOrdenado        = elTableroEstaOrdenado();
 
-            if( estaOrdenado ){                                
+            if( estaOrdenado ){
 
                 this.menorCantidadVisitados = this.unaEstrategia.getCantidadNodosVisitados();
-                
+
                 return( estaOrdenado );
             }
             else
@@ -436,7 +442,7 @@ public class NPuzzle implements Problema{
         firma+= this.casillaVacia.getCoordenadaX();
         firma+= this.casillaVacia.getCoordenadaY();
         this.unaEstrategia.aumentarUnaUnidadCantidadNodosVisitados();
-                
+
         this.mapa.put( firma, firma );
     }
 
@@ -453,7 +459,7 @@ public class NPuzzle implements Problema{
         firma+= this.casillaVacia.getCoordenadaX();
         firma+= this.casillaVacia.getCoordenadaY();
         this.unaEstrategia.disminuirUnaUnidadCantidadNodosVisitados();
-        
+
         this.mapa.remove( firma );
     }
 
@@ -468,8 +474,8 @@ public class NPuzzle implements Problema{
         firma+= casilla.getCoordenadaX();
         firma+= casilla.getCoordenadaY();
         firma+= this.casillaVacia.getCoordenadaX();
-        firma+= this.casillaVacia.getCoordenadaY();        
-        
+        firma+= this.casillaVacia.getCoordenadaY();
+
         if( this.mapa.get( firma ) != null )
             return( true );
         else
@@ -485,18 +491,18 @@ public class NPuzzle implements Problema{
         int fila;
         int columna;
         int valor = 1;
-        
+
     // -------------------------------------------------------------------------
 
         for( fila= 0; fila < this.cantidadFilasTablero; fila++ ){
 
             for( columna=0; columna < this.cantidadFilasTablero; columna++ ){
-                
+
                 // Asigna la casilla vacia
                 if( (fila == this.cantidadFilasTablero-1) && (columna == this.cantidadFilasTablero-1) ){
 
                     this.tablero[fila][columna] = new CasillaPuzzle();
-                    
+
                     this.tablero[fila][columna].marcarComoCasillaVacia();
 
                     this.casillaVacia       = this.tablero[ fila ][ columna ];
@@ -521,7 +527,7 @@ public class NPuzzle implements Problema{
         }
     }
 
-    
+
     /**
      * @function Funcion que genera el tablero
      */
@@ -531,17 +537,17 @@ public class NPuzzle implements Problema{
         int fila;
         int columna;
         int valor = 1;
-        
+
     // -------------------------------------------------------------------------
 
         for( fila= 0; fila < board.length; fila++ ){
 
             for( columna=0; columna < board.length; columna++ ){
-                
+
                 // Asigna la casilla vacia
                 if( board[fila][columna]==(board.length*board.length)-1 ){
                     this.tablero[fila][columna] = new CasillaPuzzle();
-                    
+
                     this.tablero[fila][columna].marcarComoCasillaVacia();
 
                     this.casillaVacia       = this.tablero[ fila ][ columna ];
@@ -565,7 +571,7 @@ public class NPuzzle implements Problema{
             }
         }
     }
-    
+
     /**
      * @function Funcion que desordena el tablero
      * @param ventana
@@ -589,7 +595,7 @@ public class NPuzzle implements Problema{
             while( !this.movimientoValido( posicion )  || ( posicion == anterior ) ){
                 posicion = rnd.nextInt( n );
             }
-            
+
             anterior = this.posicionAnterior( posicion );
             this.moverCasilla( posicion );
             ventana.moveBlank(posicion); // llamar a la funcion del GUI
@@ -623,7 +629,7 @@ public class NPuzzle implements Problema{
             }
 
             anterior = this.posicionAnterior( posicion );
-            this.moverCasilla( posicion );            
+            this.moverCasilla( posicion );
         }
     }
 
@@ -674,7 +680,7 @@ public class NPuzzle implements Problema{
             return false;
         else if( ( pos == right ) &&  ( this.casillaVacia.getCoordenadaY() + 1 ) == this.cantidadFilasTablero )
             return false;
-        
+
         return true;
     }
 
@@ -695,12 +701,12 @@ public class NPuzzle implements Problema{
 
 
         // ---------------------------------------------------------------------
-        
+
         if( pos == up ){
             nuevoValor = ( ( Integer )this.tablero[newX - 1][newY].obtenerValor() ).intValue();
             this.tablero[newX][newY].insertarValor(nuevoValor);
             this.tablero[newX][newY].marcarComoCasillaNoVacia();
-            
+
             // mover casilla vacia
             this.tablero[newX - 1][newY].marcarComoCasillaVacia();
             this.casillaVacia.setCoordenadaX(newX - 1);

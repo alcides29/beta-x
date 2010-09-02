@@ -11,6 +11,8 @@ public interface Solucion {
 
     public void armarSolucion();
     public int obtenerLongitudDelCamino();
+    public int getCantidadNodosExpandidos();
+    public void setCantidadNodosExpandidos( int cantidad );
     public Nodo obtenerSiguienteNodo();
     
 }
