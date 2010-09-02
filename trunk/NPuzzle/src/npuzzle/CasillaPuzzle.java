@@ -68,6 +68,25 @@ public class CasillaPuzzle implements Nodo{
         this.coordenadaY = pY;
     }
 
+    public Nodo obtenerClon(){
+    // ------------------------------------------------------------------------
+
+        CasillaPuzzle unClon;
+
+    // ------------------------------------------------------------------------
+
+        unClon = new CasillaPuzzle();
+
+        unClon.insertarValor(   this.obtenerValor()     );
+        unClon.setCoordenadaX(  this.getCoordenadaX()   );
+        unClon.setCoordenadaY(  this.getCoordenadaY()   );
+
+        if( this.yaFueVisitado() )
+            unClon.marcarComoVisitado();
+
+        return( unClon );
+    }
+
     public Object obtenerValor(){
         return( new Integer( this.valorActual ) );
     }
