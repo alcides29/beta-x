@@ -164,6 +164,7 @@ public class NPuzzle implements Problema{
 
                 this.unaEstrategia.removerSiguienteNodo();
                 this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
+                this.unaEstrategia.disminuirUnaUnidadCantidadNodosVisitados();
 
                 this.marcarNodoComoNoVisitado( nodoActual );
 
@@ -250,7 +251,7 @@ public class NPuzzle implements Problema{
 
                     unaEstrategia.insertarNodo( nodoCopia );
                     pudoExpandirse  = true;
-                    this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
+                    this.unaEstrategia.aumentarUnaUnidadCantidadNodosExpandidos();
                 }
 
             }
@@ -273,7 +274,7 @@ public class NPuzzle implements Problema{
 
                     unaEstrategia.insertarNodo( nodoCopia );
                     pudoExpandirse  = true;
-                    this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
+                    this.unaEstrategia.aumentarUnaUnidadCantidadNodosExpandidos();
                 }
             }
 
@@ -295,7 +296,7 @@ public class NPuzzle implements Problema{
 
                     unaEstrategia.insertarNodo( nodoCopia );
                     pudoExpandirse  = true;
-                    this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
+                    this.unaEstrategia.aumentarUnaUnidadCantidadNodosExpandidos();
                 }
             }
 
@@ -317,7 +318,7 @@ public class NPuzzle implements Problema{
 
                     unaEstrategia.insertarNodo( nodoCopia );
                     pudoExpandirse  = true;
-                    this.unaEstrategia.disminuirUnaUnidadCantidadNodosExpandidos();
+                    this.unaEstrategia.aumentarUnaUnidadCantidadNodosExpandidos();
                 }
             }
         }
@@ -352,6 +353,7 @@ public class NPuzzle implements Problema{
         this.casillaVacia   = casilla;
 
         this.casillaVacia.marcarComoCasillaVacia();
+        this.unaEstrategia.aumentarUnaUnidadCantidadNodosVisitados();
 
         nodoActual.setCoordenadaX( this.casillaVacia.getCoordenadaX() );
         nodoActual.setCoordenadaY( this.casillaVacia.getCoordenadaY() );
@@ -440,8 +442,7 @@ public class NPuzzle implements Problema{
         firma+= casilla.getCoordenadaX();
         firma+= casilla.getCoordenadaY();
         firma+= this.casillaVacia.getCoordenadaX();
-        firma+= this.casillaVacia.getCoordenadaY();
-        this.unaEstrategia.aumentarUnaUnidadCantidadNodosVisitados();
+        firma+= this.casillaVacia.getCoordenadaY();        
 
         this.mapa.put( firma, firma );
     }
@@ -457,8 +458,7 @@ public class NPuzzle implements Problema{
         firma+= casilla.getCoordenadaX();
         firma+= casilla.getCoordenadaY();
         firma+= this.casillaVacia.getCoordenadaX();
-        firma+= this.casillaVacia.getCoordenadaY();
-        this.unaEstrategia.disminuirUnaUnidadCantidadNodosVisitados();
+        firma+= this.casillaVacia.getCoordenadaY();        
 
         this.mapa.remove( firma );
     }
