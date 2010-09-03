@@ -378,7 +378,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                             //btnResolver.setEnabled(true);
                             //btnAnterior.setEnabled(true);
                             btnArmar.setEnabled(true);
-                            btnSgte.setEnabled(true);
+                            //btnSgte.setEnabled(true);
                             resuelto = true;
                             /*fin=System.currentTimeMillis();
                             if(fin-inicio<60000){
@@ -405,7 +405,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                             //btnResolver.setEnabled(true);
                             //btnAnterior.setEnabled(true);
                             btnArmar.setEnabled(true);
-                            btnSgte.setEnabled(true);
+                            //btnSgte.setEnabled(true);
                             resuelto = true;
                             /*fin=System.currentTimeMillis();
                             if(fin-inicio<60000){
@@ -612,10 +612,11 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         String estRec;
         String cantNiv;
         String longCam;
+        String metodo = "Búsqueda en Amplitud";
         if(puzzle.tSolucionOpt<60000){
-            best = "La mejor solución tardó: " + puzzle.tSolucionOpt+"ms";
+            best = "\nLa mejor solución tardó: " + puzzle.tSolucionOpt+"ms";
         }else {
-            best = "La mejor solución tardó: " + puzzle.tSolucionOpt/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
+            best = "\nLa mejor solución tardó: " + puzzle.tSolucionOpt/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
         }
         longCam = "\nLongitud del camino: " + (anch.pilaSol.size()-1);
         if(puzzle.tRecorrerTotalNodos<60000){
@@ -631,7 +632,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         cantSol = "\nCantidad de soluciones: " + puzzle.contSoluciones;
         estRec = "\nEstados recorridos: " + puzzle.nEstadosRecorridos;
         cantNiv = "\nCantidad de niveles: " + puzzle.longitudLevels;
-        JOptionPane.showMessageDialog(tablero, best+longCam+all+cantSol+estRec+cantNiv);
+        JOptionPane.showMessageDialog(tablero, best+longCam+all+cantSol+estRec+cantNiv, metodo,JOptionPane.INFORMATION_MESSAGE);
 	//System.out.printf("\nCantidad de soluciones: %d",puzzle.contSoluciones);
 	//System.out.printf("\nTotal de estados recorridos: %d",puzzle.nEstadosRecorridos);
 	//System.out.print("\nCantidad de niveles: " + puzzle.longitudLevels + "\n ");
@@ -689,11 +690,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 
         fin=System.currentTimeMillis();
         String best, end;
+        String metodo = "Búsqueda en profundidad";
         if(mejor-inicio<60000){
             //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio) + "ms");
-            best = "La mejor solucion tardo: "+(mejor-inicio)+"ms";
+            best = "\nLa mejor solucion tardo: "+(mejor-inicio)+"ms";
         } else{
-            best = "La mejor solucion tardo: "+(mejor-inicio)/60000 + "min " + ((mejor-inicio)%60000)/1000+"seg";
+            best = "\nLa mejor solucion tardo: "+(mejor-inicio)/60000 + "min " + ((mejor-inicio)%60000)/1000+"seg";
             //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
         }
         if(fin-inicio<60000){
@@ -706,7 +708,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         String nVis = "\nNodos visitados: "+mejorSolucion.getCantidadNodosVisitados();
         String nExp = "\nNodos expandidos: "+mejorSolucion.getCantidadNodosExpandidos();
         String lCam = "\nLongitud del camino: "+((SolucionEnProfundidad)mejorSolucion).obtenerLongitudDelCamino();
-        JOptionPane.showMessageDialog(this.tablero, best+"\n"+end+lCam+nVis+nExp);
+        JOptionPane.showMessageDialog(this.tablero, best+"\n"+end+lCam+nVis+nExp, metodo, JOptionPane.INFORMATION_MESSAGE);
         return mejorSolucion;
      
     }
