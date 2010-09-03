@@ -1,4 +1,9 @@
-/*
+/**
+ * Clase que implementa la interfaz Problema de tal manera a adecuarlo al algoritmo
+ * implementado en la clase busqueda.BusquedaSinInformación
+ *
+ * En este caso específico, el problema representa al NPuzzle
+ *
  * creado el 19-08-2010
  */
 
@@ -18,16 +23,16 @@ public class NPuzzle implements Problema{
 
     public static final int VALOR_VACIO = 9999;
 
-    private int     cantidadFilasTablero    ,                    
-                    menorCantidadVisitados  ,
-                    profundidad;
+    private int             cantidadFilasTablero    ,
+                            menorCantidadVisitados  ,
+                            profundidad;
 
-    private HashMap mapa;
+    private HashMap         mapa;
 
     private CasillaPuzzle   casillaVacia,
                             tablero[][];
 
-    private Estrategia unaEstrategia;
+    private Estrategia      unaEstrategia;
 
 // -----------------------------------------------------------------------------
 
@@ -45,30 +50,99 @@ public class NPuzzle implements Problema{
     }
 
 
+    
+    /**
+     * Retorna la cantidad de filas del trablero; la cantiad de filas se utiliza
+     * en varias partes de la implementación para como si fuera el tamaño N del
+     * Puzzle
+     * 
+     * @param ninguno.
+     * @return entero del tipo int que indica la cantidad de filas del trablero.
+     * @throws No dispara ninguna excepcion.
+     */
     public int getCantidadFilasTablero(){
         return( this.cantidadFilasTablero );
     }
 
+    /**
+     * Asigna la cantidad de filas del trablero; la utilización de este método es
+     * casi nula; se creo para emparejar el getter
+     *
+     * @param entero del tipo int que indica la cantidad de filas del trablero.
+     * @return no retorna datos.
+     * @throws No dispara ninguna excepcion.
+     */
     public void setCantidadFilasTablero( int pCantidadFilasTablero ){
         this.cantidadFilasTablero   = pCantidadFilasTablero;
     }
 
+
+
+    /**
+     * Devuelve un objeto del tipo Estrategia almacenado en la instancia de esta
+     * clase. Para más información, por favor, revisar la clase Estrategia
+     *
+     * @param ninguno
+     * @return objeto que representa la estrategia utilizada (en profundidad)
+     * @throws No dispara ninguna excepcion.
+     */
     public Estrategia getUnaEstrategia() {
         return unaEstrategia;
     }
 
+
+
+    /**
+     * Asigna un objeto del tipo Estrategia a la instancia de esta
+     * clase. Para más información, por favor, revisar la clase Estrategia
+     *
+     * @param objeto que representa la estrategia utilizada (en profundidad)
+     * @return void
+     * @throws No dispara ninguna excepcion.
+     */
     public void setUnaEstrategia(Estrategia unaEstrategia) {
         this.unaEstrategia = unaEstrategia;
     }
 
+
+    /**
+     * Retorna el tablero del N-Puzzle; dicho tablero se implementa a través
+     * de una matriz cuyas casillas son del tipo CasillaPuzzle.
+     *
+     * @param ninguno
+     * @return matriz de objetos CasillaPuzzle
+     * @throws No dispara ninguna excepcion.
+     */
     public CasillaPuzzle[][] getTablero(){
         return( this.tablero );
     }
 
+    
+    /**
+     * Asigna un tablero del N-Puzzle; dicho tablero se implementa a través
+     * de una matriz cuyas casillas son del tipo CasillaPuzzle.
+     *
+     * @param matriz de objetos CasillaPuzzle
+     * @return void
+     * @throws No dispara ninguna excepcion.
+     */
     public void setTablero( CasillaPuzzle[][] pTablero ){
         this.tablero    = pTablero;
     }
 
+
+
+    /**
+     * Método utilizado para los casos en que se desea explorar otros nodos expandidos.
+     * Se utiliza especialmente cuando un nodo candidato no es meta y, a la vez, ya
+     * no tiene hijos a expandir. En este punto, se utiliza la instancia del tipo Estrategia
+     * para liberar los nodos; además se adecuan atributos internos para seguir con otros
+     * nodos en la frontera del problema
+     *
+     * @param objeto del tipo Estrategia
+     * @return void
+     * @throws No dispara ninguna excepcion.
+     */
     private void retroceder( Estrategia unaEstrategia ){
     // -----------------------------------------------------------------------------
 
@@ -121,6 +195,18 @@ public class NPuzzle implements Problema{
 
     }
 
+
+    /**
+     * Método utilizado para los casos en que se desea explorar otros nodos expandidos.
+     * Se utiliza especialmente cuando un nodo candidato no es meta y, a la vez, ya
+     * no tiene hijos a expandir. En este punto, se utiliza la instancia del tipo Estrategia
+     * para liberar los nodos; además se adecuan atributos internos para seguir con otros
+     * nodos en la frontera del problema
+     *
+     * @param objeto del tipo Estrategia
+     * @return void
+     * @throws No dispara ninguna excepcion.
+     */
     public void inicializar( Estrategia unaEstrategia ){
     // -------------------------------------------------------------------------
 
@@ -179,6 +265,13 @@ public class NPuzzle implements Problema{
 
     }
 
+
+
+    /**
+     * Método sustituido por el método retroceder
+     *
+     * @deprecated
+     */
     private void prepararOtraOpcion( CasillaPuzzle casillaActual, Estrategia unaEstrategia ){
     // -------------------------------------------------------------------------
 
@@ -199,6 +292,26 @@ public class NPuzzle implements Problema{
 
     }
 
+    
+
+    /**
+     * Teniendo un nodo que no es meta, utiliza los datos de su posición para obtener
+     * expandir los hijos (insertar los nodos hijos en el objeto Estrategia). Aquí se
+     * tienen en cuenta los límites de la matriz; que no se retroceda a la posición por
+     * la que se está circulando; también se trata de evitar ciclos
+     *
+     * @param
+     *          nodoActual      :   objeto del tipo Nodo que representa el nodo o casilla
+     *                              que se va a expandir; sería la posilla ocupada actualmente
+     *                              por la casilla vacía.
+     *
+     *          unaEstrategia   :   objeto del tipo Estrategia que representa la estrategia
+     *                              utilizada actualmente (en profundidad). Los nodos expandidos
+     *                              son almacenados en la estructura interna de dicha Estrategia
+     *
+     * @return void
+     * @throws No dispara ninguna excepcion.
+     */
     public void expandir( Nodo nodoActual, Estrategia unaEstrategia ){
     // ------------------------------------------------------------------------
 
@@ -333,6 +446,20 @@ public class NPuzzle implements Problema{
     }
 
 
+
+    
+
+    /**
+     * Mueve la casilla vacía a la posición del nodo candidato. Ayuda a implementar
+     * el método "esMeta". Además de mover la casilla vacía, se realizan otras operaciones
+     * necesarias para las estadísticas y para evitar ciclos (como marcar los visitados)
+     *
+     * @param   objeto del tipo CasillaPuzzle que representa la casilla a la cual
+     *          se moverá la casilla vacía
+     *
+     * @return void
+     * @throws No dispara ninguna excepcion.
+     */
     private void moverCasillaVacia( CasillaPuzzle nodoActual ){
     // ----------------------------------------------------------------------
 
@@ -360,6 +487,16 @@ public class NPuzzle implements Problema{
     }
 
 
+
+    /**
+     * Verifica si el tablero ya está ordenado o no. Forma parte de una serie de operaciones
+     * para detectar si el nodo candidato "esMeta". 
+     *
+     * @param   ninguno
+     *
+     * @return boolean que indica si el tablero está ordenado (true) o no (false)
+     * @throws No dispara ninguna excepcion.
+     */
     private boolean elTableroEstaOrdenado(){
     // -------------------------------------------------------------------------
 
@@ -395,6 +532,17 @@ public class NPuzzle implements Problema{
     }
 
 
+
+    /**
+     * Método utilizado para saber si el nodo cantidad es o no meta. Para más información,
+     * revisar la clase busqueda.BusquedaSinInformacion
+     *
+     * @param   objeto del tipo Nodo que representa la casilla candidata para llegar
+     *          al tablero ordenado
+     *
+     * @return boolean que indica si el nodo es meta (true) o no (false)
+     * @throws No dispara ninguna excepcion.
+     */
     public boolean esNodoMeta( Nodo nodoActual ){
     // ------------------------------------------------------------------------
 
@@ -406,12 +554,7 @@ public class NPuzzle implements Problema{
     // ------------------------------------------------------------------------
 
 
-        /*
-        if( ( (CasillaPuzzle )nodoActual ).yaFueVisitado() )
-            return( false );
-        else{
-         *
-         */
+       
 
             valor   = nodoActual.obtenerValor();
 
@@ -427,9 +570,20 @@ public class NPuzzle implements Problema{
             }
             else
                 return( false );
-        //}
+
     }
 
+
+
+    /**
+     * Realiza operaciones necesarias para que en le futuro se detecte si uno nodo
+     * ya fue visitado o no; especialmente para evitar ciclos.
+     *
+     * @param   objeto del tipo CasillaPuzzle que representa la casilla visitada
+     *
+     * @return void
+     * @throws No dispara ninguna excepcion.
+     */
     public void marcarNodoComoVisitado( CasillaPuzzle casilla ){
     // -------------------------------------------------------------------------
 
@@ -447,6 +601,18 @@ public class NPuzzle implements Problema{
         this.mapa.put( firma, firma );
     }
 
+
+    
+    /**
+     * Quita la marca de VISITADO a un nodo; se utiliza especialemente en las operaciones
+     * de retroceso de tal manera a que se pueda buscar soluciones a través de otros
+     * nodos expandidos
+     *
+     * @param   objeto del tipo CasillaPuzzle que representa la casilla visitada
+     *
+     * @return void
+     * @throws No dispara ninguna excepcion.
+     */
     public void marcarNodoComoNoVisitado( CasillaPuzzle casilla ){
     // -------------------------------------------------------------------------
 
@@ -464,6 +630,17 @@ public class NPuzzle implements Problema{
         this.mapa.remove( firma );
     }
 
+
+    
+    /**
+     * Examina si el nodo ya fue visitado o no. Se utiliza especialmente para evitar
+     * ciclos.
+     *
+     * @param   objeto del tipo CasillaPuzzle que representa la casilla a examinar
+     *
+     * @return boolean que indica si la casilla ya fue visitada (true) o no (false)
+     * @throws No dispara ninguna excepcion.
+     */
     public boolean elNodoYaFueVisitado( CasillaPuzzle casilla ){
     // -------------------------------------------------------------------------
 
@@ -601,12 +778,7 @@ public class NPuzzle implements Problema{
             this.moverCasilla( posicion );
             ventana.moveBlank(posicion); // llamar a la funcion del GUI
             //this.imprimirTablero();
-        }
-        //System.out.println("Posicion 0, 0: " + this.tablero[0][0].getCoordenadaX() + ", " + this.tablero[0][0].getCoordenadaY() );
-        //System.out.println("Posicion 0, 1: " + this.tablero[0][1].getCoordenadaX() + ", " + this.tablero[0][1].getCoordenadaY() );
-        //System.out.println("Posicion 1, 0: " + this.tablero[1][0].getCoordenadaX() + ", " + this.tablero[1][0].getCoordenadaY() );
-        //System.out.println("Posicion 1, 1: " + this.tablero[1][1].getCoordenadaX() + ", " + this.tablero[1][1].getCoordenadaY() );
-        //System.out.println("Casilla vacia: " + this.casillaVacia.getCoordenadaX() + ", " + this.casillaVacia.getCoordenadaY() );
+        }       
     }
 
     public void desordenarTablero(){
