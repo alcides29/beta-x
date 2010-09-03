@@ -137,6 +137,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         labelEstrategia = new javax.swing.JLabel();
         jCheckCuadricula = new javax.swing.JCheckBox();
         jImagenes = new javax.swing.JToggleButton();
+        jPanel1 = new javax.swing.JPanel();
         radioBtnAnchura = new javax.swing.JRadioButton();
         radioBtnProfundidad = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
@@ -245,15 +246,17 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         jCheckCuadricula.setSelected(true);
         jCheckCuadricula.setText("Cuadrícula");
 
-        jImagenes.setText("Imágenes");
+        jImagenes.setText("Imagen");
         jImagenes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jImagenesActionPerformed(evt);
             }
         });
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         groupEstrategia.add(radioBtnAnchura);
-        radioBtnAnchura.setText("En anchura");
+        radioBtnAnchura.setText("En amplitud");
         radioBtnAnchura.setActionCommand("anchura");
 
         groupEstrategia.add(radioBtnProfundidad);
@@ -264,6 +267,34 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("Estrategia");
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(radioBtnProfundidad)
+                        .addGap(48, 48, 48)
+                        .addComponent(radioBtnAnchura))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)))
+                .addContainerGap(108, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioBtnProfundidad)
+                    .addComponent(radioBtnAnchura))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout configuracionLayout = new javax.swing.GroupLayout(configuracion);
         configuracion.setLayout(configuracionLayout);
         configuracionLayout.setHorizontalGroup(
@@ -271,18 +302,14 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             .addGroup(configuracionLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
                     .addComponent(jImagenes)
                     .addComponent(jCheckCuadricula)
                     .addGroup(configuracionLayout.createSequentialGroup()
-                        .addComponent(radioBtnProfundidad)
-                        .addGap(39, 39, 39)
-                        .addComponent(radioBtnAnchura))
-                    .addGroup(configuracionLayout.createSequentialGroup()
                         .addComponent(labelEstrategia)
                         .addGap(6, 6, 6)
-                        .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(317, Short.MAX_VALUE))
+                        .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
         configuracionLayout.setVerticalGroup(
             configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,17 +318,13 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelEstrategia)
                     .addComponent(jTextDimension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioBtnAnchura)
-                    .addComponent(radioBtnProfundidad))
-                .addGap(43, 43, 43)
+                .addGap(7, 7, 7)
                 .addComponent(jCheckCuadricula)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jImagenes)
-                .addContainerGap(352, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(356, Short.MAX_VALUE))
         );
 
         barPestanas.addTab("Configuración", configuracion);
@@ -373,8 +396,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             new Thread(new Runnable() {
                     public void run() {
                         try{
-                            long inicio, fin;
-                            inicio=System.currentTimeMillis();
+                            //long inicio, fin;
+                            //inicio=System.currentTimeMillis();
                             resolverAnch();
                             //setSolution( resolverProf() );
                             btnNuevo.setEnabled(true);
@@ -384,12 +407,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                             btnArmar.setEnabled(true);
                             btnSgte.setEnabled(true);
                             resuelto = true;
-                            fin=System.currentTimeMillis();
+                            /*fin=System.currentTimeMillis();
                             if(fin-inicio<60000){
                                 JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio) + "ms");
                             } else{
                                 JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
-                            }
+                            }*/
                         } catch(Exception e){
                             System.out.println(e.getMessage());
                         }
@@ -581,15 +604,40 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 		
         BusquedaAnch puzzle = new BusquedaAnch(crearMetaAnch(),crearTableroAnch(pos));
 	puzzle.busquedaAmplitud();
-        if(puzzle.pilaSol.isEmpty()) System.out.printf("\n vacio");
+        //if(puzzle.pilaSol.isEmpty()) System.out.printf("\n vacio");
         anch = puzzle;
-
-	System.out.printf("\nCantidad de soluciones: %d",puzzle.contSoluciones);
-	System.out.printf("\nTotal de estados recorridos: %d",puzzle.nEstadosRecorridos);
-	System.out.print("\nCantidad de niveles: " + puzzle.longitudLevels + "\n ");
-   	System.out.printf("\nTiempo de recorrer todos los nodos : " + valor.format ((float)puzzle.tRecorrerTotalNodos) );
-   	System.out.print("\nTiempo de encontrar la solucion optima : " + valor.format ((float)puzzle.tSolucionOpt));
-        System.out.print("\nLongitud del camino : " + (anch.pilaSol.size()-1));
+        String best;
+        String all;
+        String cantSol;
+        String estRec;
+        String cantNiv;
+        String longCam;
+        if(puzzle.tSolucionOpt<60000){
+            best = "La mejor solución tardó: " + puzzle.tSolucionOpt+"ms";
+        }else {
+            best = "La mejor solución tardó: " + puzzle.tSolucionOpt/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
+        }
+        longCam = "\nLongitud del camino: " + (anch.pilaSol.size()-1);
+        if(puzzle.tRecorrerTotalNodos<60000){
+            all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos+"ms";
+        }else {
+            all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
+        }
+        /*if(fin-inicio<60000){
+            JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio) + "ms");
+        } else{
+            JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
+        }*/
+        cantSol = "\nCantidad de soluciones: " + puzzle.contSoluciones;
+        estRec = "\nEstados recorridos: " + puzzle.nEstadosRecorridos;
+        cantNiv = "\nCantidad de niveles: " + puzzle.longitudLevels;
+        JOptionPane.showMessageDialog(tablero, best+longCam+all+cantSol+estRec+cantNiv);
+	//System.out.printf("\nCantidad de soluciones: %d",puzzle.contSoluciones);
+	//System.out.printf("\nTotal de estados recorridos: %d",puzzle.nEstadosRecorridos);
+	//System.out.print("\nCantidad de niveles: " + puzzle.longitudLevels + "\n ");
+   	//System.out.printf("\nTiempo de recorrer todos los nodos : " + (puzzle.tRecorrerTotalNodos) );
+   	//System.out.print("\nTiempo de encontrar la solucion optima : " + puzzle.tSolucionOpt);
+        //System.out.print("\nLongitud del camino : " + (anch.pilaSol.size()-1));
     }
     //
     public Solucion resolverProf(){
@@ -614,16 +662,6 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 
         //rompecabezas.imprimirTablero();
         tablero = rompecabezas.getTablero();
-        /*tablero[ 0 ][ 0 ].insertarValor( new Integer( 2 ) );
-        tablero[ 0 ][ 1 ].insertarValor( new Integer( 3 ) );
-
-        tablero[ 1 ][ 0 ].insertarValor( new Integer( 1 ) );
-
-        tablero[ 1 ][ 1 ].marcarComoCasillaVacia();*/
-        //tablero[2][2].insertarValor( new Integer( 8 ) );
-        //tablero[2][2].marcarComoCasillaNoVacia();
-
-        //tablero[2][1].marcarComoCasillaVacia();
 
         rompecabezas.setTablero( tablero );
        
@@ -641,20 +679,6 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         do{
             unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
 
-            //casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
-
-            /*while( casillaPuzzle != null ){
-
-
-                
-                if( casillaPuzzle.yaFueVisitado() && estrategia.getCantidadNodosVisitados() < 10 )
-                    System.out.println( "x: " + casillaPuzzle.getCoordenadaX() + "  y: " + casillaPuzzle.getCoordenadaY() );
-                        
-                casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
-            }*/
-
-            //System.out.println( " Longitud de la ruta: "  + unaSolucion.obtenerLongitudDelCamino() );
-
             if( unaSolucion.obtenerLongitudDelCamino()>=0&&unaSolucion.obtenerLongitudDelCamino() < menor ){
                 menor   = unaSolucion.obtenerLongitudDelCamino();
                 mejorSolucion = unaSolucion;
@@ -662,26 +686,21 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 //System.out.println( "NUEVO_MENOR: " + menor );
             }
         }while( unaSolucion.obtenerLongitudDelCamino() > 0 );
-        //Iterator it = ((SolucionEnProfundidad)unaSolucion).getPila().iterator();
 
-            
-            //System.out.println(  "pila: " + ((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).obtenerValor()+
-              //      " "+((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).getCoordenadaX()+" "+((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).getCoordenadaY());
-        //System.out.println("sol "+mejorSolucion);
         fin=System.currentTimeMillis();
         String best, end;
         if(mejor-inicio<60000){
             //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio) + "ms");
             best = "La mejor solucion tardo: "+(mejor-inicio)+"ms";
         } else{
-            best = "La mejor solucion tardo: "+(mejor-inicio)+"ms";
+            best = "La mejor solucion tardo: "+(mejor-inicio)/60000 + "min " + ((mejor-inicio)%60000)/1000+"seg";
             //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
         }
         if(fin-inicio<60000){
             //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio) + "ms");
             end = "Todas las soluciones tardo: "+(fin-inicio)+"ms";
         } else{
-            end = "Todas las soluciones tardo: "+(fin-inicio)+"ms";
+            end = "Todas las soluciones tardo: "+(fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg";
             //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
         }
         String nVis = "\nNodos visitados: "+mejorSolucion.getCantidadNodosVisitados();
@@ -1161,6 +1180,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckCuadricula;
     private javax.swing.JToggleButton jImagenes;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextDimension;
     private javax.swing.JLabel labelEstrategia;
     public javax.swing.JPanel panelCentral;
