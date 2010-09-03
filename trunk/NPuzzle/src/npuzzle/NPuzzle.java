@@ -19,7 +19,8 @@ public class NPuzzle implements Problema{
     public static final int VALOR_VACIO = 9999;
 
     private int     cantidadFilasTablero    ,                    
-                    menorCantidadVisitados;
+                    menorCantidadVisitados  ,
+                    profundidad;
 
     private HashMap mapa;
 
@@ -39,7 +40,8 @@ public class NPuzzle implements Problema{
         this.tablero= new CasillaPuzzle[ pN ][ pN ];
 
         this.cantidadFilasTablero   = pN;
-        this.menorCantidadVisitados = 30;        
+        this.menorCantidadVisitados = 30;
+        this.profundidad            = 0;
     }
 
 
@@ -113,10 +115,7 @@ public class NPuzzle implements Problema{
                 else
                     break;
             }
-            else{
-                //unaEstrategia.removerSiguienteNodo();
-                break;
-            }
+            
         }
 
 
@@ -230,7 +229,7 @@ public class NPuzzle implements Problema{
 
 
 
-        if( this.unaEstrategia.getCantidadNodosVisitados() < this.menorCantidadVisitados ){
+        if( this.profundidad < this.menorCantidadVisitados ){
 
             // Expandir el hijo de ARRIBA
             xHijo   =  casillaActual.getCoordenadaX() - 1;
@@ -422,7 +421,7 @@ public class NPuzzle implements Problema{
 
             if( estaOrdenado ){
 
-                this.menorCantidadVisitados = this.unaEstrategia.getCantidadNodosVisitados();
+                this.menorCantidadVisitados = this.profundidad;
 
                 return( estaOrdenado );
             }
@@ -443,7 +442,8 @@ public class NPuzzle implements Problema{
         firma+= casilla.getCoordenadaY();
         firma+= this.casillaVacia.getCoordenadaX();
         firma+= this.casillaVacia.getCoordenadaY();        
-
+        this.profundidad++;
+        
         this.mapa.put( firma, firma );
     }
 
@@ -459,7 +459,8 @@ public class NPuzzle implements Problema{
         firma+= casilla.getCoordenadaY();
         firma+= this.casillaVacia.getCoordenadaX();
         firma+= this.casillaVacia.getCoordenadaY();        
-
+        this.profundidad--;
+        
         this.mapa.remove( firma );
     }
 
