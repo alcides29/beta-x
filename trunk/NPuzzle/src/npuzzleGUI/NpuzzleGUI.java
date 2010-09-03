@@ -357,12 +357,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                             btnArmar.setEnabled(true);
                             btnSgte.setEnabled(true);
                             resuelto = true;
-                            fin=System.currentTimeMillis();
+                            /*fin=System.currentTimeMillis();
                             if(fin-inicio<60000){
                                 JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio) + "ms");
                             } else{
                                 JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
-                            }
+                            }*/
                         } catch(Exception e){
                             System.out.println(e.getMessage());
                         }
@@ -576,6 +576,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     }
 
     public void resolverAnch(){
+        anch=null;
         DecimalFormat valor = new DecimalFormat("0.00000");
 		
         BusquedaAnch puzzle = new BusquedaAnch(crearMetaAnch(),crearTableroAnch(pos));
@@ -588,9 +589,11 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 	System.out.print("\nCantidad de niveles: " + puzzle.longitudLevels + "\n ");
    	System.out.printf("\nTiempo de recorrer todos los nodos : " + valor.format ((float)puzzle.tRecorrerTotalNodos) );
    	System.out.print("\nTiempo de encontrar la solucion optima : " + valor.format ((float)puzzle.tSolucionOpt));
+        System.out.print("\nLongitud del camino : " + anch.pilaSol.size());
     }
     //
     public Solucion resolverProf(){
+       
         BusquedaSinInformacion busquedaSinInformacion;
         EstrategiaEnProfundidad estrategia;
         NPuzzle rompecabezas;
@@ -599,8 +602,11 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     tablero[][];
 
         Solucion unaSolucion;
+        long inicio, fin;
+        long mejor = 0;
 
     // -----------------------------------------------------------------------
+        inicio=System.currentTimeMillis();
         rompecabezas    = new NPuzzle( dimension );
        
         rompecabezas.generarTablero(pos);
@@ -630,7 +636,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         busquedaSinInformacion  = new BusquedaSinInformacion();
         //unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
 
-        System.out.println( "Iniciando ..." );
+        //System.out.println( "Iniciando ..." );
         int menor = 50000;
         do{
             unaSolucion     = busquedaSinInformacion.buscarSolucion( rompecabezas, estrategia );
@@ -647,12 +653,13 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 casillaPuzzle   = ( CasillaPuzzle )unaSolucion.obtenerSiguienteNodo();
             }*/
 
-            System.out.println( " Longitud de la ruta: "  + unaSolucion.obtenerLongitudDelCamino() );
+            //System.out.println( " Longitud de la ruta: "  + unaSolucion.obtenerLongitudDelCamino() );
 
             if( unaSolucion.obtenerLongitudDelCamino()>=0&&unaSolucion.obtenerLongitudDelCamino() < menor ){
                 menor   = unaSolucion.obtenerLongitudDelCamino();
                 mejorSolucion = unaSolucion;
-                System.out.println( "NUEVO_MENOR: " + menor );
+                mejor=System.currentTimeMillis();
+                //System.out.println( "NUEVO_MENOR: " + menor );
             }
         }while( unaSolucion.obtenerLongitudDelCamino() > 0 );
         //Iterator it = ((SolucionEnProfundidad)unaSolucion).getPila().iterator();
@@ -660,27 +667,37 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             
             //System.out.println(  "pila: " + ((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).obtenerValor()+
               //      " "+((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).getCoordenadaX()+" "+((CasillaPuzzle)((SolucionEnProfundidad)unaSolucion).getPila().peek()).getCoordenadaY());
-        System.out.println("sol "+mejorSolucion);   
+        //System.out.println("sol "+mejorSolucion);
+        fin=System.currentTimeMillis();
+        String best, end;
+        if(mejor-inicio<60000){
+            //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio) + "ms");
+            best = "La mejor solucion tardo: "+(mejor-inicio)+"ms";
+        } else{
+            best = "La mejor solucion tardo: "+(mejor-inicio)+"ms";
+            //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
+        }
+        if(fin-inicio<60000){
+            //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio) + "ms");
+            end = "Todas las soluciones tardo: "+(fin-inicio)+"ms";
+        } else{
+            end = "Todas las soluciones tardo: "+(fin-inicio)+"ms";
+            //JOptionPane.showMessageDialog(this.tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
+        }
+        String nVis = "\nNodos visitados: "+mejorSolucion.getCantidadNodosVisitados();
+        String nExp = "\nNodos expandidos: "+mejorSolucion.getCantidadNodosExpandidos();
+        String lCam = "\nLongitud del camino: "+((SolucionEnProfundidad)mejorSolucion).obtenerLongitudDelCamino();
+        JOptionPane.showMessageDialog(this.tablero, best+"\n"+end+lCam+nVis+nExp);
         return mejorSolucion;
      
     }
-    //ya me olvide para q ic esto
-    public void setTableroGUI(CasillaPuzzle[][] pTablero){
-        for(int i=0;i<dimension*dimension;i++){
-            
-            
-        }
-        
-    }
+
 
     public void armarPuzzleAnch(){
         Stack pila = anch.pilaSol;
         try {
             //System.out.println("pso "+pSolucion);
             int[] casilla;
-            int[] casillaSgte;
-            boolean sgtePosible;
-            int movimiento = 0;
 
             //System.out.println("sol:"+casilla);
             Thread.currentThread().sleep(400);
@@ -719,7 +736,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                         moveBlank(3);//izquierda
                     }
                     
-                    Thread.currentThread().sleep(800);
+                    
                     new Thread(new Runnable() {
                             public void run() {
                                 try{
@@ -730,6 +747,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                                 panelCentral.repaint();
                             }
                     }).start();
+                    Thread.currentThread().sleep(900);
                 }
 
                 
@@ -809,7 +827,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                             moveBlank(2);
                         }
                     } else {
-                        Thread.currentThread().sleep(800);
+                        
                         new Thread(new Runnable() {
                                 public void run() {
                                     try{
@@ -820,11 +838,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                                     panelCentral.repaint();
                                 }
                         }).start();
+                        Thread.currentThread().sleep(900);
                     }
                 }
 
                 casilla = casillaSgte;
-                System.out.println("casSgte");
+                //System.out.println("casSgte");
             }
 
         } catch (Exception ex) {
