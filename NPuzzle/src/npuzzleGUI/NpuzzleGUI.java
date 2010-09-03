@@ -1143,9 +1143,12 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         int dim = 0;
         try{
             dim = Integer.parseInt(jTextDimension.getText());
+            if(dim<2||dim>287){
+                throw new Exception("Mala dimension");
+            }
             
         } catch(Exception ex){
-            JOptionPane.showMessageDialog(this, "La dimensión debe ser un número entero");
+            JOptionPane.showMessageDialog(this, "La dimensión debe ser un número entero del 2 al 287");
             try{
                 this.barPestanas.setSelectedComponent(configuracion);
             } catch(Exception e){
