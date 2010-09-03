@@ -15,8 +15,8 @@ public class BusquedaAnch{
 	private String [][] estadoInicial;
 	public int nEstadosRecorridos;
 	public int longitudLevels;
-	public double tRecorrerTotalNodos;
-	public double tSolucionOpt;
+	public long tRecorrerTotalNodos;
+	public long tSolucionOpt;
 	private long tIniExpNodos;
 	public int contSoluciones = 0;
 	
@@ -158,7 +158,7 @@ public class BusquedaAnch{
 				valor =0;					
 			}
 
-                        System.out.println("valor: "+valor);
+                        //System.out.println("valor: "+valor);
 			this.longitudLevels = valor + 2;
 			if(!comparar(estadoAnt,this.estadoFinal)){
 				this.mapa.put(aux2, valor);
@@ -176,7 +176,13 @@ public class BusquedaAnch{
 
 		this.tIniExpNodos = System.currentTimeMillis();
                 //ojo
-  		while( !this.cola.isEmpty() && this.contSoluciones <= 1 ){
+                boolean soloMejor;
+                if (estadoInicial.length>3){
+                    soloMejor = true;
+                } else{
+                    soloMejor = false;
+                }
+  		while( !this.cola.isEmpty()&&(!soloMejor||this.contSoluciones < 1)){// && this.contSoluciones <= 1 ){
           	    movidaAnt = this.cola.remove();
                     for(int i=0; i<4; i++)//los 4 posibles movimientos
 			siguienteMovida(movidaAnt,i);
