@@ -30,91 +30,92 @@ public class BusquedaAnch{
 		this.longitudLevels = 0;
 	}
 	
-	public String [][] siguienteMovida(String [][] cad, int i){	
+	public void siguienteMovida(String [][] cad, int i){
 		String [][] car = new String [cad.length][cad.length];
 		car = copiar(car, cad);
 		
 		switch(i)
 		{
 			case 0: 
-				return arriba(car); 		
+				arriba(car); 		
 			case 1: 
-				return abajo(car);				
+                                abajo(car);
 			case 2:
-	        	return izquierda(car);
+                                izquierda(car);
 			case 3:
-        		return derecha(car);   	
+                                derecha(car);
 		}
-		return null;
 	}
 
-	public String [][] derecha(String [][] cadMat){	
+	public void derecha(String [][] cadMat){
 		String cero= "0";
 		int [] pos = new int[2];
 		String [][] stateAnt = new String [cadMat.length][cadMat.length];
+		String [][] stateAct = new String [cadMat.length][cadMat.length];
+
 		stateAnt = copiar(stateAnt,cadMat);
+		stateAct = copiar(stateAct,cadMat);
 		pos = getIndexString(cadMat,cero);
 		
 		if(pos[1] < cadMat.length -1  ){
 			String c = ""; 
-			c = c + cadMat[pos[0]][pos[1]];	
-			cadMat[pos[0]][pos[1]] = cadMat[pos[0]][pos[1]+1];
-			cadMat[pos[0]][pos[1]+1] = c;	
-			evaluarEstados(cadMat,stateAnt);
-			return cadMat;	
+			c = c + stateAct[pos[0]][pos[1]];
+			stateAct[pos[0]][pos[1]] = stateAct[pos[0]][pos[1]+1];
+			stateAct[pos[0]][pos[1]+1] = c;
+			evaluarEstados(stateAct,stateAnt);
 		}		
-		return null;
 	}
 
-	public String [][] izquierda(String [][] cadMat){	
+	public void izquierda(String [][] cadMat){
 		String cero= "0";
 		int [] pos = new int[2];
 		String [][] stateAnt = new String [cadMat.length][cadMat.length];
+                String [][] stateAct = new String [cadMat.length][cadMat.length];
+
 		stateAnt = copiar(stateAnt,cadMat);
+		stateAct = copiar(stateAct,cadMat);
 		pos = getIndexString(cadMat,cero);
 		
 		if(pos[1] > 0 ){
 			String c = cadMat[pos[0]][pos[1]];	
-			cadMat[pos[0]][pos[1]] = cadMat[pos[0]][pos[1]-1];
-			cadMat[pos[0]][pos[1]-1] = c;
-			evaluarEstados(cadMat,stateAnt);
-			return cadMat;
+			stateAct[pos[0]][pos[1]] = stateAct[pos[0]][pos[1]-1];
+			stateAct[pos[0]][pos[1]-1] = c;
+			evaluarEstados(stateAct,stateAnt);
 		}	
-		return null;
 	}
 
-	public String [][] arriba(String [][] cadMat){	
+	public void arriba(String [][] cadMat){
 		String cero= "0";
 		int [] pos = new int[2];
 		pos = getIndexString(cadMat,cero);
 		String [][] stateAnt = new String [cadMat.length][cadMat.length];
+                String [][] stateAct = new String [cadMat.length][cadMat.length];
+                
 		stateAnt = copiar(stateAnt,cadMat);
-		
+		stateAct = copiar(stateAct,cadMat);
 		if(pos[0] > 0 ){
-			String c = cadMat[pos[0]][pos[1]];	
-			cadMat[pos[0]][pos[1]] = cadMat[pos[0]-1][pos[1]];
-			cadMat[pos[0]-1][pos[1]] = c;
-			evaluarEstados(cadMat,stateAnt);
-			return cadMat;
+			String c = stateAct[pos[0]][pos[1]];
+			stateAct[pos[0]][pos[1]] = stateAct[pos[0]-1][pos[1]];
+			stateAct[pos[0]-1][pos[1]] = c;
+			evaluarEstados(stateAct,stateAnt);
 		}	
-		return null;
 	}
 
-	public String [][] abajo(String [][] cadMat){	
+	public void abajo(String [][] cadMat){
 		String cero= "0";
 		int [] pos = new int[2];
 		pos = getIndexString(cadMat,cero);
 		String [][] stateAnt = new String [cadMat.length][cadMat.length];
+		String [][] stateAct = new String [cadMat.length][cadMat.length];
+
 		stateAnt = copiar(stateAnt,cadMat);
-		
+		stateAct = copiar(stateAct,cadMat);
 		if(pos[0] < cadMat.length-1 ){
-			String c = cadMat[pos[0]][pos[1]];	
-			cadMat[pos[0]][pos[1]] = cadMat[pos[0]+1][pos[1]];
-			cadMat[pos[0]+1][pos[1]] = c;		
-			evaluarEstados(cadMat,stateAnt);		
-			return cadMat;
+			String c = stateAct[pos[0]][pos[1]];
+			stateAct[pos[0]][pos[1]] = stateAct[pos[0]+1][pos[1]];
+			stateAct[pos[0]+1][pos[1]] = c;
+			evaluarEstados(stateAct,stateAnt);
 		}	
-		return null;
 	}
 	
 	private int [] getIndexString(String [][]  cadMat, String caracter){
@@ -135,7 +136,6 @@ public class BusquedaAnch{
 	}
 
 	private void add(String [][] estadoAct, String [][] estadoAnt){
-		long t_iniCola, t_finCola;
 		int valor;
 		String aux2 = new String(); 
 		String aux = new String(); 
@@ -157,9 +157,9 @@ public class BusquedaAnch{
 			}else{
 				valor =0;					
 			}
-			
+
+                        System.out.println("valor: "+valor);
 			this.longitudLevels = valor + 2;
-		    t_iniCola = System.currentTimeMillis();
 			if(!comparar(estadoAnt,this.estadoFinal)){
 				this.mapa.put(aux2, valor);
 				this.cola.add(estadoAct);
@@ -170,19 +170,19 @@ public class BusquedaAnch{
 	
 	public void busquedaAmplitud(){ 
    		long tFinExpNodos;
-		String movida [][];
 		String movidaAnt[][];
 		
 		add(this.estadoInicial,null);
-		
+
 		this.tIniExpNodos = System.currentTimeMillis();
-  		while(!this.cola.isEmpty()){  
-			movidaAnt = this.cola.remove();
-			for(int i=0; i<4; i++)//los 4 posibles movimientos
-				movida = siguienteMovida(movidaAnt,i);
-		
-        	this.nEstadosRecorridos++;
+                //ojo
+  		while(!this.cola.isEmpty()){//&&this.contSoluciones<=1){
+          	    movidaAnt = this.cola.remove();
+                    for(int i=0; i<4; i++)//los 4 posibles movimientos
+			siguienteMovida(movidaAnt,i);
+                    this.nEstadosRecorridos++;
    		}
+                
 		this.nEstadosRecorridos++;
 		tFinExpNodos = System.currentTimeMillis();
 		this.tRecorrerTotalNodos = tFinExpNodos - this.tIniExpNodos;
@@ -208,16 +208,19 @@ public class BusquedaAnch{
 	private void evaluarEstados(String [][] estadoAct, String [][] estadoAnt ){
 		add(estadoAct, estadoAnt);
         if(comparar(estadoAct,this.estadoFinal)) { //"passar" esta solo para pruebas de ejecucion
-			System.out.println(  " \nRecorriendo la secuencia al desmapear [....]");
+			//System.out.println(  " \nRecorriendo la secuencia al desmapear [....]");
 			this.contSoluciones++;
-			apilarSolucion(estadoAct,estadoAnt);
+                        if(this.contSoluciones==1){
+                            apilarSolucion(estadoAct,estadoAnt);
+
+                        }
 		}
 	}
 	
 	private void apilarSolucion(String [][] actState, String [][] prvState){
 		long tFinSolOpt;
 		String [][] movs = prvState;
-		System.out.println(  " \nRecorriendo la secuencia al desmapear [....]");
+		//System.out.println(  " \nRecorriendo la secuencia al desmapear [....]");
 		this.pilaSol.add(getIndexString(actState,"0"));
 		this.pilaSol.add(getIndexString(movs,"0"));
 		Set set= this.secuenciaMov.keySet();
@@ -243,10 +246,10 @@ public class BusquedaAnch{
 			this.tSolucionOpt = tFinSolOpt - this.tIniExpNodos;
 		}
 		
-		while(!this.pilaSol.empty()){
+		/*while(!this.pilaSol.empty()){
 			int [] vec = this.pilaSol.pop();
 			System.out.println( " X == " + vec[0] + " Y == " + vec[1]);
-		}
+		}*/
 	}
 			
 	private void imprimir(String[][] tablero){
