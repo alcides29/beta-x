@@ -589,7 +589,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
 	System.out.print("\nCantidad de niveles: " + puzzle.longitudLevels + "\n ");
    	System.out.printf("\nTiempo de recorrer todos los nodos : " + valor.format ((float)puzzle.tRecorrerTotalNodos) );
    	System.out.print("\nTiempo de encontrar la solucion optima : " + valor.format ((float)puzzle.tSolucionOpt));
-        System.out.print("\nLongitud del camino : " + anch.pilaSol.size());
+        System.out.print("\nLongitud del camino : " + (anch.pilaSol.size()-1));
     }
     //
     public Solucion resolverProf(){
