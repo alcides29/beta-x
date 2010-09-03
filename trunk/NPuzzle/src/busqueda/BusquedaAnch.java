@@ -176,7 +176,7 @@ public class BusquedaAnch{
 
 		this.tIniExpNodos = System.currentTimeMillis();
                 //ojo
-  		while(!this.cola.isEmpty()){//&&this.contSoluciones<=1){
+  		while( !this.cola.isEmpty() && this.contSoluciones <= 1 ){
           	    movidaAnt = this.cola.remove();
                     for(int i=0; i<4; i++)//los 4 posibles movimientos
 			siguienteMovida(movidaAnt,i);
