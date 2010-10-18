@@ -7,15 +7,24 @@ package npuzzle2;
 
 /**
  *
- * @author alcides
+ * @author gusamasan
  */
+import javax.swing.JFrame;
+import npuzzleGUI.NpuzzleGUI;
+
 public class Main {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-    }
+        NpuzzleGUI window = new NpuzzleGUI();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLocationRelativeTo(null);
+        window.pack();  // finalize layout
+        window.setVisible(true);  // make window visible
+        window.setResizable(false);
+        
+    }//end main
 
 }
