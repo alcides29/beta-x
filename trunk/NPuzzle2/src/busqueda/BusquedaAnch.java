@@ -1,10 +1,6 @@
 package busqueda;
 
-
-import java.io.*;
 import java.util.*;
-import java.util.Random;
-import java.text.DecimalFormat;
 
 public class BusquedaAnch{
 	private Map <String, Integer> mapa;
