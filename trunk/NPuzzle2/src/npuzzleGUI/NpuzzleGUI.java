@@ -11,10 +11,13 @@ package npuzzleGUI;
  * @author  Administrador
  */
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.Graphics;
@@ -27,8 +30,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import npuzzle2.NPuzzle;
 import busqueda.*;
 import java.text.DecimalFormat;
+import java.util.Iterator;
 import java.util.Stack;
 import npuzzle2.*;
 
@@ -46,13 +51,14 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     boolean imagenes;
     private boolean resuelto;
     private Solucion solution;
-    private BusquedaAnch anch;
+    //private BusquedaAnch anch;
+     private BusquedaAvara anch;
     //private JPanel panelCentral;
     int[][] pos;
     int width, height;
     int cuadro;
     /** Creates new form NpuzzleGUI */
-    public NpuzzleGUI() { 
+    public NpuzzleGUI() {
         initComponents();        
         //panelCentral.setLayout(new GridLayout(3, 3));
         //panelCentral = new JPanel();
@@ -629,7 +635,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         anch=null;
         DecimalFormat valor = new DecimalFormat("0.00000");
 		
-        BusquedaAnch puzzle = new BusquedaAnch(crearMetaAnch(),crearTableroAnch(pos));
+        //BusquedaAnch puzzle = new BusquedaAnch(crearMetaAnch(),crearTableroAnch(pos));
+        BusquedaAvara puzzle = new BusquedaAvara(crearMetaAnch(),crearTableroAnch(pos));
 	puzzle.busquedaAmplitud();
         //if(puzzle.pilaSol.isEmpty()) System.out.printf("\n vacio");
         anch = puzzle;
@@ -647,19 +654,20 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         }
         longCam = "\nLongitud del camino: " + (anch.pilaSol.size()-1);
         if(puzzle.tRecorrerTotalNodos<60000){
-            all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos+"ms";
+           // all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos+"ms";
         }else {
-            all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
+            //all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
         }
         /*if(fin-inicio<60000){
             JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio) + "ms");
         } else{
             JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
         }*/
-        cantSol = "\nCantidad de soluciones: " + puzzle.contSoluciones;
+     //   cantSol = "\nCantidad de soluciones: " + puzzle.contSoluciones;
         estRec = "\nEstados recorridos: " + puzzle.nEstadosRecorridos;
         cantNiv = "\nCantidad de niveles: " + puzzle.longitudLevels;
-        JOptionPane.showMessageDialog(tablero, best+longCam+all+cantSol+estRec+cantNiv, metodo,JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(tablero, best+longCam+all+cantSol+estRec+cantNiv, metodo,JOptionPane.INFORMATION_MESSAGE);
+         JOptionPane.showMessageDialog(tablero, best+estRec+cantNiv, metodo,JOptionPane.INFORMATION_MESSAGE);
 	//System.out.printf("\nCantidad de soluciones: %d",puzzle.contSoluciones);
 	//System.out.printf("\nTotal de estados recorridos: %d",puzzle.nEstadosRecorridos);
 	//System.out.print("\nCantidad de niveles: " + puzzle.longitudLevels + "\n ");
