@@ -766,7 +766,6 @@ public class NPuzzle implements Problema{
         int iteraciones = 1700 * this.cantidadFilasTablero*this.cantidadFilasTablero/2;
 
         // ---------------------------------------------------------------------
-        System.out.println("con la ventana" +  System.currentTimeMillis() );
 
         for ( i = 0; i < iteraciones; i++){
             posicion = ( rnd.nextInt( n ) + 1 );
