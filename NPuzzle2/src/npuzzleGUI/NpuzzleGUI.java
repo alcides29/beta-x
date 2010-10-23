@@ -661,7 +661,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         if(checkAleatorio.isSelected()){
             puzzle.desordenarTablero(this);
         } else{
-            puzzle.desordenarTablero(this, Integer.parseInt(textSemilla.getText()));
+            puzzle.desordenarTablero(this, getSemilla());
         }
         new Thread(new Runnable() {
                 public void run() {
@@ -1442,6 +1442,23 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         }
         return dim;
     }
+
+    public int getSemilla(){
+        int sem = 0;
+        try{
+            sem = Integer.parseInt(textSemilla.getText());
+
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(this, "La semilla debe ser un número entero");
+            try{
+                this.barPestanas.setSelectedComponent(configuracion);
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return sem;
+    }
+
     public boolean getCuadricula(){
         return this.jCheckCuadricula.isSelected();
     }
