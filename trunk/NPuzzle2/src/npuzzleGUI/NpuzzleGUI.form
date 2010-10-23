@@ -253,8 +253,8 @@
                           <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                           <Component id="radioBtnAnchura" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="79" max="32767" attributes="0"/>
-                          <Component id="radioBtnAestrella" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+                          <Component id="radioBtnAestrella" min="-2" pref="81" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
@@ -293,7 +293,6 @@
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                       <ComponentRef name="groupEstrategia"/>
                     </Property>
-                    <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="En profundidad"/>
                     <Property name="actionCommand" type="java.lang.String" value="profundidad"/>
                   </Properties>
@@ -311,6 +310,7 @@
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                       <ComponentRef name="groupEstrategia"/>
                     </Property>
+                    <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="A*"/>
                   </Properties>
                   <Events>
@@ -433,7 +433,7 @@
                                   <Component id="jRadioBtnFueraDeLugar" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="79" max="32767" attributes="0"/>
+                          <EmptySpace pref="137" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -459,7 +459,6 @@
                       <Font name="Tahoma" size="11" style="1"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Heur&#xed;stica"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="jRadioBtnManhattan">
@@ -469,7 +468,6 @@
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Distancia de Manhattan"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="jRadioBtnFueraDeLugar">
@@ -477,8 +475,7 @@
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                       <ComponentRef name="groupHeuristica"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Piezas fuera de lugar"/>
-                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="text" type="java.lang.String" value="Hamming"/>
                   </Properties>
                 </Component>
               </SubComponents>

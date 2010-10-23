@@ -15,15 +15,17 @@ public class BusquedaAestrella{
 	private String [][] estadoInicial;
         private PriorityQueue<NodoCola> pCola;
 	public int nEstadosRecorridos;
-	public int longitudLevels;
+	public int pColaSize;
+        public int longitudLevels;
 	public long tRecorrerTotalNodos;
 	public long tSolucionOpt;
 	private long tIniExpNodos;
 	public int contSoluciones = 0;
+        private boolean manhattan;
         private Heuristica h;
         private Boolean encontrado;
 
-	public BusquedaAestrella(String [][] estadoFinal,String [][]estadoInicial){
+	public BusquedaAestrella(String [][] estadoFinal,String [][]estadoInicial,boolean tipoHeuristica){
 		this.cola = new LinkedList<String[][]>();
 		this.mapa = new HashMap<String, Integer>();// para no usar nodos repetidos
 		this.estadoFinal = estadoFinal;//estado obejetivo del tablero
@@ -34,6 +36,7 @@ public class BusquedaAestrella{
                 this.pCola = new PriorityQueue<NodoCola>();
                 this.h = new Heuristica();
                 this.encontrado = false;
+                this.manhattan = tipoHeuristica;
 	}
 
 	public void siguienteMovida(String [][] cad, int i){
@@ -146,7 +149,7 @@ public class BusquedaAestrella{
 		String aux2 = new String();
 		String aux = new String();
                 aux2 = cadena(estadoAct);
-               
+                int cost;
                 if(!this.mapa.containsKey(aux2)){
                     if(estadoAnt != null){
                         aux = cadena(estadoAnt);
@@ -155,12 +158,13 @@ public class BusquedaAestrella{
 			valor =0;
                     }
 
-                    System.out.println("valor: "+valor);
+                    //System.out.println("valor: "+valor);
                     this.longitudLevels = valor + 2;
                     if(!comparar(estadoAnt,this.estadoFinal)){
                             this.mapa.put(aux2, valor);
                          //   this.cola.add(estadoAct);
-                            this.pCola.add(new NodoCola(estadoAct,this.h.hDistanciaManhattan(estadoAct)+valor));
+                            cost = this.manhattan? this.h.hDistanciaManhattan(estadoAct)+valor:this.h.hPiezaFueraDeLugar(estadoAct)+valor;
+                            this.pCola.add(new NodoCola(estadoAct,cost));
                             this.secuenciaMov.put(estadoAct, estadoAnt);
                     }
 		}
@@ -194,14 +198,15 @@ public class BusquedaAestrella{
                 while(this.contSoluciones == 0){
           	   // movidaAnt = this.cola.remove();
                     movidaAnt = this.pCola.remove().board;
-                    System.out.println("***************************************************************\n");
-                    imprimir(movidaAnt);
+                    //System.out.println("***************************************************************\n");
+                    //imprimir(movidaAnt);
                     for(int i=0; i<4; i++)//los 4 posibles movimientos
 			siguienteMovida(movidaAnt,i);
                     this.nEstadosRecorridos++;
    		}
- System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n");
-		this.nEstadosRecorridos++;
+ //System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n");
+		//this.nEstadosRecorridos++;
+                this.pColaSize = pCola.size();
 		tFinExpNodos = System.currentTimeMillis();
 		this.tRecorrerTotalNodos = tFinExpNodos - this.tIniExpNodos;
 
