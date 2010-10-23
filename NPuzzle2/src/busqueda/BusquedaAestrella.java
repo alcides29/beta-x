@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.Random;
 import java.text.DecimalFormat;
 
-public class BusquedaAvara{
+public class BusquedaAestrella{
 	private Map <String, Integer> mapa;
 	private Map <String[][], String[][]> secuenciaMov;
 	private Queue <String[][]> cola;
@@ -23,7 +23,7 @@ public class BusquedaAvara{
         private Heuristica h;
         private Boolean encontrado;
 
-	public BusquedaAvara(String [][] estadoFinal,String [][]estadoInicial){
+	public BusquedaAestrella(String [][] estadoFinal,String [][]estadoInicial){
 		this.cola = new LinkedList<String[][]>();
 		this.mapa = new HashMap<String, Integer>();// para no usar nodos repetidos
 		this.estadoFinal = estadoFinal;//estado obejetivo del tablero
@@ -56,10 +56,10 @@ public class BusquedaAvara{
 	public void derecha(String [][] cadMat){
 		String cero= "0";
 		int [] pos = new int[2];
-		String [][] stateAnt = new String [cadMat.length][cadMat.length];
+	//	String [][] stateAnt = new String [cadMat.length][cadMat.length];
 		String [][] stateAct = new String [cadMat.length][cadMat.length];
 
-		stateAnt = copiar(stateAnt,cadMat);
+	//	stateAnt = copiar(stateAnt,cadMat);
 		stateAct = copiar(stateAct,cadMat);
 		pos = getIndexString(cadMat,cero);
 
@@ -68,17 +68,17 @@ public class BusquedaAvara{
 			c = c + stateAct[pos[0]][pos[1]];
 			stateAct[pos[0]][pos[1]] = stateAct[pos[0]][pos[1]+1];
 			stateAct[pos[0]][pos[1]+1] = c;
-			evaluarEstados(stateAct,stateAnt);
+			evaluarEstados(stateAct,cadMat);
 		}
 	}
 
 	public void izquierda(String [][] cadMat){
 		String cero= "0";
 		int [] pos = new int[2];
-		String [][] stateAnt = new String [cadMat.length][cadMat.length];
+	//	String [][] stateAnt = new String [cadMat.length][cadMat.length];
                 String [][] stateAct = new String [cadMat.length][cadMat.length];
 
-		stateAnt = copiar(stateAnt,cadMat);
+	//	stateAnt = copiar(stateAnt,cadMat);
 		stateAct = copiar(stateAct,cadMat);
 		pos = getIndexString(cadMat,cero);
 
@@ -86,7 +86,7 @@ public class BusquedaAvara{
 			String c = cadMat[pos[0]][pos[1]];
 			stateAct[pos[0]][pos[1]] = stateAct[pos[0]][pos[1]-1];
 			stateAct[pos[0]][pos[1]-1] = c;
-			evaluarEstados(stateAct,stateAnt);
+			evaluarEstados(stateAct,cadMat);
 		}
 	}
 
@@ -94,16 +94,16 @@ public class BusquedaAvara{
 		String cero= "0";
 		int [] pos = new int[2];
 		pos = getIndexString(cadMat,cero);
-		String [][] stateAnt = new String [cadMat.length][cadMat.length];
+		//String [][] stateAnt = new String [cadMat.length][cadMat.length];
                 String [][] stateAct = new String [cadMat.length][cadMat.length];
 
-		stateAnt = copiar(stateAnt,cadMat);
+		//stateAnt = copiar(stateAnt,cadMat);
 		stateAct = copiar(stateAct,cadMat);
 		if(pos[0] > 0 ){
 			String c = stateAct[pos[0]][pos[1]];
 			stateAct[pos[0]][pos[1]] = stateAct[pos[0]-1][pos[1]];
 			stateAct[pos[0]-1][pos[1]] = c;
-			evaluarEstados(stateAct,stateAnt);
+			evaluarEstados(stateAct,cadMat);
 		}
 	}
 
@@ -111,16 +111,16 @@ public class BusquedaAvara{
 		String cero= "0";
 		int [] pos = new int[2];
 		pos = getIndexString(cadMat,cero);
-		String [][] stateAnt = new String [cadMat.length][cadMat.length];
+	//	String [][] stateAnt = new String [cadMat.length][cadMat.length];
 		String [][] stateAct = new String [cadMat.length][cadMat.length];
 
-		stateAnt = copiar(stateAnt,cadMat);
+	//	stateAnt = copiar(stateAnt,cadMat);
 		stateAct = copiar(stateAct,cadMat);
 		if(pos[0] < cadMat.length-1 ){
 			String c = stateAct[pos[0]][pos[1]];
 			stateAct[pos[0]][pos[1]] = stateAct[pos[0]+1][pos[1]];
 			stateAct[pos[0]+1][pos[1]] = c;
-			evaluarEstados(stateAct,stateAnt);
+			evaluarEstados(stateAct,cadMat);
 		}
 	}
 
@@ -176,7 +176,7 @@ public class BusquedaAvara{
             return str;
         }
         
-	public void busquedaAmplitud(){
+	public void busquedaAestrella(){
    		long tFinExpNodos;
 		String movidaAnt[][];
 
