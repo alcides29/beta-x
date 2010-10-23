@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 public class BusquedaAestrella{
 	private Map <String, Integer> mapa;
 	private Map <String[][], String[][]> secuenciaMov;
-	private Queue <String[][]> cola;
+	//private Queue <String[][]> cola;
 	private String [][] estadoFinal;
 	public Stack <int[]> pilaSol;
 	private String [][] estadoInicial;
@@ -23,10 +23,10 @@ public class BusquedaAestrella{
 	public int contSoluciones = 0;
         private boolean manhattan;
         private Heuristica h;
-        private Boolean encontrado;
+     //   private Boolean encontrado;
 
 	public BusquedaAestrella(String [][] estadoFinal,String [][]estadoInicial,boolean tipoHeuristica){
-		this.cola = new LinkedList<String[][]>();
+		//this.cola = new LinkedList<String[][]>();
 		this.mapa = new HashMap<String, Integer>();// para no usar nodos repetidos
 		this.estadoFinal = estadoFinal;//estado obejetivo del tablero
 		this.secuenciaMov = new HashMap<String[][], String[][]>();//historial de jugadas, asocia el estado actual al estado anterior que lo genera
@@ -35,7 +35,7 @@ public class BusquedaAestrella{
 		this.longitudLevels = 0;
                 this.pCola = new PriorityQueue<NodoCola>();
                 this.h = new Heuristica();
-                this.encontrado = false;
+              //  this.encontrado = false;
                 this.manhattan = tipoHeuristica;
 	}
 
@@ -57,14 +57,14 @@ public class BusquedaAestrella{
 	}
 
 	public void derecha(String [][] cadMat){
-		String cero= "0";
+		//String cero= "0";
 		int [] pos = new int[2];
 	//	String [][] stateAnt = new String [cadMat.length][cadMat.length];
 		String [][] stateAct = new String [cadMat.length][cadMat.length];
 
 	//	stateAnt = copiar(stateAnt,cadMat);
 		stateAct = copiar(stateAct,cadMat);
-		pos = getIndexString(cadMat,cero);
+		pos = getIndexString(cadMat,"0");
 
 		if(pos[1] < cadMat.length -1  ){
 			String c = "";
@@ -76,14 +76,14 @@ public class BusquedaAestrella{
 	}
 
 	public void izquierda(String [][] cadMat){
-		String cero= "0";
+		//String cero= "0";
 		int [] pos = new int[2];
 	//	String [][] stateAnt = new String [cadMat.length][cadMat.length];
                 String [][] stateAct = new String [cadMat.length][cadMat.length];
 
 	//	stateAnt = copiar(stateAnt,cadMat);
 		stateAct = copiar(stateAct,cadMat);
-		pos = getIndexString(cadMat,cero);
+		pos = getIndexString(cadMat,"0");
 
 		if(pos[1] > 0 ){
 			String c = cadMat[pos[0]][pos[1]];
@@ -94,9 +94,9 @@ public class BusquedaAestrella{
 	}
 
 	public void arriba(String [][] cadMat){
-		String cero= "0";
+		//String cero= "0";
 		int [] pos = new int[2];
-		pos = getIndexString(cadMat,cero);
+		pos = getIndexString(cadMat,"0");
 		//String [][] stateAnt = new String [cadMat.length][cadMat.length];
                 String [][] stateAct = new String [cadMat.length][cadMat.length];
 
@@ -111,9 +111,9 @@ public class BusquedaAestrella{
 	}
 
 	public void abajo(String [][] cadMat){
-		String cero= "0";
+		//String cero= "0";
 		int [] pos = new int[2];
-		pos = getIndexString(cadMat,cero);
+		pos = getIndexString(cadMat,"0");
 	//	String [][] stateAnt = new String [cadMat.length][cadMat.length];
 		String [][] stateAct = new String [cadMat.length][cadMat.length];
 
@@ -188,12 +188,12 @@ public class BusquedaAestrella{
 
 		this.tIniExpNodos = System.currentTimeMillis();
                 //ojo
-                boolean soloMejor;
+               /* boolean soloMejor;
                 if (estadoInicial.length>3){
                     soloMejor = true;
                 } else{
                     soloMejor = false;
-                }
+                }*/
   		//while( !this.cola.isEmpty()&&(!soloMejor||this.contSoluciones < 1)){// && this.contSoluciones <= 1 ){
                 while(this.contSoluciones == 0){
           	   // movidaAnt = this.cola.remove();
