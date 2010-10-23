@@ -781,7 +781,35 @@ public class NPuzzle implements Problema{
             //this.imprimirTablero();
         }       
     }
-    
+
+    public void desordenarTablero(NpuzzleGUI ventana, int nro){
+        // ---------------------------------------------------------------------
+
+        // Generamos un random con una semilla
+        Random rnd = new Random( nro );
+        int n = 4;
+        int i;
+        int posicion;
+        int anterior = 2;
+        int iteraciones = 1700 * this.cantidadFilasTablero*this.cantidadFilasTablero/2;
+
+        // ---------------------------------------------------------------------
+
+        for ( i = 0; i < iteraciones; i++){
+            posicion = ( rnd.nextInt( n ) + 1 );
+
+            // Verifica que la posicion sea valida y no se mude a la posicion anterior
+            while( !this.movimientoValido( posicion )  || ( posicion == anterior ) ){
+                posicion = rnd.nextInt( n );
+            }
+
+            anterior = this.posicionAnterior( posicion );
+            this.moverCasilla( posicion );
+            ventana.moveBlank(posicion); // llamar a la funcion del GUI
+            //this.imprimirTablero();
+        }
+    }
+
     // Calcula la posicion anterior de donde vino la casilla vacia
     private int posicionAnterior( int pos ){
         // ---------------------------------------------------------------------
