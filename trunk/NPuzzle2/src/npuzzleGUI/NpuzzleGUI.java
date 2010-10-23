@@ -52,7 +52,8 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private boolean resuelto;
     private Solucion solution;
     //private BusquedaAnch anch;
-     private BusquedaAvara anch;
+    private BusquedaAnch anch;
+    private BusquedaAestrella estrella;
     //private JPanel panelCentral;
     int[][] pos;
     int width, height;
@@ -124,6 +125,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         groupEstrategia = new javax.swing.ButtonGroup();
+        groupHeuristica = new javax.swing.ButtonGroup();
         barPestanas = new javax.swing.JTabbedPane();
         tablero = new javax.swing.JPanel();
         panelCentral = new javax.swing.JPanel();
@@ -138,12 +140,17 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         radioBtnAnchura = new javax.swing.JRadioButton();
         radioBtnProfundidad = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
+        radioBtnAestrella = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         labelEstrategia = new javax.swing.JLabel();
         jTextDimension = new javax.swing.JTextField();
         jCheckCuadricula = new javax.swing.JCheckBox();
         jImagenes = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jRadioBtnManhattan = new javax.swing.JRadioButton();
+        jRadioBtnFueraDeLugar = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("N-Puzzle");
@@ -253,24 +260,32 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         radioBtnProfundidad.setText("En profundidad");
         radioBtnProfundidad.setActionCommand("profundidad");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Estrategia");
+
+        groupEstrategia.add(radioBtnAestrella);
+        radioBtnAestrella.setText("A*");
+        radioBtnAestrella.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                radioBtnAestrellaStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(radioBtnProfundidad)
-                        .addGap(48, 48, 48)
-                        .addComponent(radioBtnAnchura))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2)))
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addComponent(radioBtnProfundidad)
+                .addGap(48, 48, 48)
+                .addComponent(radioBtnAnchura)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addComponent(radioBtnAestrella)
+                .addGap(63, 63, 63))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,8 +295,9 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(radioBtnProfundidad)
-                    .addComponent(radioBtnAnchura))
-                .addContainerGap(44, Short.MAX_VALUE))
+                    .addComponent(radioBtnAnchura)
+                    .addComponent(radioBtnAestrella))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -339,16 +355,60 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Heurística");
+        jLabel3.setEnabled(false);
+
+        groupHeuristica.add(jRadioBtnManhattan);
+        jRadioBtnManhattan.setSelected(true);
+        jRadioBtnManhattan.setText("Distancia de Manhattan");
+        jRadioBtnManhattan.setEnabled(false);
+
+        groupHeuristica.add(jRadioBtnFueraDeLugar);
+        jRadioBtnFueraDeLugar.setText("Piezas fuera de lugar");
+        jRadioBtnFueraDeLugar.setEnabled(false);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jRadioBtnManhattan)
+                        .addGap(59, 59, 59)
+                        .addComponent(jRadioBtnFueraDeLugar)))
+                .addContainerGap(79, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioBtnManhattan)
+                    .addComponent(jRadioBtnFueraDeLugar))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout configuracionLayout = new javax.swing.GroupLayout(configuracion);
         configuracion.setLayout(configuracionLayout);
         configuracionLayout.setHorizontalGroup(
             configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(configuracionLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addGroup(configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         configuracionLayout.setVerticalGroup(
             configuracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -357,7 +417,9 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(354, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(252, Short.MAX_VALUE))
         );
 
         barPestanas.addTab("Configuración", configuracion);
@@ -425,7 +487,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                         panelCentral.repaint();
                     }
             }).start();
-        } else{
+        } else if(isAnch()){
             new Thread(new Runnable() {
                     public void run() {
                         try{
@@ -452,10 +514,34 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                         panelCentral.repaint();
                     }
             }).start();
+        } else{
+            new Thread(new Runnable() {
+                    public void run() {
+                        try{
+                            //long inicio, fin;
+                            //inicio=System.currentTimeMillis();
+                            resolverAestrella();
+                            //setSolution( resolverProf() );
+                            btnNuevo.setEnabled(true);
+                            btnVistaPrevia.setEnabled(true);
+                            //btnResolver.setEnabled(true);
+                            //btnAnterior.setEnabled(true);
+                            btnArmar.setEnabled(true);
+                            //btnSgte.setEnabled(true);
+                            resuelto = true;
+                            /*fin=System.currentTimeMillis();
+                            if(fin-inicio<60000){
+                                JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio) + "ms");
+                            } else{
+                                JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
+                            }*/
+                        } catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
+                        panelCentral.repaint();
+                    }
+            }).start();
         }
-        
-        
-        //System.out.println(seleccion);
     }//GEN-LAST:event_btnResolverActionPerformed
 
     private void btnVistaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVistaPreviaActionPerformed
@@ -607,7 +693,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                         panelCentral.repaint();
                     }
             }).start();
-        } else{
+        } else if(isAnch()){
             new Thread(new Runnable() {
                     public void run() {
                         try{
@@ -623,23 +709,54 @@ public class NpuzzleGUI extends javax.swing.JFrame {
                     }
             }).start();
 
+        } else{
+            new Thread(new Runnable() {
+                    public void run() {
+                        try{
+                            armarPuzzleAestrella();
+                            btnNuevo.setEnabled(true);
+                            btnVistaPrevia.setEnabled(true);
+                            //btnAnterior.setEnabled(true);
+                            Thread.currentThread().sleep(dimension*10+200);
+                        } catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
+                        panelCentral.repaint();
+                    }
+            }).start();
+
         }
     }//GEN-LAST:event_btnArmarActionPerformed
+
+    private void radioBtnAestrellaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_radioBtnAestrellaStateChanged
+        if(radioBtnAestrella.isSelected()){
+            //jPanel3.setEnabled(true);
+            jRadioBtnFueraDeLugar.setEnabled(true);
+            jRadioBtnManhattan.setEnabled(true);
+            jLabel3.setEnabled(true);
+
+        } else{
+            jRadioBtnFueraDeLugar.setEnabled(false);
+            jRadioBtnManhattan.setEnabled(false);
+            jLabel3.setEnabled(false);
+
+        }
+    }//GEN-LAST:event_radioBtnAestrellaStateChanged
 
 
     public void setSolution(Solucion pSolucion){
         solution = pSolucion;
     }
 
-    public void resolverAnch(){
-        anch=null;
+    public void resolverAestrella(){
+        estrella=null;
         DecimalFormat valor = new DecimalFormat("0.00000");
-		
+
         //BusquedaAnch puzzle = new BusquedaAnch(crearMetaAnch(),crearTableroAnch(pos));
-        BusquedaAvara puzzle = new BusquedaAvara(crearMetaAnch(),crearTableroAnch(pos));
-	puzzle.busquedaAmplitud();
+        BusquedaAestrella puzzle = new BusquedaAestrella(crearMetaAnch(),crearTableroAnch(pos));
+	puzzle.busquedaAestrella();
         //if(puzzle.pilaSol.isEmpty()) System.out.printf("\n vacio");
-        anch = puzzle;
+        estrella = puzzle;
         String best;
         String all;
         String cantSol;
@@ -652,7 +769,7 @@ public class NpuzzleGUI extends javax.swing.JFrame {
         }else {
             best = "\nLa mejor solución tardó: " + puzzle.tSolucionOpt/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
         }
-        longCam = "\nLongitud del camino: " + (anch.pilaSol.size()-1);
+        longCam = "\nLongitud del camino: " + (estrella.pilaSol.size()-1);
         if(puzzle.tRecorrerTotalNodos<60000){
            // all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos+"ms";
         }else {
@@ -675,7 +792,50 @@ public class NpuzzleGUI extends javax.swing.JFrame {
    	//System.out.print("\nTiempo de encontrar la solucion optima : " + puzzle.tSolucionOpt);
         //System.out.print("\nLongitud del camino : " + (anch.pilaSol.size()-1));
     }
-    //
+
+    public void resolverAnch(){
+        anch=null;
+        DecimalFormat valor = new DecimalFormat("0.00000");
+
+        BusquedaAnch puzzle = new BusquedaAnch(crearMetaAnch(),crearTableroAnch(pos));
+	puzzle.busquedaAmplitud();
+        //if(puzzle.pilaSol.isEmpty()) System.out.printf("\n vacio");
+        anch = puzzle;
+        String best;
+        String all;
+        String cantSol;
+        String estRec;
+        String cantNiv;
+        String longCam;
+        String metodo = "Búsqueda en Amplitud";
+        if(puzzle.tSolucionOpt<60000){
+            best = "\nLa mejor solución tardó: " + puzzle.tSolucionOpt+"ms";
+        }else {
+            best = "\nLa mejor solución tardó: " + puzzle.tSolucionOpt/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
+        }
+        longCam = "\nLongitud del camino: " + (anch.pilaSol.size()-1);
+        if(puzzle.tRecorrerTotalNodos<60000){
+            all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos+"ms";
+        }else {
+            all = "\nTodas las soluciones tardó: " + puzzle.tRecorrerTotalNodos/60000 + "min " + (puzzle.tRecorrerTotalNodos%60000)/1000+"seg";
+        }
+        /*if(fin-inicio<60000){
+            JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio) + "ms");
+        } else{
+            JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
+        }*/
+        //cantSol = "\nCantidad de soluciones: " + puzzle.contSoluciones;
+        estRec = "\nEstados recorridos: " + puzzle.nEstadosRecorridos;
+        cantNiv = "\nCantidad de niveles: " + puzzle.longitudLevels;
+        JOptionPane.showMessageDialog(tablero, best+longCam+all+estRec+cantNiv, metodo,JOptionPane.INFORMATION_MESSAGE);
+	//System.out.printf("\nCantidad de soluciones: %d",puzzle.contSoluciones);
+	//System.out.printf("\nTotal de estados recorridos: %d",puzzle.nEstadosRecorridos);
+	//System.out.print("\nCantidad de niveles: " + puzzle.longitudLevels + "\n ");
+   	//System.out.printf("\nTiempo de recorrer todos los nodos : " + (puzzle.tRecorrerTotalNodos) );
+   	//System.out.print("\nTiempo de encontrar la solucion optima : " + puzzle.tSolucionOpt);
+        //System.out.print("\nLongitud del camino : " + (anch.pilaSol.size()-1));
+    }
+    
     public Solucion resolverProf(){
        
         BusquedaSinInformacion busquedaSinInformacion;
@@ -748,6 +908,72 @@ public class NpuzzleGUI extends javax.swing.JFrame {
      
     }
 
+    public void armarPuzzleAestrella(){
+        Stack pila = estrella.pilaSol;
+        try {
+            //System.out.println("pso "+pSolucion);
+            int[] casilla;
+
+            //System.out.println("sol:"+casilla);
+            Thread.currentThread().sleep(400);
+            while(!pila.isEmpty()){
+                 casilla = (int[])pila.pop();
+                //System.out.println("val "+casilla.obtenerValor()+" "+casilla.getCoordenadaX()+" "+casilla.getCoordenadaY());
+                /*System.out.println("hasta aqui");
+                System.out.println("coordXcas"+casilla.getCoordenadaX());
+                System.out.println("coordYcas"+casilla.getCoordenadaY());
+                System.out.println("coordX"+hole.getPosicionX());
+                System.out.println("coordY"+hole.getPosicionY());*/
+                //System.out.println(casilla.yaFueVisitado());
+
+
+                /*if(casillaSgte==null){
+                    sgtePosible=true;
+                } else{
+                    sgtePosible =false;
+                }*/
+                if(true){
+                    //Thread.currentThread().sleep(400);
+                    if(casilla[0]==hole.getPosicionX()+1&&hole.getPosicionY()==casilla[1]){
+                        //if(casilla.yaFueVisitado())
+                        //movimiento=2;
+                        moveBlank(2);//abajo
+                    } else if(casilla[0]==hole.getPosicionX()-1&&hole.getPosicionY()==casilla[1]){
+                        //System.out.println("adjflkadffflkajdlfj");
+                        //movimiento=4;
+                        moveBlank(4);//arriba
+                    } else if(casilla[0]==hole.getPosicionX()&&hole.getPosicionY()==casilla[1]+1){
+                        //movimiento=1;
+                        moveBlank(1);//derecha
+                    } else if(casilla[0]==hole.getPosicionX()&&hole.getPosicionY()==casilla[1]-1){
+                        //System.out.println("entro");
+                        //movimiento=3;
+                        moveBlank(3);//izquierda
+                    }
+
+
+                    new Thread(new Runnable() {
+                            public void run() {
+                                try{
+                                    Thread.currentThread().sleep(200);
+                                } catch(Exception e){
+                                    System.out.println(e.getMessage());
+                                }
+                                panelCentral.repaint();
+                            }
+                    }).start();
+                    Thread.currentThread().sleep(900);
+                }
+
+
+                //System.out.println("casSgte");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(NpuzzleGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        resuelto=false;
+    }
 
     public void armarPuzzleAnch(){
         Stack pila = anch.pilaSol;
@@ -1057,8 +1283,13 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     public boolean isProf(){
         return radioBtnProfundidad.isSelected();
     }
+
     public boolean isAnch(){
         return radioBtnAnchura.isSelected();
+    }
+
+    public boolean isAestrella(){
+        return radioBtnAestrella.isSelected();
     }
     public boolean isResuelto(){
         boolean res=true;
@@ -1214,15 +1445,21 @@ public class NpuzzleGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnVistaPrevia;
     private javax.swing.JPanel configuracion;
     private javax.swing.ButtonGroup groupEstrategia;
+    private javax.swing.ButtonGroup groupHeuristica;
     private javax.swing.JCheckBox jCheckCuadricula;
     private javax.swing.JToggleButton jImagenes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JRadioButton jRadioBtnFueraDeLugar;
+    private javax.swing.JRadioButton jRadioBtnManhattan;
     private javax.swing.JTextField jTextDimension;
     private javax.swing.JLabel labelEstrategia;
     public javax.swing.JPanel panelCentral;
+    private javax.swing.JRadioButton radioBtnAestrella;
     private javax.swing.JRadioButton radioBtnAnchura;
     private javax.swing.JRadioButton radioBtnProfundidad;
     private javax.swing.JPanel tablero;
