@@ -826,10 +826,10 @@ public class NpuzzleGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(tablero, "Tardo: " + (fin-inicio)/60000 + "min " + ((fin-inicio)%60000)/1000+"seg");
         }*/
      //   cantSol = "\nCantidad de soluciones: " + puzzle.contSoluciones;
-        estRec = "\nEstados recorridos: " + puzzle.nEstadosRecorridos;
+        //estRec = "\nEstados recorridos: " + puzzle.nEstadosRecorridos;
         //cantNiv = "\nCantidad de niveles: " + puzzle.longitudLevels;
         //JOptionPane.showMessageDialog(tablero, best+longCam+all+cantSol+estRec+cantNiv, metodo,JOptionPane.INFORMATION_MESSAGE);
-         JOptionPane.showMessageDialog(tablero, best+estRec+longCam+cantExp+cantVisit, metodo,JOptionPane.INFORMATION_MESSAGE);
+         JOptionPane.showMessageDialog(tablero, best+longCam+cantExp+cantVisit, metodo,JOptionPane.INFORMATION_MESSAGE);
 	//System.out.printf("\nCantidad de soluciones: %d",puzzle.contSoluciones);
 	//System.out.printf("\nTotal de estados recorridos: %d",puzzle.nEstadosRecorridos);
 	//System.out.print("\nCantidad de niveles: " + puzzle.longitudLevels + "\n ");
